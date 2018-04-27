@@ -1,2 +1,1 @@
-export * from './taggify.pipe';
-export * from './taggify.module';
+export * from './example.module';

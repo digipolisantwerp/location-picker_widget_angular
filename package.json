@@ -1,32 +1,31 @@
 {
-  "name": "angular-library-starter-kit",
-  "description": "Angular 5 Library Starter Kit",
+  "name": "@acpaas-ui-widgets/ngx-starter-kit",
+  "description": "Smart Widget UI Starter Kit (Angular)",
   "author": {
-    "name": "Gerard Rovira Sánchez",
-    "email": "zurfyx@gmail.com",
-    "url": "zurfyx.com"
+    "name": "Joeri Sebrechts",
+    "email": "joeri.sebrechts@digipolis.be"
   },
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
     "start": "ng serve --aot",
-    "build": "ng-packagr -p ng-package.json",
-    "build-ghpages": "ng build --base-href \"https://zurfyx.github.io/angular-library-starter-kit/\" --output-path \"dist-ghpages\"",
-    "test": "npm run lint && ng test --watch false",
-    "test-watch": "ng test",
+    "build": "npm run clean && ng-packagr -p ng-package.json",
+    "clean": "rimraf coverage",
+    "test": "npm run lint && ng test --watch false --code-coverage",
+    "test-watch": "ng test --code-coverage",
     "e2e": "ng e2e",
     "e2e-watch": "watch \"ng e2e -s false\" src e2e --wait=1",
     "lint": "ng lint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zurfyx/angular-library-starter-kit.git"
+    "url": "git+https://github.com/digipolisantwerp/starter-kit_widget_angular.git"
   },
   "bugs": {
-    "url": "https://github.com/zurfyx/angular-library-starter-kit/issues"
+    "url": "https://github.com/digipolisantwerp/starter-kit_widget_angular/issues"
   },
-  "homepage": "https://github.com/zurfyx/angular-library-starter-kit#readme",
+  "homepage": "https://github.com/digipolisantwerp/starter-kit_widget_angular#readme",
   "keywords": [
     "angular",
     "library",
@@ -35,21 +34,21 @@
     "angular-cli",
     "ng-packagr"
   ],
-  "private": false,
   "peerDependencies": {
     "@angular/common": "^5.0.0",
-    "@angular/core": "^5.0.0"
+    "@angular/core": "^5.0.0",
+    "@angular/forms": "^5.0.0"
   },
   "dependencies": {},
   "devDependencies": {
+    "@a-ui/core": "^2.0.3",
     "@angular/animations": "^5.0.0",
-    "@angular/cli": "1.5.4",
+    "@angular/cli": "1.7.3",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/forms": "^5.0.0",
-    "@angular/http": "^5.0.0",
     "@angular/language-service": "^5.0.0",
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
@@ -67,16 +66,18 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "^1.5.0-rc.1",
+    "ng-packagr": "^2.4.2",
     "protractor": "~5.1.2",
+    "rimraf": "^2.6.2",
     "rxjs": "^5.5.2",
     "ts-node": "~3.2.0",
+    "tsickle": "^0.27.5",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2",
     "watch": "^1.0.2",
     "zone.js": "^0.8.14"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://nexusrepo.antwerpen.be/repository/npm-private/"
   }
 }
