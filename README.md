@@ -34,6 +34,10 @@ To build a new widget front-end:
 
 8. Follow the instructions from the [Smart Widgets contributing page](https://github.com/digipolisantwerp/starter-kit_widget_angular/blob/master/CONTRIBUTING.md) to notify Digipolis about your widget and get it published.
 
+## Contributing to this starter kit
+
+If you want to make changes to this starter kit, please drop us a note on the [#acpaas-ui-dev slack channel](https://dgpls.slack.com/messages/C4S2D7KTK) or create an issue on github.
+
 ## License
 
 This project is published under the [MIT license](LICENSE.md).
