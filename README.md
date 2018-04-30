@@ -18,10 +18,11 @@ To build a new widget front-end:
 
    - Test using `npm test` to run once, and `npm run test-watch` to run in watch mode.
 
-5. Update all the relevant files to replace the reference to "starter-kit" or "Starter Kit".
+5. Update all the relevant files to replace the references to `starter-kit`, `Starter Kit` and `example`.
 
    - `package.json`: ACPaaS UI components you depend on should go into `dependencies`
    - `.angular-cli.json`
+   - Any other files that contain the above mentioned words...
    - Delete `package-lock.json` and run `npm install` to regenerate it.
 
 6. Place appropriate README.md and CONTRIBUTING.md files.
