@@ -14,7 +14,7 @@ Please book a GitHub issue.
 
 ## What should I know to get started?
 
-This widget is part of the [ACPaaS UI platform](https://acpaas-ui.digipolis.be).
+This widget is part of the [ACPaaS UI platform](https://acpaas-ui.digipolis.be). For more info about Smart Widgets, check the [documentation hub](https://github.com/digipolisantwerp/smart-widgets).
 
 Before contributing code, you should be aware of the following:
 
