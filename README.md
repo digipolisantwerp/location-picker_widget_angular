@@ -1,43 +1,43 @@
 # Smart Widget UI Starter Kit (Angular)
 
-This is a starter kit for building the Angular 5+ front-end for an ACPaaS UI Smart Widget. To learn more about Smart Widgets and find out the guidelines for how to use this starter kit, see the [Smart Widget index page](https://github.com/digipolisantwerp/smart-widgets).
+Dit is een starter kit om een Angular 5+ front-end te bouwen voor een ACPaaS UI Smart Widget. Om meer te leren over Smart Widgets en de richtlijnen te weten om deze starter kit te gebruiken kijk dan naar de [Smart Widget index pagina](https://github.com/digipolisantwerp/smart-widgets).
 
-To build a new widget front-end:
+Om een nieuwe widget front-end te maken:
 
-1. Clone this repo.
+1. Kloon deze repo.
 
    `git clone https://github.com/digipolisantwerp/starter-kit_widget_angular.git`
 
-2. Implement your widget in the `src` folder.
+2. Implementeer je widget in de `src` map.
 
-3. Implement an example for your widget in the `example` folder
+3. Implementeer een voorbeeld van het gebruik van je widget in de `example` map.
 
-   - If your widget can be used with and without a BFF, please include an example of both.
+   - Als jouw widget gebruikt kan worden met en zonder een BFF, gelieve dan een voorbeeld van elk te geven.
 
-4. Write some tests for your widget by adding `.spec.ts files` in the src folder.
+4. Schrijf enkele tests voor jouw widget door `.spec.ts files` toe te voegen aan de `src` map.
 
-   - Test using `npm test` to run once, and `npm run test-watch` to run in watch mode.
+   - Test eenmalig met `npm test`, en met `npm run test-watch` in *watch* modus.
 
-5. Update all the relevant files to replace the references to `starter-kit`, `Starter Kit` and `example`.
+5. Pas alle relevante bestanden aan om de referenties naar `starter-kit`, `Starter Kit` en `example` te vervangen.
 
-   - `package.json`: ACPaaS UI components you depend on should go into `dependencies`
+   - `package.json`: ACPaaS UI componenten waarvan je afhankelijk bent horen in `dependencies` te gaan
    - `.angular-cli.json`
-   - Any other files that contain the above mentioned words...
-   - Delete `package-lock.json` and run `npm install` to regenerate it.
+   - Andere bestanden met bovenstaande termen...
+   - Verwijder `package-lock.json` en draai `npm install` om het opnieuw te genereren.
 
-6. Place appropriate README.md and CONTRIBUTING.md files.
+6. Plaats geschikte README.md en CONTRIBUTING.md bestanden.
 
-   - Replace `README.md` by `README.example.md` and edit it.
-   - Replace `CONTRIBUTING.md` by `CONTRIBUTING.example.md` and edit it.
+   - Vervang `README.md` door `README.example.md` en pas het aan.
+   - Hernoem `CONTRIBUTING.example.md` naar `CONTRIBUTING.md` en pas het aan.
 
-7. Push your widget to a new repo.
+7. Push jouw widget naar een nieuwe repo.
 
-8. Follow the instructions from the [Smart Widgets contributing page](https://github.com/digipolisantwerp/starter-kit_widget_angular/blob/master/CONTRIBUTING.md) to notify Digipolis about your widget and get it published.
+8. Volg de instructies uit de [Smart Widgets contributing pagina](https://github.com/digipolisantwerp/starter-kit_widget_angular/blob/master/CONTRIBUTING.md) om Digipolis op de hoogte te stellen van jouw widget en die te publiceren.
 
-## Contributing to this starter kit
+## Bijdragen aan deze starter kit
 
-If you want to make changes to this starter kit, please drop us a note on the [#acpaas-ui-dev slack channel](https://dgpls.slack.com/messages/C4S2D7KTK) or create an issue on github.
+Wens je wijzigingen te maken aan deze starter kit, kom dan even langs op het [#acpaas-ui-dev slack channel](https://dgpls.slack.com/messages/C4S2D7KTK) of maak een github issue.
 
-## License
+## Licentie
 
-This project is published under the [MIT license](LICENSE.md).
+Dit project is gepubliceerd onder de [MIT licentie](LICENSE.md).
