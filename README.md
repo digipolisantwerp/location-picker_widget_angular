@@ -18,6 +18,12 @@ Then install (you will need to be connected to the Digipolis network):
 > npm install @acpaas-ui-widgets/ngx-location-picker
 ```
 
+You may also need to install peer dependencies:
+
+```sh
+> npm install @acpaas-ui/flyout @acpaas-ui/mask @acpaas-ui/selectable-list
+```
+
 ### Using
 
 A BFF service should be running (see demo app instructions below for how to start one).
@@ -25,6 +31,8 @@ A BFF service should be running (see demo app instructions below for how to star
 Import the component in your module:
 
 ```ts
+import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
+
 @NgModule({
   imports: [
     ...,
@@ -44,7 +52,7 @@ In your template:
 
 ```html
 <aui-location-picker
-    [url]="http://localhost:9999/api/locations"
+    url="http://localhost:9999/api/locations"
     [(value)]="location">
 </aui-location-picker>
 ```
