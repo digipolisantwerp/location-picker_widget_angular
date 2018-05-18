@@ -1,43 +1,108 @@
-# Smart Widget UI Starter Kit (Angular)
+# Location Picker Smart Widget UI (Angular)
 
-Dit is een starter kit om een Angular 5+ front-end te bouwen voor een ACPaaS UI Smart Widget. Om meer te leren over Smart Widgets en de richtlijnen te weten om deze starter kit te gebruiken kijk dan naar de [Smart Widget index pagina](https://github.com/digipolisantwerp/smart-widgets).
+This is the Angular 5+ UI for a Smart Widget implementing a picker field to choose a location (street, address or point of interest). It is matched by a [corresponding back-end service](https://github.com/digipolisantwerp/location-picker_service_nodejs) which is needed when running it in remote mode. A default implementation for selecting locations in antwerp is provided.
 
-Om een nieuwe widget front-end te maken:
+![screenshot](example.png)
 
-1. Kloon deze repo.
+There is a demo app, see below for instructions on running it.
 
-   `git clone https://github.com/digipolisantwerp/starter-kit_widget_angular.git`
+## How to use
 
-2. Implementeer je widget in de `src` map.
+### Installing
 
-3. Implementeer een voorbeeld van het gebruik van je widget in de `example` map.
+Copy the .npmrc file from this repo to your local repo to set up the link to nexusrepo.antwerpen.be npm repository.
 
-   - Als jouw widget gebruikt kan worden met en zonder een BFF, gelieve dan een voorbeeld van elk te geven.
+Then install (you will need to be connected to the Digipolis network):
 
-4. Schrijf enkele tests voor jouw widget door `.spec.ts files` toe te voegen aan de `src` map.
+```sh
+> npm install @acpaas-ui-widgets/ngx-location-picker
+```
 
-   - Test eenmalig met `npm test`, en met `npm run test-watch` in *watch* modus.
+### Using
 
-5. Pas alle relevante bestanden aan om de referenties naar `starter-kit`, `Starter Kit` en `example` te vervangen.
+A BFF service should be running (see demo app instructions below for how to start one).
 
-   - `package.json`: ACPaaS UI componenten waarvan je afhankelijk bent horen in `dependencies` te gaan
-   - `.angular-cli.json`
-   - Andere bestanden met bovenstaande termen...
-   - Verwijder `package-lock.json` en draai `npm install` om het opnieuw te genereren.
+Import the component in your module:
 
-6. Plaats geschikte README.md en CONTRIBUTING.md bestanden.
+```ts
+@NgModule({
+  imports: [
+    ...,
+    LocationPickerModule
+  ],
+  ...
+})
+```
 
-   - Vervang `README.md` door `README.example.md` en pas het aan.
-   - Hernoem `CONTRIBUTING.example.md` naar `CONTRIBUTING.md` en pas het aan.
+In the index.html, include the core branding stylesheet:
 
-7. Push jouw widget naar een nieuwe repo.
+```html
+<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/2.0.1/main.min.css">
+```
 
-8. Volg de instructies uit de [Smart Widgets contributing pagina](https://github.com/digipolisantwerp/starter-kit_widget_angular/blob/master/CONTRIBUTING.md) om Digipolis op de hoogte te stellen van jouw widget en die te publiceren.
+In your template:
 
-## Bijdragen aan deze starter kit
+```html
+<aui-location-picker
+    [url]="http://localhost:9999/api/locations"
+    [(value)]="location">
+</aui-location-picker>
+```
 
-Wens je wijzigingen te maken aan deze starter kit, kom dan even langs op het [#acpaas-ui-dev slack channel](https://dgpls.slack.com/messages/C4S2D7KTK) of maak een github issue.
+(Replace the url of the BFF service.)
 
-## Licentie
+In the component code:
 
-Dit project is gepubliceerd onder de [MIT licentie](LICENSE.md).
+```ts
+class YourComponent {
+
+    // you can assign an initial value here
+    location: LocationPickerValue;
+
+    ...
+}
+```
+
+Every value in the backing list must have a unique id.
+
+Supported attributes:
+
+- **url**: the URL of the back-end service feeding this widget
+- **bufferInputMs**: how long to buffer keystrokes before fetching remote results
+- **value**: The current value of the picker, represented as a value object
+- **placeholder**: specify the text to show in an empty field
+- **noDataMessage**: the text shown in the list when there are no matching results
+
+Events:
+
+- **valueChange**: triggers when the current value is changed (or cleared)
+
+The backing service implements the following protocol:
+
+- GET /path/to/endpoint?search=...&types=...
+- search = the text that the user typed on which to match
+- types = a comma-separated list of types to return, default value = "street,number,poi"
+- result = JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
+
+## Run the demo app
+
+Set up the .npmrc (see above), then run:
+
+```sh
+> npm install
+> npm start
+```
+
+Browse to [localhost:4200](http://localhost:4200)
+
+You will also need to run [the backing service](https://github.com/digipolisantwerp/location-picker_service_nodejs).
+
+## Contributing
+
+We welcome your bug reports and pull requests.
+
+Please see our [contribution guide](CONTRIBUTING.md).
+
+## License
+
+This project is published under the [MIT license](LICENSE.md).
