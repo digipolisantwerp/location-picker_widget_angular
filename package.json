@@ -1,6 +1,6 @@
 {
-  "name": "@acpaas-ui-widgets/ngx-starter-kit",
-  "description": "Smart Widget UI Starter Kit (Angular)",
+  "name": "@acpaas-ui-widgets/ngx-location-picker",
+  "description": "Location Picker Smart Widget UI package (Angular)",
   "author": {
     "name": "Joeri Sebrechts",
     "email": "joeri.sebrechts@digipolis.be"
@@ -20,28 +20,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/digipolisantwerp/starter-kit_widget_angular.git"
+    "url": "git+https://github.com/digipolisantwerp/location-picker_widget_angular.git"
   },
   "bugs": {
-    "url": "https://github.com/digipolisantwerp/starter-kit_widget_angular/issues"
+    "url": "https://github.com/digipolisantwerp/location-picker_widget_angular/issues"
   },
-  "homepage": "https://github.com/digipolisantwerp/starter-kit_widget_angular#readme",
-  "keywords": [
-    "angular",
-    "library",
-    "starter",
-    "typescript",
-    "angular-cli",
-    "ng-packagr"
-  ],
+  "homepage": "https://github.com/digipolisantwerp/location-picker_widget_angular#readme",
   "peerDependencies": {
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/forms": "^5.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@acpaas-ui/auto-complete": "^4.0.2"
+  },
   "devDependencies": {
     "@a-ui/core": "^2.0.3",
+    "@acpaas-ui/flyout": "^4.0.2",
+    "@acpaas-ui/mask": "^4.0.0",
+    "@acpaas-ui/selectable-list": "^3.0.1",
     "@angular/animations": "^5.0.0",
     "@angular/cli": "1.7.3",
     "@angular/common": "^5.0.0",

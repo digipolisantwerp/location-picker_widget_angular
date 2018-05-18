@@ -1,1 +1,1 @@
-export * from './example.module';
+export * from './location-picker.module';

@@ -1,0 +1,19 @@
+<div class="a-input m-location-picker">
+    <div class="a-input__wrapper">
+        <aui-auto-complete 
+            remote="true"
+            clearInvalid="true"
+            value="id"
+            label="name"
+            [ngModel]="value?.name"
+            [placeholder]="placeholder"
+            [noResultsText]="noDataMessage"
+            [results]="searchResults"
+            (search)="onSearch($event)"
+            (select)="onSelect($event)">
+            <ng-template let-item>
+                <span [innerHTML]="formatLabel(item)"></span>
+            </ng-template>
+        </aui-auto-complete>
+    </div>
+</div>

@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { ExampleModule } from '../../src';
+import { LocationPickerModule } from '../../src';
 
 import { AppComponent } from './app.component';
 
 @NgModule({
   imports: [
     BrowserModule,
-    ExampleModule,
+    LocationPickerModule,
   ],
   declarations: [
     AppComponent,
