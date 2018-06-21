@@ -51,6 +51,9 @@
   },
   "defaults": {
     "styleExt": "scss",
+	  "serve": {
+      "port": 4200
+    },
     "class": {
       "spec": false
     },
