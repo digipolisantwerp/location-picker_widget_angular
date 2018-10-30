@@ -13,7 +13,7 @@
             (select)="onSelect($event)">
             <ng-template let-item>
                 <span [innerHTML]="formatLabel(item)"></span>
-                <small class="m-contact-picker__detail u-text-light" [innerHTML]="item.layer"></small>
+                <small *ngIf="item.layer" class="m-location-picker__detail u-text-light" [innerHTML]="item.layer"></small>
             </ng-template>
         </aui-auto-complete>
     </div>
