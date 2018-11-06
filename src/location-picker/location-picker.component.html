@@ -1,6 +1,6 @@
 <div class="a-input m-location-picker">
     <div class="a-input__wrapper">
-        <aui-auto-complete 
+        <aui-auto-complete
             remote="true"
             clearInvalid="true"
             value="id"
@@ -13,6 +13,7 @@
             (select)="onSelect($event)">
             <ng-template let-item>
                 <span [innerHTML]="formatLabel(item)"></span>
+                <small *ngIf="item.layer && (item.layer !== 'CRAB')" class="m-location-picker__detail u-text-light" [innerHTML]="item.layer"></small>
             </ng-template>
         </aui-auto-complete>
     </div>
