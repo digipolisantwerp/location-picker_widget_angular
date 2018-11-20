@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ElementRef } from '@angular/core';
 
 import { LocationPickerComponent, LocationPickerService, LocationPickerValue, LocationPickerModule } from '..';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 describe('LocationPickerComponent', () => {
 
@@ -13,7 +13,7 @@ describe('LocationPickerComponent', () => {
 
     class MockLocationPickerService {
         getLocationsByQuery(dataSource: any, search: string) {
-            return Observable.of(testValues);
+            return of(testValues);
         }
     }
 

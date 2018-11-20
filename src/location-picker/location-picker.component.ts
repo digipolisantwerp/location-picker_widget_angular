@@ -1,11 +1,15 @@
 import { Input, Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/mergeMap';
+import {
+  Observable,
+  Observer,
+} from 'rxjs';
+import {
+  debounceTime,
+  mergeMap,
+} from 'rxjs/operators';
 
-import { AutoCompleteComponent } from '@acpaas-ui/auto-complete';
+import { AutoCompleteComponent } from '@acpaas-ui/ngx-components/forms';
 import { LocationPickerValue } from './location-picker.types';
 import { LocationPickerService } from './location-picker.service';
 
@@ -76,9 +80,11 @@ export class LocationPickerComponent
         Observable.create((observer) => {
             this.searchChange$ = observer;
         })
-            .debounceTime(this.bufferInputMs)
-            .mergeMap((search) =>
-                this.locationService.getLocationsByQuery(this.url, search, this.types)
+            .pipe(
+              debounceTime(this.bufferInputMs),
+              mergeMap((search) =>
+                this.locationService.getLocationsByQuery(this.url, String(search), this.types)
+              )
             )
             .subscribe((results) => {
                 this.searchResults = results;
@@ -111,7 +117,7 @@ export class LocationPickerComponent
         }
     }
 
-    private formatLabel(input: LocationPickerValue): string {
+    public formatLabel(input: LocationPickerValue): string {
         const search = this.autocomplete.query;
         const inputString = input.name || input.id || '';
         const regEx = new RegExp(search, 'ig');

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AutoCompleteModule } from '@acpaas-ui/auto-complete';
+import { AutoCompleteModule } from '@acpaas-ui/ngx-components/forms';
 
 import { LocationPickerComponent } from './location-picker/location-picker.component';
 import { LocationPickerService } from './location-picker/location-picker.service';
