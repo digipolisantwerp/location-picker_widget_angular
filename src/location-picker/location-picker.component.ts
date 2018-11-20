@@ -1,12 +1,20 @@
-import { Input, Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import {
-  Observable,
-  Observer,
+    Observable,
+    Observer,
 } from 'rxjs';
 import {
-  debounceTime,
-  mergeMap,
+    debounceTime,
+    mergeMap,
 } from 'rxjs/operators';
 
 import { AutoCompleteComponent } from '@acpaas-ui/ngx-components/forms';

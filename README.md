@@ -38,10 +38,10 @@ In the index.html, include the core branding stylesheet:
 <link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.0.3/main.min.css">
 ```
 
-> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/chatbot_widget_angular/tree/v1), which will still receive bug fixes if needed.
+> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker_widget_angular/tree/v1), which will still receive bug fixes if needed.
 
 ```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker@"<2.0.0
+> npm install @acpaas-ui-widgets/ngx-location-picker@"<2.0.0"
 ```
 
 ### In your template:
@@ -69,7 +69,7 @@ class YourComponent {
 
 Every value in the backing list must have a unique id.
 
-Supported attributes:
+### Supported attributes
 
 - **url**: the URL of the back-end service feeding this widget
 - **bufferInputMs**: how long to buffer keystrokes before fetching remote results
@@ -77,11 +77,13 @@ Supported attributes:
 - **placeholder**: specify the text to show in an empty field
 - **noDataMessage**: the text shown in the list when there are no matching results
 
-Events:
+### Events
 
 - **valueChange**: triggers when the current value is changed (or cleared)
 
-The backing service implements the following protocol:
+### Protocol
+
+The back-end service implements the following protocol:
 
 - GET /path/to/endpoint?search=...&types=...
 - search = the text that the user typed on which to match
@@ -97,7 +99,7 @@ The backing service implements the following protocol:
 
 Browse to [localhost:4200](http://localhost:4200)
 
-To use the chatbot widget, you will need to have also started the corresponding back-end service.
+To use the location picker widget, you will need to have also started the corresponding back-end service.
 
 ## Contributing
 
