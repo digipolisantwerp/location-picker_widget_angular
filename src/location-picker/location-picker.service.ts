@@ -19,13 +19,16 @@ export class LocationPickerService {
         /** The string to search for */
         search: string,
         /** The types of locations to search for (comma-separated) */
-        types: string
+        types: string,
+        /** The way to sort (name by default) */
+        sort: string
     ): Observable<LocationPickerValue[]> {
         if (typeof dataSource === 'string') {
             const uri = dataSource +
                 ((dataSource.indexOf('?') < 0) ? '?' : '&') +
                 'search=' + search +
-                (types ? '&types=' + types : '');
+                (types ? '&types=' + types : '') +
+                (sort ? '&sort=' + sort : '');
             return this.http.get<LocationPickerValue[]>(uri);
         } else {
             // should never happen

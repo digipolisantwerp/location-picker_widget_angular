@@ -46,6 +46,8 @@ export class LocationPickerComponent
     @Input() public noDataMessage = 'Geen resultaat gevonden';
     /** the type of values to search for, comma-separated list of "street", "number" or "poi" */
     @Input() public types = 'street,number,poi';
+    /* the manner in which the user would like to sort results, by default sorting by name happens */
+    @Input() public sort = 'name';
     /** the value that is displayed */
     @Input() public value: LocationPickerValue;
     /** how long to buffer keystrokes before requesting search results */
@@ -91,7 +93,7 @@ export class LocationPickerComponent
             .pipe(
               debounceTime(this.bufferInputMs),
               mergeMap((search) =>
-                this.locationService.getLocationsByQuery(this.url, String(search), this.types)
+                this.locationService.getLocationsByQuery(this.url, String(search), this.types, this.sort)
               )
             )
             .subscribe((results) => {
