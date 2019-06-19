@@ -48,7 +48,7 @@ In the index.html, include the core branding stylesheet:
 
 ```html
 <aui-location-picker
-    url="http://localhost:9999/api/locations"
+    url="http://localhost:9999/api"
     [(value)]="location">
 </aui-location-picker>
 ```
