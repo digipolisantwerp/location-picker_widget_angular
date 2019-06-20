@@ -24,6 +24,7 @@ export class LocationPickerService {
      /** The types of locations to search for (comma-separated) */
      types: string
      ): Observable<LocationPickerValue[]> {
+
     if (typeof dataSource === 'string') {
       const dataParts = this.analyseDataSource(dataSource);
       const uri = dataParts.uri +
@@ -62,20 +63,14 @@ export class LocationPickerService {
   }
 
   private analyseDataSource(dataSource: string) {
-    let s, p;
-
-    if ((dataSource.indexOf('?') < 0)) {
-      s = dataSource;
-      p = '?';
-    } else {
-      const split = dataSource.split('?');
-      s = split[0];
-      p = '?' + split[1] + '&';
+    if (dataSource.indexOf('?') === -1) {
+      return { uri: dataSource, params: '?'};
     }
 
-    return {
-      uri: s,
-      params: p,
-    };
+    const dataSourceParts = dataSource.split('?');
+    const uri = dataSourceParts[0];
+    const params = `?${dataSourceParts[1]}&`;
+
+    return { uri, params };
   }
 }
