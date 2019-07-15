@@ -1,0 +1,100 @@
+::ng-deep .ngx-location-picker-marker {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    display: block;
+}
+
+.a-button.a-button--block {
+    display: block;
+}
+
+.a-input .a-input__wrapper.has-inline-addon {
+    position: relative;
+    z-index: 10;
+}
+
+.a-input .a-input__search {
+    position: absolute;
+    width: calc(100% - (1.125rem * 2));
+    top: 1.125rem;
+    left: 1.125rem;
+}
+
+.a-input .a-input__wrapper input {
+    padding-right: 110px;
+}
+
+.a-input .a-input__wrapper .inline-addon {
+    display: flex;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+}
+
+.show-on-mobile {
+    display: block;
+}
+
+.show-on-desktop {
+    display: none;
+}
+
+@media screen and (min-width: 450px) {
+    .show-on-mobile {
+        display: none;
+    }
+
+    .show-on-desktop {
+        display: block;
+    }
+}
+
+.notification-panel {
+    padding: 14px;
+    color: #fff;
+}
+
+.notification-panel.warning {
+    background: #f9b01e;
+}
+
+.notification-panel.alert {
+    background: #da291c;
+}
+
+.m-flyout {
+    display: block;
+}
+
+.m-flyout .m-flyout__content {
+    box-shadow: none;
+}
+
+.m-flyout .m-flyout__content .no-results {
+    padding: 1rem 0 1rem .75rem;
+    margin: 0;
+}
+
+.m-flyout .m-flyout__content .a-list li {
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+}
+
+.m-flyout .m-flyout__content .a-list li:first-child {
+    border-top: 0;
+}
+
+.m-flyout .m-flyout__content .a-list li:last-child {
+    border-bottom: 0;
+}
+
+.m-flyout .m-flyout__content .a-list li:hover {
+    background: rgb(243, 243, 243);
+}
+
+.m-flyout .m-flyout__content .a-list li small {
+    margin: 0;
+}

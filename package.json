@@ -1,76 +1,9 @@
 {
-  "name": "@acpaas-ui-widgets/ngx-location-picker",
-  "description": "Location Picker Smart Widget UI package (Angular)",
-  "author": {
-    "name": "Joeri Sebrechts",
-    "email": "joeri.sebrechts@digipolis.be"
-  },
-  "version": "3.0.0",
-  "license": "MIT",
-  "main": "src/index.ts",
-  "scripts": {
-    "start": "ng serve --aot",
-    "build": "npm run clean && ng-packagr -p ng-package.json",
-    "clean": "rimraf coverage",
-    "test": "npm run lint && ng test --watch false --code-coverage",
-    "test-watch": "ng test --code-coverage",
-    "e2e": "ng e2e",
-    "e2e-watch": "watch \"ng e2e -s false\" src e2e --wait=1",
-    "lint": "ng lint"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/digipolisantwerp/location-picker_widget_angular.git"
-  },
-  "bugs": {
-    "url": "https://github.com/digipolisantwerp/location-picker_widget_angular/issues"
-  },
-  "homepage": "https://github.com/digipolisantwerp/location-picker_widget_angular#readme",
+  "name": "ngx-location-picker",
+  "version": "4.0.0",
   "peerDependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/forms": "^6.0.0",
-    "@acpaas-ui/ngx-components": "^1.0.3"
-  },
-  "devDependencies": {
-    "@a-ui/core": "~3.0.3",
-    "@a-ui/flexboxgrid": "~1.0.1",
-    "@acpaas-ui/ngx-components": "^1.0.3",
-    "@angular-devkit/build-angular": "~0.8.0",
-    "@angular/animations": "6.1.9",
-    "@angular/cli": "^6.2.3",
-    "@angular/common": "6.1.9",
-    "@angular/compiler": "6.1.9",
-    "@angular/compiler-cli": "6.1.9",
-    "@angular/core": "6.1.9",
-    "@angular/forms": "6.1.9",
-    "@angular/language-service": "6.1.9",
-    "@angular/platform-browser": "6.1.9",
-    "@angular/platform-browser-dynamic": "6.1.9",
-    "@angular/router": "6.1.9",
-    "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.4",
-    "@types/node": "~8.9.4",
-    "codelyzer": "~4.4.4",
-    "core-js": "^2.5.7",
-    "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~3.0.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "~0.2.2",
-    "ng-packagr": "~4.2.0",
-    "protractor": "~5.4.0",
-    "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3",
-    "rxjs-compat": "^6.3.3",
-    "ts-node": "~7.0.0",
-    "tsickle": "~0.32.1",
-    "tslint": "~5.11.0",
-    "typescript": "~2.9.2",
-    "watch": "^1.0.2",
-    "zone.js": "^0.8.26"
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@acpaas-ui/ngx-components": "^2.1.1"
   }
 }

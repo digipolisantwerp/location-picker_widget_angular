@@ -1,0 +1,53 @@
+<div class="a-input" [class.has-map]="showMap" [formGroup]="leafletForm">
+    <label *ngIf="label" class="a-input__label" for="leaflet-search">{{ label }}</label>
+    <div class="a-input__search">
+        <div class="a-input__wrapper has-inline-addon">
+            <input
+                    id="leaflet-search"
+                    type="text"
+                    name="leaflet-search"
+                    [placeholder]="placeholder"
+                    formControlName="searchField"
+                    autocomplete="off"
+                    (blur)="didSearch = false"
+            />
+            <div class="inline-addon">
+                <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
+                <button
+                        class="a-button a-button--tiny"
+                        type="button"
+                        (click)="emptyField()"
+                        [disabled]="inputHasValue"
+                >
+                    <span class="show-on-desktop">Leegmaken</span>
+                    <span class="show-on-mobile"><i class="fa fa-times" aria-hidden="true"></i></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
+            <div class="m-flyout__content">
+                <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
+                <ng-template #results>
+                    <ul class="a-list a-list--reset a-list--lined">
+                        <li (click)="onLocationSelect(location)" *ngFor="let location of foundLocations">
+                            <p>{{ location.label }}</p>
+                            <small>{{ location.layer }}</small>
+                        </li>
+                    </ul>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <aui-leaflet *ngIf="showMap" [leafletMap]="leafletMap" [hasSidebar]="hasSidebar">
+        <div controls bottom left>
+            <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
+        </div>
+        <div controls bottom right>
+            <aui-leaflet-locate-control></aui-leaflet-locate-control>
+        </div>
+    </aui-leaflet>
+    <div *ngIf="leafletNotification?.text" class="notification-panel {{ leafletNotification.status }}">
+        <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
+    </div>
+</div>

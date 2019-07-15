@@ -1,112 +1,132 @@
-# Location Picker Smart Widget UI (Angular)
+# NgxLocationPicker
 
-This is the Angular 6+ UI for a Smart Widget implementing a picker field to choose a location (street, address or point of interest). It is matched by a [corresponding back-end service](https://github.com/digipolisantwerp/location-picker_service_nodejs) which is needed when running it in remote mode. A default implementation for selecting locations in antwerp is provided.
+Location Picker for Angular 7+. Provides easy to use interface for searching locations or addresses within the city of Antwerp.
 
-![screenshot](example.png)
+##### Desktop view
 
-There is a demo app, see below for instructions on running it.
+![screenshot](desktop-view.png)
 
-## How to use
+##### Mobile view
 
-### Installing
+![screenshot](mobile-view.png)
 
-```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker
-```
+## Using the component
 
-### Using
+##### Installation
 
-A BFF service should be running (see demo app instructions below for how to start one).
+First install the component from npm:
 
-Import the component in your module:
+`npm install @acpaas-ui-widgets/ngx-location-picker`
+
+Then import the component inside your module:
 
 ```ts
-import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
+import {NgxLocationPickerModule} from '@acpaas-ui-widgets/ngx-location-picker';
 
 @NgModule({
   imports: [
     ...,
-    LocationPickerModule
+    NgxLocationPickerModule
   ],
   ...
 })
 ```
 
-In the index.html, include the core branding stylesheet:
+Finally include the Antwerp core branding stylesheet in your index.html file:
 
 ```html
 <link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.0.3/main.min.css">
 ```
 
-> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker_widget_angular/tree/v1), which will still receive bug fixes if needed.
+##### Getting an API key
 
-```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker@"<2.0.0"
-```
+This component uses a dedicated API for which an api key is required. Request a key through one of the links below (depending on you environment):
 
-### In your template:
+Development: https://api-store-o.antwerpen.be  
+Acceptance: https://api-store-a.antwerpen.be  
+Production: https://api-store.antwerpen.be  
+
+Create a contract with the Location Picker api for your organization.
+
+##### Usage
 
 ```html
-<aui-location-picker
-    url="http://localhost:9999/api"
-    [(value)]="location">
-</aui-location-picker>
+<ngx-location-picker
+    [baseUrl]="baseUrl"
+    [defaultZoom]="defaultZoom"
+    [onSelectZoom]="onSelectZoom"
+    [mapCenter]="mapCenter"
+    [hasSidebar]="hasSidebar"
+    [showMap]="showMap"
+    [featureLayers]="featureLayers"
+    [placeholder]="placeholder"
+    [label]="label"
+    [noResultsLabel]="noResultsLabel"
+    (addPolygon)="onAddPolygon($event)"
+    (addLine)="onAddLine($event)"
+    (editFeature)="onEditFeature($event)"
+    (locationSelect)="onLocationSelect($event)"
+></ngx-location-picker>
 ```
 
-(replace the url of the BFF service)
-
-In the component code:
-
 ```ts
-class YourComponent {
-
-    // you can assign an initial value here
-    location: LocationPickerValue;
-
-    ...
+class ExampleComponent {
+    
+    /**
+     * Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API.
+     * Make sure your BFF adds the api key you requested earlier.
+     */
+    baseUrl: string = 'https://path-to-bff';
+    /* the default zoom level on map load. */
+    defaultZoom: number = 14;
+    /* the zoom level when a location is selected. */
+    onSelectZoom: number = 16;
+    /* the initial map center on load. */
+    mapCenter: Array<number> = [51.215, 4.425];
+    /* show a sidebar next to the map leaflet. */
+    hasSidebar: boolean = false;
+    /* show or hide the map. */
+    showMap: boolean = true;
+    /* add layers to show on the map. eg: A-card terminals, Velo stations, ... */
+    featureLayers: FeatureLayerModel[] = [];
+    /* the input field placeholder text. */
+    placeholder: string = 'Locaties zoeken...';
+    /* label to show above the search field. No label is shown if left empty */
+    label: string = '';
+    /* label to use when no results were found. */
+    noResultsLabel: string = 'Er werden geen locaties gevonden.';
+    
+    /* addPolygon event */
+    onAddPolygon($event: any) {}
+    
+    /* addLine event */
+    onAddLine($event: any) {}
+    
+    /* editFeature event */
+    onEditFeature($event: any) {}
+    
+    /* locationSelect event: fired when selecting a location. */
+    onLocationSelect(location: LocationModel | AddressModel | CoordinateModel) {}
 }
 ```
 
-Every value in the backing list must have a unique id.
+## Demo
 
-### Supported attributes
+Live demo can be found on:
+https://locationpicker-app1-o.antwerpen.be
 
-- **url**: the URL of the back-end service feeding this widget
-- **bufferInputMs**: how long to buffer keystrokes before fetching remote results
-- **value**: The current value of the picker, represented as a value object
-- **placeholder**: specify the text to show in an empty field
-- **noDataMessage**: the text shown in the list when there are no matching results
+## Build
 
-### Events
+Run `ng build ngx-location-picker` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-- **valueChange**: triggers when the current value is changed (or cleared)
+## Publishing
 
-### Protocol
+After building your library with `ng build ngx-location-picker`, go to the dist folder `cd dist/ngx-location-picker` and run `npm publish`.
 
-The back-end service implements the following protocol:
+## Running unit tests
 
-- GET /path/to/endpoint?search=...&types=...
-- search = the text that the user typed on which to match
-- types = a comma-separated list of types to return, default value = "street,number,poi"
-- result = JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
+Run `ng test ngx-location-picker` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Run the demo app
+## Further help
 
-```sh
-> npm install
-> npm start
-```
-
-Browse to [localhost:4200](http://localhost:4200)
-
-To use the location picker widget, you will need to have also started the corresponding back-end service.
-
-## Contributing
-
-We welcome your bug reports and pull requests.
-
-Please see our [contribution guide](CONTRIBUTING.md).
-
-## License
-
-This project is published under the [MIT license](LICENSE.md).
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
