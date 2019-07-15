@@ -60,6 +60,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
 
     /* Current active location marker on the map */
     private selectedLocationMarker;
+    /* Current active geometry on the map */
+    private selectedLocationGeometry;
     /* Observable subscription for the input event */
     private inputChangeSubscription;
     /* Observable subscription for fetching locations */
@@ -119,6 +121,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
         if (this.showMap) {
             this.leafletMap.setView(this.mapCenter, this.defaultZoom);
             this.removeMarker(this.selectedLocationMarker);
+            this.removeGeometry(this.selectedLocationGeometry);
         }
     }
 
@@ -127,13 +130,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
         this.leafletForm.get('searchField').patchValue($event.label, {emitEvent: false});
         this.didSearch = false;
 
-        console.log('selected location: ', $event);
-
         if (this.showMap) {
             this.removeMarker(this.selectedLocationMarker);
 
             /*
-            * TODO: Handle geometry
             * TODO: Do this a little cleaner. 🤨
             * */
 
@@ -149,39 +149,26 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
                 const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
                 this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
                 this.leafletMap.setView(coords, this.onSelectZoom);
+            } else if ($event.location.position.geometry) {
+                const geoJson = {
+                    type: 'Feature',
+                    properties: {
+                        name: $event.label,
+                    },
+                    geometry: {
+                        type: $event.location.position.geometryShape,
+                        coordinates: $event.location.position.geometry
+                    }
+                };
+
+                this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
             } else {
                 this.leafletNotification = {
                     status: 'warning',
-                    text: 'Locatie kan niet op de map getoond worden. Coordinaten ontbreken.',
+                    text: 'Locatie kan niet op de map getoond worden.',
                     icon: 'fa-exclamation-triangle'
                 };
             }
-
-
-            // const geoJson = {
-            //     type: 'Feature',
-            //     properties: {
-            //         name: 'TESTING',
-            //     },
-            //     geometry: {
-            //         type: 'Polygon',
-            //         coordinates: [
-            //             [4.415493957663025, 51.21462343869551],
-            //             [4.415493957663025, 51.21462343869551],
-            //             [4.415493957663025, 51.21462343869551],
-            //             [4.415493957663025, 51.21462343869551],
-            //             [4.415493957663025, 51.21462343869551]
-            //         ]
-            //     }
-            // };
-            //
-            // const myStyle = {
-            //     color: '#ff7800',
-            //     weight: 5,
-            //     opacity: 0.65
-            // };
-            //
-            // this.leafletMap.addGeoJSON(geoJson, {style: myStyle});
         }
 
         this.locationSelect.emit($event);
@@ -253,6 +240,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     private removeMarker(marker) {
         if (marker) {
             this.leafletMap.removeLayer(marker);
+        }
+    }
+
+    /* Removes added geometry area from leaflet instance */
+    private removeGeometry(geometry) {
+        if (geometry) {
+            this.leafletMap.removeLayer(geometry);
         }
     }
 
