@@ -6,11 +6,29 @@ import {AddressQueryModel} from '../types/address-query.model';
 @Injectable({
     providedIn: 'root'
 })
+
+/**
+ * NgxLocationPickerHelper
+ * Provide helper functions
+ *
+ * @since 4.0.0
+ */
 export class NgxLocationPickerHelper {
 
+    /**
+     * NgxLocationPickerHelper constructor
+     */
     constructor() {
     }
 
+    /**
+     * Converts a query object to HttpParams.
+     *
+     * @param query (the object containing a set of parameters)
+     *
+     * @since 4.0.0
+     * @return HttpParams
+     */
     toHttpParams(query: any): HttpParams {
         const strQuery = this.queryObjectToStringObject(query);
         let params = new HttpParams();
@@ -22,6 +40,14 @@ export class NgxLocationPickerHelper {
         return params;
     }
 
+    /**
+     * Converts a query object to a query string
+     *
+     * @param obj (the object containing a set of parameters)
+     *
+     * @since 4.0.0
+     * @return any
+     */
     private queryObjectToStringObject(obj: any): any {
         const retObj = {};
         Object.keys(obj).forEach(key => {
@@ -43,6 +69,9 @@ export class NgxLocationPickerHelper {
 
     /**
      * Determines if the given query input resembles an address or not.
+     *
+     * @since 4.0.0
+     * @return boolean
      */
     isAddress(query: string): boolean {
         const addressParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(' ') : null;
@@ -62,6 +91,9 @@ export class NgxLocationPickerHelper {
 
     /**
      * Determines if the given query input resembles coordinate pairs
+     *
+     * @since 4.0.0
+     * @return boolean
      */
     isCoordinate(query: string): boolean {
         const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(',') : null;
@@ -78,6 +110,7 @@ export class NgxLocationPickerHelper {
     /**
      * Splits the location query in street name and house number.
      *
+     * @since 4.0.0
      * @return streetAndNumber
      */
     extractStreetAndNumber(query: string): AddressQueryModel {
@@ -127,6 +160,7 @@ export class NgxLocationPickerHelper {
     /**
      * Splits the location query in X/Y coordinate.
      *
+     * @since 4.0.0
      * @return coordinate
      */
     extractXYCoord(query: string): LambertModel {

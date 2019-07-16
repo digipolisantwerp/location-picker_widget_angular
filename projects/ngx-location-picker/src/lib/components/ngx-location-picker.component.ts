@@ -125,13 +125,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
         }
     }
 
-    /* When a found location is selected from the list. */
+    /* When a location is selected from the list. */
     onLocationSelect($event: any) {
         this.leafletForm.get('searchField').patchValue($event.label, {emitEvent: false});
         this.didSearch = false;
 
         if (this.showMap) {
             this.removeMarker(this.selectedLocationMarker);
+            this.removeGeometry(this.selectedLocationGeometry);
 
             /*
             * TODO: Do this a little cleaner. 🤨

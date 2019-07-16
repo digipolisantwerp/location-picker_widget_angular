@@ -15,36 +15,67 @@ import {CoordinateModel} from '../types/coordinate.model';
 @Injectable({
     providedIn: 'root'
 })
+
+/**
+ * NgxLocationPickerService
+ * Provide functions for handling location or address searches
+ *
+ * @since 4.0.0
+ */
 export class NgxLocationPickerService {
 
     private locationPickerApi = '';
 
+    /**
+     * NgxLocationPickerService constructor
+     *
+     * @param httpClient (httpClient used for making requests to the api)
+     * @param locationPickerHelper (Helper functions class)
+     *
+     * @since 4.0.0
+     */
     constructor(
         private httpClient: HttpClient,
         private locationPickerHelper: NgxLocationPickerHelper
     ) {
     }
 
-    delegateSearch(query: string, baseUrl: string): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
+    /**
+     * Main search function. Determines which action to undertake based on the provided search string.
+     *
+     * @param search (the search query)
+     * @param baseUrl (required the url to the BFF)
+     * @param limit (the amount of locations to return, only used for querying searchLocations)
+     * @param layers (the layers to look for locations in, only used for querying searchLocations)
+     *
+     * @since 4.0.0
+     * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
+     */
+    delegateSearch(
+        search: string,
+        baseUrl: string,
+        limit: number = 5,
+        layers: Array<string> = ['straatnaam']
+    ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
         this.locationPickerApi = baseUrl;
 
-        if (this.locationPickerHelper.isCoordinate(query)) {
-            const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(query);
+        if (this.locationPickerHelper.isCoordinate(search)) {
+            const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search);
             const requestQuery: CoordinateQueryModel = {
                 xcoord: coordinate.x,
                 ycoord: coordinate.y
             };
 
             return this.searchLocationsByCoordinates(requestQuery);
-        } else if (this.locationPickerHelper.isAddress(query)) {
-            const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(query);
+        } else if (this.locationPickerHelper.isAddress(search)) {
+            const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search);
 
             return this.searchAddresses(addressQuery);
         } else {
             const locationQuery: LocationQueryModel = {
-                layers: ['all'],
-                limit: 10,
-                search: query,
+                layers,
+                limit,
+                search,
                 sort: LocationSortingEnum.NAME
             };
 
@@ -52,30 +83,70 @@ export class NgxLocationPickerService {
         }
     }
 
+    /**
+     * Returns a list of layers based on the provided map service.
+     *
+     * @param query (the map service to load layers from)
+     *
+     * @since 4.0.0
+     * @return Observable<LayerModel[]>
+     */
     getMapLayers(query: LayerQueryModel): Observable<LayerModel[]> {
         const parameters = this.locationPickerHelper.toHttpParams(query);
 
         return this.httpClient.get<LayerModel[]>(`${this.locationPickerApi}/layers`, {params: parameters});
     }
 
+    /**
+     * Search locations by user input
+     *
+     * @param query (the location to look for)
+     *
+     * @since 4.0.0
+     * @return Observable<LocationModel[]>
+     */
     private searchLocations(query: LocationQueryModel): Observable<LocationModel[]> {
         const parameters = this.locationPickerHelper.toHttpParams(query);
 
         return this.httpClient.get<LocationModel[]>(`${this.locationPickerApi}/locations`, {params: parameters});
     }
 
-    private searchAddresses(query: AddressQueryModel): Observable<LocationModel[]> {
+    /**
+     * Search addresses based on street name and house number
+     *
+     * @param query (the address to look for, consists of a street name and house number)
+     *
+     * @since 4.0.0
+     * @return Observable<AddressModel[]>
+     */
+    private searchAddresses(query: AddressQueryModel): Observable<AddressModel[]> {
         const parameters = this.locationPickerHelper.toHttpParams(query);
 
-        return this.httpClient.get<LocationModel[]>(`${this.locationPickerApi}/addresses`, {params: parameters});
+        return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses`, {params: parameters});
     }
 
-    private searchAddressById(query: AddressIdQueryModel): Observable<LocationModel[]> {
+    /**
+     * Get an address by id
+     *
+     * @param query (the address id to get)
+     *
+     * @since 4.0.0
+     * @return Observable<AddressModel[]>
+     */
+    private searchAddressById(query: AddressIdQueryModel): Observable<AddressModel[]> {
         const parameters = this.locationPickerHelper.toHttpParams(query);
 
-        return this.httpClient.get<LocationModel[]>(`${this.locationPickerApi}/addresses/${query.id}`, {params: parameters});
+        return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses/${query.id}`, {params: parameters});
     }
 
+    /**
+     * Search locations based on a set of coordinates
+     *
+     * @param query (search query containing coordinates and other parameters)
+     *
+     * @since 4.0.0
+     * @return Observable<CoordinateModel[]>
+     */
     private searchLocationsByCoordinates(query: CoordinateQueryModel): Observable<CoordinateModel[]> {
         const parameters = this.locationPickerHelper.toHttpParams(query);
 

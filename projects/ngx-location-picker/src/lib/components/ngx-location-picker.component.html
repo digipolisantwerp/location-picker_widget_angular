@@ -44,7 +44,7 @@
             <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
         </div>
         <div controls bottom right>
-            <aui-leaflet-locate-control></aui-leaflet-locate-control>
+            <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>
         </div>
     </aui-leaflet>
     <div *ngIf="leafletNotification?.text" class="notification-panel {{ leafletNotification.status }}">
