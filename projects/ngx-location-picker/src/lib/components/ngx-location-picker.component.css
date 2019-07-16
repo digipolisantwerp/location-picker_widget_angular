@@ -57,6 +57,10 @@
     color: #fff;
 }
 
+.notification-panel.notify {
+    background: #0064b4;
+}
+
 .notification-panel.warning {
     background: #f9b01e;
 }
