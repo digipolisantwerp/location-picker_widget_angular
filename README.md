@@ -32,10 +32,19 @@ import {NgxLocationPickerModule} from '@acpaas-ui-widgets/ngx-location-picker';
 })
 ```
 
-Finally include the Antwerp core branding stylesheet in your index.html file:
+Finally include the required styles:
+
+Add Antwerp core branding stylesheet in your index.html file:
 
 ```html
 <link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.0.3/main.min.css">
+```
+
+Add required leaflet styles in the styles array in your angular.json project file.
+
+```
+"node_modules/leaflet/dist/leaflet.css"
+"node_modules/leaflet-draw/dist/leaflet.draw.css"
 ```
 
 ##### Getting an API key
