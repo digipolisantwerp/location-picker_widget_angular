@@ -1,6 +1,6 @@
 {
   "name": "ngx-location-picker",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
