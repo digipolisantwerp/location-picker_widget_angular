@@ -119,6 +119,8 @@ export class NgxLocationPickerHelper {
             housenumber: ''
         };
 
+        query = query.split(',')[0];
+
         const addressParts: Array<string> = (query && query.trim().length > 0) ? query.split(' ') : null;
 
         if (addressParts) {

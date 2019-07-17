@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LocationModel} from '../types/location.model';
-import {AddressModel} from '../types/address.model';
+import {AddressModel, LatLngModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
 
@@ -35,6 +35,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     @Input() label = '';
     /* label to use when no results were found. */
     @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+    /* Optionally set a default location to be shown on the map */
+    @Input() defaultLocation: LatLngModel;
     /* addPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* addLine event */
@@ -161,10 +163,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
             this.removeMarker(this.selectedLocationMarker);
             this.removeGeometry(this.selectedLocationGeometry);
 
-            /*
-            * TODO: Do this a little cleaner. 🤨
-            * */
-
             if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
                 const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
                 this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
@@ -203,13 +201,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Implements scroll to zoom in or out.
+     * Implements keyboard and mouse commands
      *
      * @since 4.0.0
      */
     @HostListener('window:wheel', ['$event'])
     @HostListener('window:keydown', ['$event'])
-    onScroll(event) {
+    onKeyCommand(event) {
+        /**
+         * zoom in/out using ctrl + scroll to zoom in or out.
+         * Show notification if only scroll is used.
+         */
         if ((event.ctrlKey || event.metaKey) && event.deltaY) {
             const direction = (event.deltaY > 0) ? 'out' : 'in';
 
@@ -224,6 +226,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
                 text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
                 icon: 'fa-question-circle'
             });
+        }
+
+        /**
+         * Close flyout when escape key is pressed
+         */
+        if (event.key === 'Escape' && this.didSearch) {
+            this.didSearch = false;
+        }
+
+        /**
+         * When pressing enter, select first value in found locations list.
+         */
+        if (event.key === 'Enter' && this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
+            this.onLocationSelect(this.foundLocations[0]);
         }
     }
 
@@ -352,7 +368,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
 
         this.inputChangeSubscription = this.leafletForm.get('searchField').valueChanges.subscribe((changes: string) => {
             this.leafletNotification = null;
-            this.foundLocations = [];
 
             if (changes.length === 0) {
                 this.didSearch = false;

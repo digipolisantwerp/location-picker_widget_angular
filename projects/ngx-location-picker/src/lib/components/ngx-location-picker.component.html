@@ -31,7 +31,7 @@
                 <ng-template #results>
                     <ul class="a-list a-list--reset a-list--lined">
                         <li (click)="onLocationSelect(location)" *ngFor="let location of foundLocations">
-                            <p>{{ location.label }}</p>
+                            <p [innerHTML]="location.label | highlight: leafletForm.get('searchField').value"></p>
                             <small>{{ location.layer }}</small>
                         </li>
                     </ul>

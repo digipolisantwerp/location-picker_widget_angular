@@ -10,11 +10,7 @@ export class AppComponent implements OnInit {
     baseUrl = '';
 
     ngOnInit(): void {
-        if (location.origin.includes('localhost')) {
-            this.baseUrl = `http://localhost:3000/api/v1`;
-        } else {
-            this.baseUrl = `${location.origin}/api/v1`;
-        }
+        this.baseUrl = `https://locationpicker-app1-o.antwerpen.be`;
     }
 
 }
