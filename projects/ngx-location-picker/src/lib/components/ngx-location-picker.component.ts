@@ -1,14 +1,12 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {LeafletMap, baseMapWorldGray, baseMapAntwerp} from '@acpaas-ui/ngx-components/map';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LocationModel} from '../types/location.model';
 import {AddressModel, LatLngModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
-import {InitialLocationModel} from "../types/initial-location.model";
 
 @Component({
     selector: 'ngx-location-picker',
