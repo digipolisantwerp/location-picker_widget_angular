@@ -6,10 +6,6 @@ Location Picker for Angular 7+. Provides easy to use interface for searching loc
 
 ![screenshot](desktop-view.png)
 
-##### Mobile view
-
-![screenshot](mobile-view.png)
-
 ## Using the component
 
 ##### Installation
