@@ -1,15 +1,14 @@
 {
-  "name": "ngx-location-picker",
+  "name": "@acpaas-ui-widgets/ngx-location-picker",
+  "description": "Location Picker Smart Widget UI package (Angular)",
   "version": "4.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
-  "private": true,
   "dependencies": {
     "@acpaas-ui/ngx-components": "^2.1.1",
     "@angular/animations": "~7.2.0",

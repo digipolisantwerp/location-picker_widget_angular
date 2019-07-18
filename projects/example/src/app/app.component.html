@@ -6,9 +6,14 @@
             <a [href]="baseUrl + '/api-explorer/'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
         </p>
     </div>
-
-    <ngx-location-picker
-            [baseUrl]="baseUrl + '/api/v1'"
-    ></ngx-location-picker>
+    
+    <form (ngSubmit)="onSubmitNgModel()">
+        <ngx-location-picker
+                name="locationPickerModel"
+                [baseUrl]="baseUrl + '/api/v1'"
+                [(ngModel)]="selectedLocationModel"
+        ></ngx-location-picker>
+        <button type="submit" class="a-button u-margin-top">Submit</button>
+    </form>
 </div>
 

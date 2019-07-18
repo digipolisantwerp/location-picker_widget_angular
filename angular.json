@@ -3,41 +3,6 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-lib": {
-      "root": "projects/ngx-lib",
-      "sourceRoot": "projects/ngx-lib/src",
-      "projectType": "library",
-      "prefix": "ngx",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/ngx-lib/tsconfig.lib.json",
-            "project": "projects/ngx-lib/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngx-lib/src/test.ts",
-            "tsConfig": "projects/ngx-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-lib/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ngx-lib/tsconfig.lib.json",
-              "projects/ngx-lib/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
     "example": {
       "root": "projects/example/",
       "sourceRoot": "projects/example/src",
@@ -132,34 +97,6 @@
               "projects/example/tsconfig.app.json",
               "projects/example/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "example-e2e": {
-      "root": "projects/example-e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/example-e2e/protractor.conf.js",
-            "devServerTarget": "example:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "example:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "projects/example-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

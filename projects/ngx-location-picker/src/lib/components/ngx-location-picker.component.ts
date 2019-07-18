@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener, forwardRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {LeafletMap, baseMapWorldGray, baseMapAntwerp} from '@acpaas-ui/ngx-components/map';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
@@ -7,13 +8,21 @@ import {LocationModel} from '../types/location.model';
 import {AddressModel, LatLngModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
+import {InitialLocationModel} from "../types/initial-location.model";
 
 @Component({
     selector: 'ngx-location-picker',
     templateUrl: './ngx-location-picker.component.html',
-    styleUrls: ['./ngx-location-picker.component.css']
+    styleUrls: ['./ngx-location-picker.component.css'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => NgxLocationPickerComponent),
+            multi: true
+        }
+    ]
 })
-export class NgxLocationPickerComponent implements OnInit, OnDestroy {
+export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
     /* url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
     @Input() baseUrl;
@@ -23,11 +32,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     @Input() onSelectZoom = 16;
     /* the initial map center on load. */
     @Input() mapCenter: Array<number> = [51.215, 4.425];
-    /* show a sidebar next to the map leaflet. */
+    /* show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
     @Input() hasSidebar = false;
     /* show or hide the map. */
     @Input() showMap = true;
-    /* add layers to show on the map. eg: A-card terminals, Velo stations, ... */
+    /**
+     * add layers to show on the map. eg: A-card terminals, Velo stations, ...
+     * A single featureLayer consists of:
+     *
+     * url: the url to the mapServer containing the features to be shown on the map.
+     * icon: the marker to use to show featureLayer locations.
+     *
+     * An icon should include: font-awesome icon class, background color (default: transparent) and the icon color (default: #0064B)
+     * see: FeatureLayerIconModel
+     */
     @Input() featureLayers: FeatureLayerModel[] = [];
     /* the input field placeholder text. */
     @Input() placeholder = 'Locaties zoeken...';
@@ -35,8 +53,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     @Input() label = '';
     /* label to use when no results were found. */
     @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
-    /* Optionally set a default location to be shown on the map */
-    @Input() defaultLocation: LatLngModel;
+    /* aria label for clear input button */
+    @Input() clearInputAriaLabel = 'Input veld leegmaken';
     /* addPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* addLine event */
@@ -48,8 +66,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
 
     /* leaflet instance */
     leafletMap: LeafletMap;
-    /* leaflet search form */
-    leafletForm: FormGroup;
     /* Whether a search request is running or not. */
     searching = false;
     /* Whether a search was initiated or not. */
@@ -67,6 +83,21 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     private inputChangeSubscription;
     /* Observable subscription for fetching locations */
     private locationServiceSubscription;
+    /* Currently selected location */
+    private _selectedLocation;
+
+    /* Used for ControlValueAccessor */
+    propagateChange = (_: any) => {
+    };
+
+    get selectedLocation() {
+        return this._selectedLocation;
+    }
+
+    set selectedLocation(val) {
+        this._selectedLocation = val;
+        this.propagateChange(this._selectedLocation);
+    }
 
     /**
      * Checks if input field has a value
@@ -74,7 +105,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
      * @since 4.0.0
      */
     get inputHasValue(): boolean {
-        return (this.leafletForm && !this.leafletForm.get('searchField').value);
+        return (this.selectedLocation && !this.selectedLocation.label);
     }
 
     /**
@@ -92,7 +123,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
      * @since 4.0.0
      */
     constructor(
-        private formBuilder: FormBuilder,
         private locationPickerService: NgxLocationPickerService
     ) {
     }
@@ -112,9 +142,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
         if (this.showMap) {
             this.initLocationPicker();
         }
-
-        /* Inits search form. */
-        this.initLeafletForm();
     }
 
     /**
@@ -134,12 +161,41 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * ControlValueAccessor write value
+     *
+     * @since 4.0.0
+     */
+    writeValue(location: LocationModel | AddressModel | CoordinateModel): void {
+        if (location && location.label) {
+            this.selectedLocation = location;
+            this.locationSelect.emit(location);
+        }
+    }
+
+    /**
+     * ControlValueAccessor register on change
+     *
+     * @since 4.0.0
+     */
+    registerOnChange(fn) {
+        this.propagateChange = fn;
+    }
+
+    /**
+     *
+     *
+     * @since 4.0.0
+     */
+    registerOnTouched() {
+    }
+
+    /**
      * Clear search field value, If map is visible, resets to it's original position.
      *
      * @since 4.0.0
      */
     emptyField() {
-        this.leafletForm.get('searchField').patchValue('');
+        this.selectedLocation = null;
         this.didSearch = false;
         this.searching = false;
 
@@ -151,12 +207,37 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Trigger search when input string is longer than 2 characters
+     *
+     * @since 4.0.0
+     */
+    onSearch(searchValue) {
+        this.leafletNotification = null;
+
+        if (!searchValue) {
+            this.didSearch = false;
+        }
+
+        if (searchValue.length > 2) {
+            this.searching = true;
+            this.didSearch = true;
+            this.locationServiceSubscription = this.locationPickerService.delegateSearch(searchValue, this.baseUrl)
+                .subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
+                    this.foundLocations = response;
+                }, (error) => {
+                    console.log(error);
+                }, () => {
+                    this.searching = false;
+                });
+        }
+    }
+
+    /**
      * When a location is selected from the list.
      *
      * @since 4.0.0
      */
     onLocationSelect($event: any) {
-        this.leafletForm.get('searchField').patchValue($event.label, {emitEvent: false});
         this.didSearch = false;
 
         if (this.showMap) {
@@ -165,16 +246,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
 
             if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
                 const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-                this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
-                this.leafletMap.setView(coords, this.onSelectZoom);
+                this.addMapMarker(coords);
             } else if ($event.addressPosition && $event.addressPosition.wgs84) {
                 const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
-                this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
-                this.leafletMap.setView(coords, this.onSelectZoom);
+                this.addMapMarker(coords);
             } else if ($event.position && $event.position.wgs84) {
                 const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
-                this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
-                this.leafletMap.setView(coords, this.onSelectZoom);
+                this.addMapMarker(coords);
             } else if ($event.location.position.geometry) {
                 const geoJson = {
                     type: 'Feature',
@@ -197,7 +275,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.locationSelect.emit($event);
+        this.writeValue($event);
     }
 
     /**
@@ -267,6 +345,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
             this.leafletMap.addTileLayer(baseMapWorldGray);
             this.leafletMap.addTileLayer(baseMapAntwerp);
 
+            if (this.selectedLocation && this.selectedLocation.position) {
+                const coords: Array<number> = [this.selectedLocation.position.lat, this.selectedLocation.position.lng];
+                this.addMapMarker(coords);
+            }
+
             this.leafletMap.map.addEventListener('click', (event) => this.registerMapClick(event));
 
             this.registerFeatureLayers();
@@ -282,7 +365,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
         this.removeMarker(this.selectedLocationMarker);
 
         if ($event.latlng) {
-            this.leafletForm.get('searchField').patchValue(`${$event.latlng.lat},${$event.latlng.lng}`);
+            this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
+            this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
             this.selectedLocationMarker = this.leafletMap.addHtmlMarker([$event.latlng.lat, $event.latlng.lng], this.createMarker());
         }
     }
@@ -307,6 +391,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
                 });
             });
         }
+    }
+
+    /**
+     * Adds a marker on a given coordinate and zooms in on this location.
+     *
+     * @param coords array containing lat & lng
+     *
+     * @since 4.0.0
+     */
+    private addMapMarker(coords) {
+        this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
+        this.leafletMap.setView(coords, this.onSelectZoom);
     }
 
     /**
@@ -355,37 +451,4 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy {
             this.leafletNotification = null;
         }, 2000);
     }
-
-    /**
-     * Init leaflet form and setup input listener for triggering searches.
-     *
-     * @since 4.0.0
-     */
-    private initLeafletForm() {
-        this.leafletForm = this.formBuilder.group({
-            searchField: ['']
-        });
-
-        this.inputChangeSubscription = this.leafletForm.get('searchField').valueChanges.subscribe((changes: string) => {
-            this.leafletNotification = null;
-
-            if (changes.length === 0) {
-                this.didSearch = false;
-            }
-
-            if (changes.length > 2) {
-                this.searching = true;
-                this.didSearch = true;
-                this.locationServiceSubscription = this.locationPickerService.delegateSearch(changes, this.baseUrl)
-                    .subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
-                        this.foundLocations = response;
-                    }, (error) => {
-                        console.log(error);
-                    }, () => {
-                        this.searching = false;
-                    });
-            }
-        });
-    }
-
 }

@@ -22,5 +22,5 @@ import {HighlightSearchDirective} from './directives/highlight-search.directive'
         NgxLocationPickerComponent
     ]
 })
-export class NgxLocationPickerModule {
+export class LocationPickerModule {
 }

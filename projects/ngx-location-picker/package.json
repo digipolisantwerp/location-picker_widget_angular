@@ -1,5 +1,6 @@
 {
-  "name": "ngx-location-picker",
+  "name": "@acpaas-ui-widgets/ngx-location-picker",
+  "description": "Location Picker Smart Widget UI package (Angular)",
   "version": "4.0.0",
   "peerDependencies": {
     "@angular/common": "^7.2.0",

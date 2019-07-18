@@ -1,8 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
-import {NgxLocationPickerModule} from '../../../../dist/ngx-location-picker';
+import {LocationPickerModule} from '../../../../dist/ngx-location-picker';
 
 @NgModule({
     declarations: [
@@ -10,7 +11,9 @@ import {NgxLocationPickerModule} from '../../../../dist/ngx-location-picker';
     ],
     imports: [
         BrowserModule,
-        NgxLocationPickerModule
+        LocationPickerModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
