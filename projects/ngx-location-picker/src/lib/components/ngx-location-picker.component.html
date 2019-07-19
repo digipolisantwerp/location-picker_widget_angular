@@ -39,9 +39,31 @@
             </div>
         </div>
     </div>
-    <aui-leaflet *ngIf="showMap" [leafletMap]="leafletMap" [hasSidebar]="hasSidebar">
+    <aui-leaflet *ngIf="showMap" [leafletMap]="leafletMap" [hasSidebar]="hasSidebar"
+                 [class.is-picking]="pickLocationActive">
         <div controls bottom left>
-            <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
+            <button
+                    type="button"
+                    class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs"
+                    (click)="pickLocationOnMap()"
+                    [class.is-active]="pickLocationActive"
+            >
+                <i class="fa fa-thumb-tack" aria-hidden="true" aria-label="Pick location on map"></i>
+            </button>
+            <button
+                    typ="button"
+                    class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs"
+                    (click)="zoomIn()"
+            >
+                <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
+            </button>
+            <button
+                    typ="button"
+                    class="a-button a-button--small has-icon a-button--block"
+                    (click)="zoomOut()"
+            >
+                <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
+            </button>
         </div>
         <div controls bottom right>
             <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>

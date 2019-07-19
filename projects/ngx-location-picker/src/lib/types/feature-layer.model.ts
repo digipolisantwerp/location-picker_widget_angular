@@ -7,9 +7,9 @@ export interface FeatureLayerModel {
 
 interface FeatureLayerIconModel {
     /* font-awesome icon class eg: fa-map-marker */
-    faIcon: string;
-    /* background color, default: transparent */
-    backgroundColor: string;
+    iconClass: string;
     /* icon color, default: #0064B */
-    textColor: string;
+    color: string;
+    /* icon size in pixels, default: 40px */
+    size: string;
 }

@@ -80,10 +80,8 @@ selectedLocation = {
     label: 'Generaal Armstrongweg 1, 2020 Antwerpen',
     // Not required but can be useful to show a marker on the map.
     position: {
-        wgs84: {
-            lat: 0,
-            lng: 0
-        }
+        lat: 0,
+        lng: 0
     }
 };
 ```
@@ -136,7 +134,7 @@ class ExampleComponent {
      * url: the url to the mapServer containing the features to be shown on the map.
      * icon: the marker to use to show featureLayer locations.
      *
-     * An icon should include: font-awesome icon class, background color (default: transparent) and the icon color (default: #0064B)
+     * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
      * see: FeatureLayerIconModel
      */
     featureLayers: FeatureLayerModel[] = [];

@@ -41,7 +41,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * url: the url to the mapServer containing the features to be shown on the map.
      * icon: the marker to use to show featureLayer locations.
      *
-     * An icon should include: font-awesome icon class, background color (default: transparent) and the icon color (default: #0064B)
+     * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
      * see: FeatureLayerIconModel
      */
     @Input() featureLayers: FeatureLayerModel[] = [];
@@ -68,6 +68,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     searching = false;
     /* Whether a search was initiated or not. */
     didSearch = false;
+    /* Whether the user clicked the pick location from map button or not. */
+    pickLocationActive = false;
     /* The locations returned from the server. */
     foundLocations: LocationModel[] | AddressModel[] | CoordinateModel[] = [];
     /* Leaflet notification message */
@@ -82,7 +84,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     /* Observable subscription for fetching locations */
     private locationServiceSubscription;
     /* Currently selected location */
-    private _selectedLocation;
+    private _selectedLocation: any = {};
 
     /* Used for ControlValueAccessor */
     propagateChange = (_: any) => {
@@ -159,7 +161,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
 
     /**
-     * ControlValueAccessor write value
+     * Writes a new value to the element.
      *
      * @since 4.0.0
      */
@@ -171,7 +173,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
 
     /**
-     * ControlValueAccessor register on change
+     * Registers a callback function that is called when the control's value changes in the UI.
      *
      * @since 4.0.0
      */
@@ -180,11 +182,29 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
 
     /**
-     *
+     * Registers a callback function is called by the forms API on initialization to update the form model on blur.
      *
      * @since 4.0.0
      */
     registerOnTouched() {
+    }
+
+    /**
+     * Zooms the map in
+     *
+     * @since 4.0.0
+     */
+    zoomIn() {
+        this.leafletMap.zoomIn();
+    }
+
+    /**
+     * Zooms the map out
+     *
+     * @since 4.0.0
+     */
+    zoomOut() {
+        this.leafletMap.zoomOut();
     }
 
     /**
@@ -193,7 +213,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * @since 4.0.0
      */
     emptyField() {
-        this.selectedLocation = null;
+        this.selectedLocation = {};
         this.didSearch = false;
         this.searching = false;
 
@@ -202,6 +222,21 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
             this.removeMarker(this.selectedLocationMarker);
             this.removeGeometry(this.selectedLocationGeometry);
         }
+    }
+
+    /**
+     * Allows location search by clicking somewhere on the map.
+     *
+     * @since 4.0.0
+     */
+    pickLocationOnMap() {
+        if (this.pickLocationActive) {
+            this.leafletMap.map.removeEventListener('click');
+        } else {
+            this.leafletMap.map.addEventListener('click', (event) => this.registerMapClick(event));
+        }
+
+        this.pickLocationActive = !this.pickLocationActive;
     }
 
     /**
@@ -312,6 +347,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         }
 
         /**
+         * Cancel location search by click when escape key is pressed.
+         */
+        if (event.key === 'Escape') {
+            this.leafletMap.map.removeEventListener('click');
+            this.pickLocationActive = false;
+        }
+
+        /**
          * When pressing enter, select first value in found locations list.
          */
         if (event.key === 'Enter' && this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
@@ -348,8 +391,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
                 this.addMapMarker(coords);
             }
 
-            this.leafletMap.map.addEventListener('click', (event) => this.registerMapClick(event));
-
             this.registerFeatureLayers();
         });
     }
@@ -360,6 +401,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * @since 4.0.0
      */
     private registerMapClick($event) {
+        this.leafletMap.map.removeEventListener('click');
+        this.pickLocationActive = false;
         this.removeMarker(this.selectedLocationMarker);
 
         if ($event.latlng) {
@@ -381,10 +424,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
                     url: featureLayer.url,
                     pointToLayer: (geojson, latlng) => {
                         this.leafletMap.addHtmlMarker(latlng, this.createMarker(
-                            featureLayer.icon.backgroundColor,
-                            featureLayer.icon.textColor,
-                            featureLayer.icon.faIcon)
-                        );
+                            featureLayer.icon.color,
+                            featureLayer.icon.iconClass,
+                            featureLayer.icon.size
+                        ));
                     },
                 });
             });
@@ -408,8 +451,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      *
      * @since 4.0.0
      */
-    private createMarker(background: string = 'rgb(0, 100, 180)', color: string = '#fff', icon: string = 'fa-map-marker') {
-        const markerStyle = `background-color: ${background}; color: ${color};`;
+    private createMarker(color: string = '#0064b4', icon: string = 'fa-thumb-tack', size: string = '40px') {
+        const markerStyle = `color: ${color}; font-size: ${size}`;
         const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
 
         return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;

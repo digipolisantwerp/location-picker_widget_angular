@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0] - Unreleased
+
+Complete rewrite of the original location picker. Includes fixes, improvements and new features. This version was built and tested using Angular 7.
+
+### Changed
+
+- Feature layers can now be added to leaflet.
+- Custom icons can be set for each feature layer.
+- Improved picking a location on leaflet.
+- Locations that have geometry available will now be drawn on leaflet.
+- Added notification messages when things go bad (eg: no coordinates received from server)
+- Added scroll-to-zoom using ctrl + scroll or cmd + scroll.
+- Added new configuration options. See readme for more info.
+- Bumped Angular version to 7+
+
+### Fixed
+
+- Fixed styling issue with flyout not being full width
+- Fixed an issue with flyout opening when focussing the input field
+- Fixed an issue where you couldn't update the house number after selecting an address from the dropdown.
+- Fixed an issue where using the zoom controls would trigger a submit event if picker was used inside a form.
+
 ## [Unreleased]
 
 <!--
