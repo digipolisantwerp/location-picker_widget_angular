@@ -7,7 +7,12 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "copy-license": "cp license dist/ngx-location-picker",
+    "copy-readme": "cp projects/ngx-location-picker/README.md dist/ngx-location-picker",
+    "copy-files": "npm run copy-license && npm run copy-readme",
+    "npm_pack": "cd dist/ngx-location-picker && npm pack",
+    "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm_pack"
   },
   "dependencies": {
     "@acpaas-ui/ngx-components": "^2.1.1",
