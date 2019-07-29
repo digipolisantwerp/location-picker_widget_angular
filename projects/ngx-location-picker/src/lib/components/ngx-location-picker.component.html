@@ -15,7 +15,7 @@
             <div class="inline-addon">
                 <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
                 <button
-                        class="a-button-transparent a-button--small"
+                        class="a-button-transparent a-button--small button-reset-input"
                         type="button"
                         (click)="emptyField()"
                         [disabled]="inputHasValue"
@@ -44,22 +44,22 @@
         <div controls bottom left>
             <button
                     type="button"
-                    class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs"
+                    class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs button-location-picking"
                     (click)="pickLocationOnMap()"
                     [class.is-active]="pickLocationActive"
             >
-                <i class="fa fa-thumb-tack" aria-hidden="true" aria-label="Pick location on map"></i>
+                <i class="fa fa-map-pin" aria-hidden="true" aria-label="Pick location on map"></i>
             </button>
             <button
                     type="button"
-                    class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs"
+                    class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs button-zoom-in"
                     (click)="zoomIn()"
             >
                 <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
             </button>
             <button
                     type="button"
-                    class="a-button a-button--small has-icon a-button--block"
+                    class="a-button a-button--small has-icon a-button--block button-zoom-out"
                     (click)="zoomOut()"
             >
                 <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>

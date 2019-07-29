@@ -6,11 +6,11 @@
             <a [href]="baseUrl + '/api-explorer/'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
         </p>
     </div>
-    
+
     <form (ngSubmit)="onSubmitNgModel()">
         <ngx-location-picker
                 name="locationPickerModel"
-                [baseUrl]="baseUrl + '/api/v1'"
+                [baseUrl]="baseUrl"
                 [(ngModel)]="selectedLocationModel"
         ></ngx-location-picker>
         <button type="submit" class="a-button u-margin-top">Log to browser console</button>

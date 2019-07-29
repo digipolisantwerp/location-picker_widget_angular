@@ -3,10 +3,11 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {LeafletMap, baseMapWorldGray, baseMapAntwerp} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
-import {LocationModel} from '../types/location.model';
+import {LambertModel, LocationModel} from '../types/location.model';
 import {AddressModel, LatLngModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
+import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 
 @Component({
     selector: 'ngx-location-picker',
@@ -123,7 +124,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * @since 4.0.0
      */
     constructor(
-        private locationPickerService: NgxLocationPickerService
+        private locationPickerService: NgxLocationPickerService,
+        private locationPickerHelper: NgxLocationPickerHelper
     ) {
     }
 
@@ -219,8 +221,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
         if (this.showMap) {
             this.leafletMap.setView(this.mapCenter, this.defaultZoom);
-            this.removeMarker(this.selectedLocationMarker);
-            this.removeGeometry(this.selectedLocationGeometry);
+            this.removeGeometry();
+            this.removeMarker();
         }
     }
 
@@ -254,6 +256,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         if (searchValue.length > 2) {
             this.searching = true;
             this.didSearch = true;
+
+            if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
+                const coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
+                this.addMapMarker([coords.x, coords.y]);
+            }
+
             this.locationServiceSubscription = this.locationPickerService.delegateSearch(searchValue, this.baseUrl)
                 .subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
                     this.foundLocations = response;
@@ -274,8 +282,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.didSearch = false;
 
         if (this.showMap) {
-            this.removeMarker(this.selectedLocationMarker);
-            this.removeGeometry(this.selectedLocationGeometry);
+            this.removeGeometry();
 
             if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
                 const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
@@ -327,9 +334,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
             const direction = (event.deltaY > 0) ? 'out' : 'in';
 
             if (direction === 'out') {
-                this.leafletMap.zoomOut();
+                this.zoomOut();
             } else {
-                this.leafletMap.zoomIn();
+                this.zoomIn();
             }
         } else if (event.type === 'wheel') {
             this.setNotification({
@@ -403,12 +410,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     private registerMapClick($event) {
         this.leafletMap.map.removeEventListener('click');
         this.pickLocationActive = false;
-        this.removeMarker(this.selectedLocationMarker);
 
         if ($event.latlng) {
             this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
             this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
-            this.selectedLocationMarker = this.leafletMap.addHtmlMarker([$event.latlng.lat, $event.latlng.lng], this.createMarker());
+            this.addMapMarker([$event.latlng.lat, $event.latlng.lng]);
         }
     }
 
@@ -423,10 +429,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
                 this.leafletMap.addFeatureLayer({
                     url: featureLayer.url,
                     pointToLayer: (geojson, latlng) => {
-                        this.leafletMap.addHtmlMarker(latlng, this.createMarker(
-                            featureLayer.icon.color,
-                            featureLayer.icon.iconClass,
-                            featureLayer.icon.size
+                        return this.leafletMap.addHtmlMarker(latlng, this.createMarker(
+                            (featureLayer.icon && featureLayer.icon.color) ? featureLayer.icon.color : undefined,
+                            (featureLayer.icon && featureLayer.icon.iconClass) ? featureLayer.icon.iconClass : undefined,
+                            (featureLayer.icon && featureLayer.icon.size) ? featureLayer.icon.size : undefined,
                         ));
                     },
                 });
@@ -442,6 +448,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * @since 4.0.0
      */
     private addMapMarker(coords) {
+        this.removeMarker();
+
         this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
         this.leafletMap.setView(coords, this.onSelectZoom);
     }
@@ -451,7 +459,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      *
      * @since 4.0.0
      */
-    private createMarker(color: string = '#0064b4', icon: string = 'fa-thumb-tack', size: string = '40px') {
+    private createMarker(color: string = '#0064b4', icon: string = 'fa-map-pin', size: string = '40px') {
         const markerStyle = `color: ${color}; font-size: ${size}`;
         const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
 
@@ -463,9 +471,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      *
      * @since 4.0.0
      */
-    private removeMarker(marker) {
-        if (marker) {
-            this.leafletMap.removeLayer(marker);
+    private removeMarker() {
+        if (this.selectedLocationMarker) {
+            this.leafletMap.removeLayer(this.selectedLocationMarker);
         }
     }
 
@@ -474,9 +482,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      *
      * @since 4.0.0
      */
-    private removeGeometry(geometry) {
-        if (geometry) {
-            this.leafletMap.removeLayer(geometry);
+    private removeGeometry() {
+        if (this.selectedLocationGeometry) {
+            this.leafletMap.removeLayer(this.selectedLocationGeometry);
         }
     }
 

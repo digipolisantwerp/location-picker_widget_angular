@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {InitialLocationModel} from '../../../ngx-location-picker/src/lib/types/initial-location.model';
 
 @Component({
     selector: 'app-root',
@@ -9,17 +8,10 @@ import {InitialLocationModel} from '../../../ngx-location-picker/src/lib/types/i
 export class AppComponent implements OnInit {
 
     baseUrl = '';
-    selectedLocation: InitialLocationModel = {
-        label: 'Francis Wellesplein 1, 2018 Antwerpen',
-        position: {
-            lat: 51.20582713100443,
-            lng: 4.3984563736866935
-        }
-    };
-    selectedLocationModel = this.selectedLocation;
+    selectedLocationModel;
 
     ngOnInit(): void {
-        this.baseUrl = `https://locationpicker-app1-o.antwerpen.be`;
+        this.baseUrl = 'https://locationpicker-app1-o.antwerpen.be/api/v1';
     }
 
     onSubmitNgModel() {
