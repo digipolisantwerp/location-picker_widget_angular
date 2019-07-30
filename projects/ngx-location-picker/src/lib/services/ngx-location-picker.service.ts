@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {NgxLocationPickerHelper} from './ngx-location-picker.helper';
 import {LambertModel, LocationModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
-import {LocationQueryModel, LocationSortingEnum} from '../types/location-query.model';
+import {LocationQueryModel} from '../types/location-query.model';
 import {LayerQueryModel} from '../types/layer-query.model';
 import {LayerModel} from '../types/layer.model';
 import {AddressIdQueryModel} from '../types/address-id-query.model';
@@ -47,6 +47,7 @@ export class NgxLocationPickerService {
      * @param baseUrl (required the url to the BFF)
      * @param limit (the amount of locations to return, only used for querying searchLocations)
      * @param layers (the layers to look for locations in, only used for querying searchLocations)
+     * @param sort (the layer to sort results)
      *
      * @since 4.0.0
      * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
@@ -55,7 +56,8 @@ export class NgxLocationPickerService {
         search: string,
         baseUrl: string,
         limit: number = 5,
-        layers: Array<string> = ['straatnaam']
+        layers: Array<string> = ['straatnaam'],
+        sort: string = 'straatnaam'
     ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
         this.locationPickerApi = baseUrl;
 
@@ -63,7 +65,8 @@ export class NgxLocationPickerService {
             const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search);
             const requestQuery: CoordinateQueryModel = {
                 xcoord: coordinate.x,
-                ycoord: coordinate.y
+                ycoord: coordinate.y,
+                limit
             };
 
             return this.searchLocationsByCoordinates(requestQuery);
@@ -76,7 +79,7 @@ export class NgxLocationPickerService {
                 layers,
                 limit,
                 search,
-                sort: LocationSortingEnum.NAME
+                sort
             };
 
             return this.searchLocations(locationQuery);

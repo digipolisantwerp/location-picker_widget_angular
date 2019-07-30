@@ -112,50 +112,53 @@ selectedLocation = {
 
 ```ts
 class ExampleComponent {
-    
-    /**
-     * Url to the backend-for-frontend (bff).
-     */
-    baseUrl: string = 'https://path-to-bff';
-    /* the default zoom level on map load. */
-    defaultZoom: number = 14;
-    /* the zoom level when a location is selected. */
-    onSelectZoom: number = 16;
-    /* the initial map center on load. */
-    mapCenter: Array<number> = [51.215, 4.425];
-    /* show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
-    hasSidebar: boolean = false;
-    /* show or hide the map. */
-    showMap: boolean = true;
-    /**
-     * add layers to show on the map. eg: A-card terminals, Velo stations, ...
-     * A single featureLayer consists of:
-     *
-     * url: the url to the mapServer containing the features to be shown on the map.
-     * icon: the marker to use to show featureLayer locations.
-     *
-     * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
-     * see: FeatureLayerIconModel
-     */
-    featureLayers: FeatureLayerModel[] = [];
-    /* the input field placeholder text. */
-    placeholder: string = 'Locaties zoeken...';
-    /* label to show above the search field. No label is shown if left empty */
-    label: string = '';
-    /* label to use when no results were found. */
-    noResultsLabel: string = 'Er werden geen locaties gevonden.';
-    
-    /* addPolygon event */
-    onAddPolygon($event: any) {}
-    
-    /* addLine event */
-    onAddLine($event: any) {}
-    
-    /* editFeature event */
-    onEditFeature($event: any) {}
-    
-    /* locationSelect event: fired when selecting a location. */
-    onLocationSelect(location: LocationModel | AddressModel | CoordinateModel) {}
+      /* url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
+      @Input() baseUrl;
+      /* the default zoom level on map load. */
+      @Input() defaultZoom = 14;
+      /* the zoom level when a location is selected. */
+      @Input() onSelectZoom = 16;
+      /* the initial map center on load. */
+      @Input() mapCenter: Array<number> = [51.215, 4.425];
+      /* show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
+      @Input() hasSidebar = false;
+      /* show or hide the map. */
+      @Input() showMap = true;
+      /**
+       * add layers to show on the map. eg: A-card terminals, Velo stations, ...
+       * A single featureLayer consists of:
+       *
+       * url: the url to the mapServer containing the features to be shown on the map.
+       * icon: the marker to use to show featureLayer locations.
+       *
+       * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
+       * see: FeatureLayerIconModel
+       */
+      @Input() featureLayers: FeatureLayerModel[] = [];
+      /* the input field placeholder text. */
+      @Input() placeholder = 'Locaties zoeken...';
+      /* label to show above the search field. */
+      @Input() label = '';
+      /* label to use when no results were found. */
+      @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+      /* aria label for clear input button. */
+      @Input() clearInputAriaLabel = 'Input veld leegmaken';
+      /* search input length requirement before triggering a search. */
+      @Input() minInputLength = 2;
+      /* the amount of results to return */
+      @Input() locationsLimit = 5;
+      /* the layers to search locations for */
+      @Input() locationLayers = ['straatnaam'];
+      /* sorting by layer name boosts results from a given layer to the top of the found locations. */
+      @Input() sortingLayer = 'straatnaam';
+      /* addPolygon event */
+      @Output() addPolygon = new EventEmitter<any>();
+      /* addLine event */
+      @Output() addLine = new EventEmitter<any>();
+      /* editFeature event */
+      @Output() editFeature = new EventEmitter<any>();
+      /* locationSelect event: fired when selecting a location. */
+      @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
 }
 ```
 
@@ -182,7 +185,7 @@ npm install
 
 Rebuild library on changes
 ```
-ng build ngx-location-picker --watch
+npm run dev
 ```
 
 Start example project
@@ -195,7 +198,7 @@ Any changes done on the library will visible on http://localhost:4200
 
 ## Build
 
-Run `ng build ngx-location-picker` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build-lib` to build the project. The build artifacts will be stored in the `dist/` directory and a .tgz file containing the library will be created. This is needed for publishing to NPM.
 
 ## Contributing
 

@@ -8,6 +8,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "dev": "ng build ngx-location-picker --watch",
     "copy-license": "cp license dist/ngx-location-picker",
     "copy-readme": "cp projects/ngx-location-picker/README.md dist/ngx-location-picker",
     "copy-files": "npm run copy-license && npm run copy-readme",

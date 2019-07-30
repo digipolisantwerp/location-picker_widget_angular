@@ -2,7 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.0.0] - Unreleased
+## [4.0.0-beta.3] - Unreleased
+
+- Added sorting option - found locations can now be sorted based on the provided sorting layer.
+- Added locationLayers option - an array of searchable layers can now be passed to the component.
+- Limit option now works properly for addresses found when using reverse geocoding
+- Added minInputLength option to determine when to trigger a search request
+
+## [4.0.0-beta.2] - Unreleased
+
+- Updated gitignore
+- Updated marker icon
+- improved performance when using featureLayers
+
+## [4.0.0-beta.1] - Unreleased
 
 Complete rewrite of the original location picker. Includes fixes, improvements and new features. This version was built and tested using Angular 7.
 
