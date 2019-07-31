@@ -83,6 +83,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   foundLocations: LocationModel[] | AddressModel[] | CoordinateModel[] = [];
   /* Leaflet notification message */
   leafletNotification: NotificationModel;
+  /* The current highlighted index in the location results array */
+  highlightedLocationResult = 0;
 
   /* Current active location marker on the map */
   private selectedLocationMarker;
@@ -94,6 +96,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private locationServiceSubscription;
   /* Currently selected location */
   private _selectedLocation: any = {};
+  /* Cursor state if hovering over leaflet or not */
+  private cursorOnLeaflet = false;
 
   /* Used for ControlValueAccessor */
   propagateChange = (_: any) => {
@@ -256,6 +260,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   onSearch(searchValue) {
     this.leafletNotification = null;
+    this.highlightedLocationResult = 0;
 
     if (!searchValue) {
       this.didSearch = false;
@@ -343,20 +348,22 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
      * zoom in/out using ctrl + scroll to zoom in or out.
      * Show notification if only scroll is used.
      */
-    if ((event.ctrlKey || event.metaKey) && event.deltaY) {
-      const direction = (event.deltaY > 0) ? 'out' : 'in';
+    if (event.type === 'wheel' && this.cursorOnLeaflet) {
+      if (event.ctrlKey || event.metaKey) {
+        const direction = (event.deltaY > 0) ? 'out' : 'in';
 
-      if (direction === 'out') {
-        this.zoomOut();
+        if (direction === 'out') {
+          this.zoomOut();
+        } else {
+          this.zoomIn();
+        }
       } else {
-        this.zoomIn();
+        this.setNotification({
+          status: 'notify',
+          text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
+          icon: 'fa-question-circle'
+        });
       }
-    } else if (event.type === 'wheel') {
-      this.setNotification({
-        status: 'notify',
-        text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
-        icon: 'fa-question-circle'
-      });
     }
 
     /**
@@ -374,12 +381,38 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.pickLocationActive = false;
     }
 
-    /**
-     * When pressing enter, select first value in found locations list.
-     */
-    if (event.key === 'Enter' && this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
-      this.onLocationSelect(this.foundLocations[0]);
+    if (this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
+      /**
+       * When pressing enter, select first value in found locations list.
+       */
+      if (event.key === 'Enter') {
+        this.onLocationSelect(this.foundLocations[this.highlightedLocationResult]);
+      }
+
+      /**
+       * When using arrow keys, select next/previous result in found locations list
+       */
+      if (event.key === 'ArrowUp') {
+        if (this.highlightedLocationResult > 0) {
+          this.highlightedLocationResult--;
+        }
+      }
+
+      if (event.key === 'ArrowDown') {
+        if (this.highlightedLocationResult < this.foundLocations.length - 1) {
+          this.highlightedLocationResult++;
+        }
+      }
     }
+  }
+
+  /**
+   * Determines whether the cursor is hovering over the leaflet instance or not.
+   *
+   * @since 4.0.0
+   */
+  isCursorOnLeaflet(cursorOnLeaflet: boolean) {
+    this.cursorOnLeaflet = cursorOnLeaflet;
   }
 
   /**

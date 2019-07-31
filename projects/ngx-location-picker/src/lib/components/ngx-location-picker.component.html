@@ -1,78 +1,88 @@
 <div class="a-input" [class.has-map]="showMap">
-    <label *ngIf="label" class="a-input__label" for="leaflet-search">{{ label }}</label>
-    <div class="a-input__search" [class.has-sidebar]="hasSidebar">
-        <div class="a-input__wrapper has-inline-addon">
-            <input
-                    id="leaflet-search"
-                    type="text"
-                    name="leaflet-search"
-                    [placeholder]="placeholder"
-                    [(ngModel)]="selectedLocation && selectedLocation.label"
-                    (ngModelChange)="onSearch($event)"
-                    autocomplete="off"
-                    (blur)="didSearch = false"
-            />
-            <div class="inline-addon">
-                <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
-                <button
-                        class="a-button-transparent a-button--small button-reset-input"
-                        type="button"
-                        (click)="emptyField()"
-                        [disabled]="inputHasValue"
-                >
-                    <i class="fa fa-times" aria-hidden="true" [attr.aria-label]="clearInputAriaLabel"></i>
-                </button>
-            </div>
-        </div>
+  <label *ngIf="label" class="a-input__label" for="leaflet-search">{{ label }}</label>
+  <div class="a-input__search" [class.has-sidebar]="hasSidebar">
+    <div class="a-input__wrapper has-inline-addon">
+      <input
+        id="leaflet-search"
+        type="text"
+        name="leaflet-search"
+        [placeholder]="placeholder"
+        [(ngModel)]="selectedLocation && selectedLocation.label"
+        (ngModelChange)="onSearch($event)"
+        autocomplete="off"
+        (blur)="didSearch = false"
+      />
+      <div class="inline-addon">
+        <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
+        <button
+          class="a-button-transparent a-button--small button-reset-input"
+          type="button"
+          (click)="emptyField()"
+          [disabled]="inputHasValue"
+        >
+          <i class="fa fa-times" aria-hidden="true" [attr.aria-label]="clearInputAriaLabel"></i>
+        </button>
+      </div>
+    </div>
 
-        <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
-            <div class="m-flyout__content">
-                <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
-                <ng-template #results>
-                    <ul class="a-list a-list--reset a-list--lined">
-                        <li (click)="onLocationSelect(location)" *ngFor="let location of foundLocations">
-                            <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
-                            <small>{{ location.layer }}</small>
-                        </li>
-                    </ul>
-                </ng-template>
-            </div>
-        </div>
+    <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
+      <div class="m-flyout__content">
+        <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
+        <ng-template #results>
+          <ul class="a-list a-list--reset a-list--lined">
+            <li
+              *ngFor="let location of foundLocations; let ii = index"
+              (click)="onLocationSelect(location)"
+              [class.is-highlighted]="ii === highlightedLocationResult"
+            >
+              <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
+              <small>{{ location.layer }}</small>
+            </li>
+          </ul>
+        </ng-template>
+      </div>
     </div>
-    <aui-leaflet *ngIf="showMap" [leafletMap]="leafletMap" [hasSidebar]="hasSidebar"
-                 [class.is-picking]="pickLocationActive">
-        <div controls bottom left>
-            <button
-                    type="button"
-                    class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs button-location-picking"
-                    (click)="pickLocationOnMap()"
-                    [class.is-active]="pickLocationActive"
-            >
-                <i class="fa fa-map-pin" aria-hidden="true" aria-label="Pick location on map"></i>
-            </button>
-            <button
-                    type="button"
-                    class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs button-zoom-in"
-                    (click)="zoomIn()"
-            >
-                <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
-            </button>
-            <button
-                    type="button"
-                    class="a-button a-button--small has-icon a-button--block button-zoom-out"
-                    (click)="zoomOut()"
-            >
-                <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
-            </button>
-        </div>
-        <div controls bottom right>
-            <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>
-        </div>
-        <div *ngIf="hasSidebar">
-            <ng-content></ng-content>
-        </div>
-    </aui-leaflet>
-    <div *ngIf="leafletNotification?.text" class="notification-panel {{ leafletNotification.status }}">
-        <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
+  </div>
+  <aui-leaflet
+    *ngIf="showMap"
+    [leafletMap]="leafletMap"
+    [hasSidebar]="hasSidebar"
+    [class.is-picking]="pickLocationActive"
+    (mouseover)="isCursorOnLeaflet(true)"
+    (mouseout)="isCursorOnLeaflet(false)"
+  >
+    <div controls bottom left>
+      <button
+        type="button"
+        class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs button-location-picking"
+        (click)="pickLocationOnMap()"
+        [class.is-active]="pickLocationActive"
+      >
+        <i class="fa fa-map-pin" aria-hidden="true" aria-label="Pick location on map"></i>
+      </button>
+      <button
+        type="button"
+        class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs button-zoom-in"
+        (click)="zoomIn()"
+      >
+        <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
+      </button>
+      <button
+        type="button"
+        class="a-button a-button--small has-icon a-button--block button-zoom-out"
+        (click)="zoomOut()"
+      >
+        <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
+      </button>
     </div>
+    <div controls bottom right>
+      <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>
+    </div>
+    <div *ngIf="hasSidebar">
+      <ng-content></ng-content>
+    </div>
+  </aui-leaflet>
+  <div *ngIf="leafletNotification?.text" class="notification-panel {{ leafletNotification.status }}">
+    <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
+  </div>
 </div>

@@ -103,3 +103,7 @@
 .m-flyout .m-flyout__content .a-list li small {
     margin: 0;
 }
+
+.m-flyout .m-flyout__content .a-list li.is-highlighted {
+  background: rgb(243, 243, 243);
+}
