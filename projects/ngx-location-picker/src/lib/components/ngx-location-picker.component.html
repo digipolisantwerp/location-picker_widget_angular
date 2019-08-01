@@ -74,6 +74,25 @@
       >
         <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
       </button>
+
+      <div *ngIf="tileLayer" class="map-layer-toggle u-margin-top-xs">
+        <button
+          type="button"
+          class="a-button a-button--small u-margin-right-xs"
+          (click)="toggleTileLayer()"
+          [disabled]="isDefaultTileLayer"
+        >
+          Kaart
+        </button>
+        <button
+          type="button"
+          class="a-button a-button--small"
+          (click)="toggleTileLayer(true)"
+          [disabled]="isCustomTileLayer"
+        >
+          {{ tileLayer.buttonLabel }}
+        </button>
+      </div>
     </div>
     <div controls bottom right>
       <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>

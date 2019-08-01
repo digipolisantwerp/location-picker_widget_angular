@@ -1,22 +1,23 @@
 <div class="u-container">
-    <div class="panel u-bg-light u-margin-top u-margin-bottom">
-        <h5 class="u-margin-bottom">Digipolis Location Picker Service</h5>
-        <p>
-            <span class="a-label u-margin-right-xs">v1.0.0</span>
-            <a [href]="baseUrl + '/api-explorer/'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
-        </p>
-    </div>
+  <div class="panel u-bg-light u-margin-top u-margin-bottom">
+    <h5 class="u-margin-bottom">Digipolis Location Picker Service</h5>
+    <p>
+      <span class="a-label u-margin-right-xs">v1.0.0</span>
+      <a [href]="baseUrl + '/api-explorer/'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
+    </p>
+  </div>
 
-    <form (ngSubmit)="onSubmitNgModel()">
-        <ngx-location-picker
-                name="locationPickerModel"
-                [baseUrl]="baseUrl"
-                [(ngModel)]="selectedLocationModel"
-                [locationLayers]="['all']"
-        ></ngx-location-picker>
-        <button type="submit" class="a-button u-margin-top">Log to browser console</button>
+  <form (ngSubmit)="onSubmitNgModel()">
+    <ngx-location-picker
+      name="locationPickerModel"
+      [baseUrl]="baseUrl"
+      [(ngModel)]="selectedLocationModel"
+      [locationLayers]="['all']"
+      [tileLayer]="satelliteMapLayer"
+    ></ngx-location-picker>
+    <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 
-        <pre>{{ selectedLocationModel | json }}</pre>
-    </form>
+    <pre>{{ selectedLocationModel | json }}</pre>
+  </form>
 </div>
 

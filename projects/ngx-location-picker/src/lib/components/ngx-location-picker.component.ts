@@ -1,13 +1,14 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener, forwardRef} from '@angular/core';
+import {Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {LeafletMap, baseMapWorldGray, baseMapAntwerp} from '@acpaas-ui/ngx-components/map';
+import {baseMapAntwerp, baseMapWorldGray, LeafletMap} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LambertModel, LocationModel} from '../types/location.model';
-import {AddressModel, LatLngModel} from '../types/address.model';
+import {AddressModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
 import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
+import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 
 @Component({
   selector: 'ngx-location-picker',
@@ -54,6 +55,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
   /* aria label for clear input button. */
   @Input() clearInputAriaLabel = 'Input veld leegmaken';
+  /* custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
+  @Input() tileLayer: LeafletTileLayerModel;
   /* search input length requirement before triggering a search. */
   @Input() minInputLength = 2;
   /* the amount of results to return */
@@ -85,6 +88,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   leafletNotification: NotificationModel;
   /* The current highlighted index in the location results array */
   highlightedLocationResult = 0;
+  /* Current tile layer type default or custom */
+  tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
   /* Current active location marker on the map */
   private selectedLocationMarker;
@@ -98,6 +103,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private _selectedLocation: any = {};
   /* Cursor state if hovering over leaflet or not */
   private cursorOnLeaflet = false;
+  /* Current active tile layers */
+  private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
   propagateChange = (_: any) => {
@@ -130,6 +137,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     return (this.foundLocations && this.foundLocations.length > 0);
   }
 
+  get isDefaultTileLayer(): boolean {
+    return (this.tileLayerType === LeafletTileLayerType.DEFAULT);
+  }
+
+  get isCustomTileLayer(): boolean {
+    return (this.tileLayerType === LeafletTileLayerType.CUSTOM);
+  }
+
   /**
    * NgxLocationPickerComponent constructor, injects required dependencies
    *
@@ -137,7 +152,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   constructor(
     private locationPickerService: NgxLocationPickerService,
-    private locationPickerHelper: NgxLocationPickerHelper
+    private locationPickerHelper: NgxLocationPickerHelper,
+    private renderer: Renderer2
   ) {
   }
 
@@ -352,18 +368,24 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       if (event.ctrlKey || event.metaKey) {
         const direction = (event.deltaY > 0) ? 'out' : 'in';
 
+        this.renderer.addClass(document.body, 'is-map-interaction');
+
         if (direction === 'out') {
           this.zoomOut();
         } else {
           this.zoomIn();
         }
       } else {
+        this.renderer.removeClass(document.body, 'is-map-interaction');
+
         this.setNotification({
           status: 'notify',
           text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
           icon: 'fa-question-circle'
         });
       }
+    } else {
+      this.renderer.removeClass(document.body, 'is-map-interaction');
     }
 
     /**
@@ -416,6 +438,39 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
+   * Toggle tile layer when a custom tile layer is provided
+   *
+   * @since 4.0.0
+   */
+  toggleTileLayer(custom: boolean = false) {
+    this.resetCurrentTileLayers();
+
+    this.tileLayerType = (custom) ? LeafletTileLayerType.CUSTOM : LeafletTileLayerType.DEFAULT;
+
+    if (custom) {
+      this.activeTileLayers.push(this.leafletMap.addTileLayer(this.tileLayer.layer));
+    } else {
+      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
+      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
+    }
+  }
+
+  /**
+   * Resets the current tile layers
+   *
+   * @since 4.0.0
+   */
+  private resetCurrentTileLayers() {
+    if (this.activeTileLayers.length > 0) {
+      this.activeTileLayers.map((layer) => {
+        this.leafletMap.removeLayer(layer);
+      });
+    }
+
+    this.activeTileLayers = [];
+  }
+
+  /**
    * Init leaflet map with default values and register feature layers if provided.
    *
    * @since 4.0.0
@@ -436,8 +491,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     });
 
     this.leafletMap.onInit.subscribe(() => {
-      this.leafletMap.addTileLayer(baseMapWorldGray);
-      this.leafletMap.addTileLayer(baseMapAntwerp);
+      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
+      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
         const coords: Array<number> = [this.selectedLocation.position.lat, this.selectedLocation.position.lng];

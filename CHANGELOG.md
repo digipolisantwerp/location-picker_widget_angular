@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.5]
+
+- Body scroll now locked when interacting (zooming) with the leaflet instance
+- A custom map tile layer can now be added
+
 ## [4.0.0-beta.4]
 
 - Scrolling event now only triggers when cursor is over leaflet instance

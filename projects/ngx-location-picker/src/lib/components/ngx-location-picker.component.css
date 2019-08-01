@@ -1,3 +1,7 @@
+::ng-deep body.is-map-interaction {
+  overflow: hidden;
+}
+
 ::ng-deep .ngx-location-picker-marker {
     position: relative;
     top: -36px;
