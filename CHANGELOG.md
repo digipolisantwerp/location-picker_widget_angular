@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.6]
+
+- Added prioritizeLayer option
+- Fixed sorting issue
+
 ## [4.0.0-beta.5]
 
 - Body scroll now locked when interacting (zooming) with the leaflet instance

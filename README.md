@@ -112,6 +112,7 @@ selectedLocation = {
 
 ```ts
 class ExampleComponent {
+
       /* url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
       @Input() baseUrl;
       /* the default zoom level on map load. */
@@ -143,14 +144,18 @@ class ExampleComponent {
       @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
       /* aria label for clear input button. */
       @Input() clearInputAriaLabel = 'Input veld leegmaken';
+      /* custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
+      @Input() tileLayer: LeafletTileLayerModel;
       /* search input length requirement before triggering a search. */
       @Input() minInputLength = 2;
       /* the amount of results to return */
       @Input() locationsLimit = 5;
       /* the layers to search locations for */
       @Input() locationLayers = ['straatnaam'];
-      /* sorting by layer name boosts results from a given layer to the top of the found locations. */
-      @Input() sortingLayer = 'straatnaam';
+      /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
+      @Input() prioritizeLayer = 'straatnaam';
+      /* Sort locations by certain key */
+      @Input() sortBy = 'name';
       /* addPolygon event */
       @Output() addPolygon = new EventEmitter<any>();
       /* addLine event */
@@ -159,6 +164,7 @@ class ExampleComponent {
       @Output() editFeature = new EventEmitter<any>();
       /* locationSelect event: fired when selecting a location. */
       @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
+
 }
 ```
 

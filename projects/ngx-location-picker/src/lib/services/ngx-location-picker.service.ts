@@ -47,7 +47,8 @@ export class NgxLocationPickerService {
      * @param baseUrl (required the url to the BFF)
      * @param limit (the amount of locations to return, only used for querying searchLocations)
      * @param layers (the layers to look for locations in, only used for querying searchLocations)
-     * @param sort (the layer to sort results)
+     * @param prioritizelayer (the layer to boost)
+     * @param sort (key to sort results by)
      *
      * @since 4.0.0
      * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
@@ -57,7 +58,8 @@ export class NgxLocationPickerService {
         baseUrl: string,
         limit: number = 5,
         layers: Array<string> = ['straatnaam'],
-        sort: string = 'straatnaam'
+        prioritizelayer: string = 'straatnaam',
+        sort: string = 'name'
     ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
         this.locationPickerApi = baseUrl;
 
@@ -79,6 +81,7 @@ export class NgxLocationPickerService {
                 layers,
                 limit,
                 search,
+                prioritizelayer,
                 sort
             };
 

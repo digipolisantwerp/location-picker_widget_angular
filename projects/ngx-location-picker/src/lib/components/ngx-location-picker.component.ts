@@ -63,8 +63,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locationsLimit = 5;
   /* the layers to search locations for */
   @Input() locationLayers = ['straatnaam'];
-  /* sorting by layer name boosts results from a given layer to the top of the found locations. */
-  @Input() sortingLayer = 'straatnaam';
+  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
+  @Input() prioritizeLayer = 'straatnaam';
+  /* Sort locations by certain key */
+  @Input() sortBy = 'name';
   /* addPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* addLine event */
@@ -296,7 +298,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.baseUrl,
         this.locationsLimit,
         this.locationLayers,
-        this.sortingLayer
+        this.prioritizeLayer,
+        this.sortBy
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
       }, (error) => {
