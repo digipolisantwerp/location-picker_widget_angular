@@ -284,7 +284,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.didSearch = false;
     }
 
-    if (searchValue.length > this.minInputLength) {
+    if (searchValue.length >= this.minInputLength) {
       this.searching = true;
       this.didSearch = true;
 
@@ -602,6 +602,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     setTimeout(() => {
       this.leafletNotification = null;
-    }, 2000);
+    }, 4000);
   }
 }
