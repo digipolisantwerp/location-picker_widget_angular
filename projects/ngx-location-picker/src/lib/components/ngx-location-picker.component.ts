@@ -24,20 +24,22 @@ import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile
 })
 export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
-  /* url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
+  /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
   @Input() baseUrl;
-  /* the default zoom level on map load. */
+  /* The default zoom level on map load. */
   @Input() defaultZoom = 14;
-  /* the zoom level when a location is selected. */
+  /* The zoom level when a location is selected. */
   @Input() onSelectZoom = 16;
-  /* the initial map center on load. */
+  /* The initial map center on load. */
   @Input() mapCenter: Array<number> = [51.215, 4.425];
-  /* show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
+  /* Show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
   @Input() hasSidebar = false;
-  /* show or hide the map. */
+  /* Show or hide the map. */
   @Input() showMap = true;
+  /* Toggle the clear button */
+  @Input() showClearInputButton = true;
   /**
-   * add layers to show on the map. eg: A-card terminals, Velo stations, ...
+   * Add layers to show on the map. eg: A-card terminals, Velo stations, ...
    * A single featureLayer consists of:
    *
    * url: the url to the mapServer containing the features to be shown on the map.
@@ -47,36 +49,36 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * see: FeatureLayerIconModel
    */
   @Input() featureLayers: FeatureLayerModel[] = [];
-  /* the input field placeholder text. */
+  /* The input field placeholder text. */
   @Input() placeholder = 'Locaties zoeken...';
-  /* label to show above the search field. */
+  /* Label to show above the search field. */
   @Input() label = '';
-  /* label to use when no results were found. */
+  /* Label to use when no results were found. */
   @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
-  /* aria label for clear input button. */
+  /* Aria label for clear input button. */
   @Input() clearInputAriaLabel = 'Input veld leegmaken';
-  /* custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
+  /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
   @Input() tileLayer: LeafletTileLayerModel;
-  /* search input length requirement before triggering a search. */
+  /* Search input length requirement before triggering a search. */
   @Input() minInputLength = 2;
-  /* the amount of results to return */
+  /* The amount of results to return */
   @Input() locationsLimit = 5;
-  /* the layers to search locations for */
+  /* The layers to search locations for */
   @Input() locationLayers = ['straatnaam'];
   /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
   @Input() prioritizeLayer = 'straatnaam';
-  /* Sort locations by certain key */
-  @Input() sortBy = 'name';
-  /* addPolygon event */
+  /* Sort locations by certain key, overrides prioritizeLayer. */
+  @Input() sortBy = '';
+  /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
-  /* addLine event */
+  /* AddLine event */
   @Output() addLine = new EventEmitter<any>();
-  /* editFeature event */
+  /* EditFeature event */
   @Output() editFeature = new EventEmitter<any>();
-  /* locationSelect event: fired when selecting a location. */
+  /* LocationSelect event: fired when selecting a location. */
   @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
 
-  /* leaflet instance */
+  /* Leaflet instance */
   leafletMap: LeafletMap;
   /* Whether a search request is running or not. */
   searching = false;
@@ -345,7 +347,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
       } else {
         this.setNotification({
-          status: 'warning',
+          status: 'm-alert--danger',
           text: 'Locatie kan niet op de map getoond worden.',
           icon: 'fa-exclamation-triangle'
         });
@@ -382,7 +384,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.renderer.removeClass(document.body, 'is-map-interaction');
 
         this.setNotification({
-          status: 'notify',
+          status: 'default',
           text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
           icon: 'fa-question-circle'
         });
@@ -563,7 +565,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *
    * @since 4.0.0
    */
-  private createMarker(color: string = '#0064b4', icon: string = 'fa-map-pin', size: string = '40px') {
+  private createMarker(color: string = '#0064b4', icon: string = 'fa-map-marker', size: string = '40px') {
     const markerStyle = `color: ${color}; font-size: ${size}`;
     const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
 

@@ -12,10 +12,10 @@
         autocomplete="off"
         (blur)="didSearch = false"
       />
-      <div class="inline-addon">
+      <div class="inline-addon" *ngIf="showClearInputButton">
         <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
         <button
-          class="a-button-transparent a-button--small button-reset-input"
+          class="a-button-transparent a-button--small has-icon"
           type="button"
           (click)="emptyField()"
           [disabled]="inputHasValue"
@@ -58,27 +58,30 @@
         (click)="pickLocationOnMap()"
         [class.is-active]="pickLocationActive"
       >
-        <i class="fa fa-map-pin" aria-hidden="true" aria-label="Pick location on map"></i>
-      </button>
-      <button
-        type="button"
-        class="a-button a-button--small has-icon a-button--block u-margin-bottom-xs button-zoom-in"
-        (click)="zoomIn()"
-      >
-        <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
-      </button>
-      <button
-        type="button"
-        class="a-button a-button--small has-icon a-button--block button-zoom-out"
-        (click)="zoomOut()"
-      >
-        <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
+        <i class="fa fa-map-marker" aria-hidden="true" aria-label="Pick location on map"></i>
       </button>
 
-      <div *ngIf="tileLayer" class="map-layer-toggle u-margin-top-xs">
+      <div class="m-button-group m-button-group--vertical">
         <button
           type="button"
-          class="a-button a-button--small u-margin-right-xs"
+          class="a-button a-button--small has-icon a-button--block button-zoom-in"
+          (click)="zoomIn()"
+        >
+          <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
+        </button>
+        <button
+          type="button"
+          class="a-button a-button--small has-icon a-button--block button-zoom-out"
+          (click)="zoomOut()"
+        >
+          <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
+        </button>
+      </div>
+
+      <div *ngIf="tileLayer" class="m-button-group map-layer-toggle u-margin-top-xs">
+        <button
+          type="button"
+          class="a-button a-button--small"
           (click)="toggleTileLayer()"
           [disabled]="isDefaultTileLayer"
         >
@@ -101,7 +104,7 @@
       <ng-content></ng-content>
     </div>
   </aui-leaflet>
-  <div *ngIf="leafletNotification?.text" class="notification-panel {{ leafletNotification.status }}">
+  <div *ngIf="leafletNotification?.text" class="notification-panel m-alert {{ leafletNotification.status }}">
     <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
   </div>
 </div>
