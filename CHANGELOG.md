@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.7]
+
+- Angular 6, 7 and 8 are now supported
+- Updated map marker icon
+- Better button grouping for leaflet actions
+- Fixed clear input button
+- Clear input button can now be hidden
+- Updated core branding styles in readme
+- Removed default sortBy value
+- Updated leaflet alerts and notifications
+- Refactored css in scss
+- Added Core Branding npm package for using sass vars
+
 ## [4.0.0-beta.6]
 
 - Added prioritizeLayer option

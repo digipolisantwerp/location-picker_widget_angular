@@ -81,7 +81,7 @@
             "tsConfig": "projects/example/tsconfig.spec.json",
             "karmaConfig": "projects/example/karma.conf.js",
             "styles": [
-              "projects/example/src/styles.css"
+              "projects/example/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
@@ -144,5 +144,10 @@
       }
     }
   },
-  "defaultProject": "ngx-lib"
+  "defaultProject": "ngx-lib",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

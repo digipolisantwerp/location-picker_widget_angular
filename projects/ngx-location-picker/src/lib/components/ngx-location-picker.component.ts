@@ -13,7 +13,7 @@ import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile
 @Component({
   selector: 'ngx-location-picker',
   templateUrl: './ngx-location-picker.component.html',
-  styleUrls: ['./ngx-location-picker.component.css'],
+  styleUrls: ['./ngx-location-picker.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
