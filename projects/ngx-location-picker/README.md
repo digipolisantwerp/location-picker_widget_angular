@@ -8,7 +8,7 @@ This library was tested in Angular 6, 7 and 8.
 
 ## Using the component
 
-##### Installation
+### Installation
 
 First install the component from npm:
 
@@ -45,7 +45,102 @@ Add required leaflet styles in your angular.json file.
 ]
 ```
 
-##### Usage
+Next, you will need to configure your BFF to proxy all location picker request to the correct service.
+The example below is based on an Express.js powered BFF.
+The concept remains the same for different technologies:
+
+The BFF should function solely as a pass-through layer where the API KEY gets added to the request header before proxying.
+
+> We're using axios for handling requests in the example below. Feel free to use any other library.
+
+Step 1: Create a contract with the "LOCATIONPICKER" on the api-store.
+![screenshot](api-store.png)
+
+Step 2: Copy the api key and api url
+
+Step 3: In your BFF create a .env file and add:
+```
+API_KEY=00000000-0000-0000-0000-000000000000
+LOCATION_PICKER_URL=https://api-gw-o.antwerpen.be/gis/locationpicker/v1
+```
+
+Step 4: Create a new file **locations.routes.js** in **/routes** and add the following contents:
+```javascript
+const express = require('express');
+const router = express.Router();
+const locationController = require('../controllers/location.controller');
+
+/**
+ * Proxy requests from /locations to location picker api.
+ */
+router.get('/*', locationController.proxyLocationRequest);
+
+module.exports = router;
+```
+
+Step 5: Create a new file **locations.controller.js** in **/controllers** and add the following contents:
+```javascript
+const locationModel = require('../models/location.model');
+
+/**
+ * Catch all requests to /locations and proxy to location picker api.
+ *
+ * @param req {Request}
+ * @param res {Response}
+ */
+exports.proxyLocationRequest = (req, res) => {
+    const requestPath = req.originalUrl.replace('/api/v1/locations', '');
+
+    locationModel.handleLocationRequest(requestPath)
+        .then((response) => {
+            res.status(response.status);
+            res.json(response.data);
+        })
+        .catch((error) => {
+            res.status(error.response.status);
+            res.json(error.response.data);
+        });
+};
+```
+
+Step 6: Create a new file **locations.model.js** in **/models** and add the following contents:
+```javascript
+const axios = require('axios');
+
+/**
+ * Handle request to location picker api.
+ * Add API_KEY to header
+ */
+exports.handleLocationRequest = (requestPath) => {
+    return new Promise((resolve, reject) => {
+        // Add our api key (which we added to our .env file) to the request headers
+        const requestOptions = {
+            headers: {
+                'ApiKey': process.env.API_KEY
+            }
+        };
+
+        axios.get(`${process.env.LOCATION_PICKER_URL}${requestPath}`, requestOptions).then((response) => {
+            resolve(response);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+```
+
+Step 7: Add your newly created route to **app.js**
+```javascript
+// Add this to the top of app.js
+const locationProxy = require('./routes/location.routes');
+
+// Add this after const app = express(); and before any error handler routes
+app.use('/api/v1/locations', locationProxy);
+```
+
+**That's it!** 🎉
+
+### Usage
 
 Note: There are 3 methods of getting values after selecting a location:
 
