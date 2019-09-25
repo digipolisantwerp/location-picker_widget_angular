@@ -247,6 +247,8 @@ class ExampleComponent {
     @Input() zoomInAriaLabel = 'Zoom in';
     /* Aria label for zooming out  */
     @Input() zoomOutAriaLabel = 'Zoom out';
+    /* Aria label for text input */
+    @Input() textInputAriaLabel = 'Locaties zoeken op basis van zoekterm';
     /* Default tile layer button label */
     @Input() defaultTileLayerLabel = 'Kaart';
     /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
