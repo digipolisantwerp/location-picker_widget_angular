@@ -35,7 +35,7 @@ Finally include the required styles:
 Add Antwerp core branding stylesheet in your index.html file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.2.2/main.min.css">
+<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.0.0/main.min.css">
 ```
 
 Add required leaflet styles in your angular.json file.
@@ -148,26 +148,26 @@ Note: There are 3 methods of getting values after selecting a location:
 
 **Method 1: locationSelect event**  
 ```html
-<ngx-location-picker
+<aui-location-picker
     ...
     (locationSelect)="onLocationSelect($event)"
-></ngx-location-picker>
+></aui-location-picker>
 ```
 
 **Method 2: NgModel**
 ```html
-<ngx-location-picker
+<aui-location-picker
     ...
     [(ngModel)]="selectedLocation"
-></ngx-location-picker>
+></aui-location-picker>
 ```
 
 **Method 3: Reactive forms**
 ```html
-<ngx-location-picker
+<aui-location-picker
     ...
     formControlName="selectedLocation"
-></ngx-location-picker>
+></aui-location-picker>
 ```
 
 Method 2 and 3 can also be used to set an initial value:
@@ -185,7 +185,7 @@ selectedLocation = {
 
 **Full example**
 ```html
-<ngx-location-picker
+<aui-location-picker
     [baseUrl]="baseUrl"
     [defaultZoom]="defaultZoom"
     [onSelectZoom]="onSelectZoom"
@@ -204,65 +204,71 @@ selectedLocation = {
 
 <p>This is shown inside the leaflet sidebar if hasSidebar is set to true.</p>
 
-</ngx-location-picker>
+</aui-location-picker>
 ```
 
 ```ts
 class ExampleComponent {
 
-        /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
-        @Input() baseUrl;
-        /* The default zoom level on map load. */
-        @Input() defaultZoom = 14;
-        /* The zoom level when a location is selected. */
-        @Input() onSelectZoom = 16;
-        /* The initial map center on load. */
-        @Input() mapCenter: Array<number> = [51.215, 4.425];
-        /* Show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
-        @Input() hasSidebar = false;
-        /* Show or hide the map. */
-        @Input() showMap = true;
-        /* Toggle the clear button */
-        @Input() showClearInputButton = true;
-        /**
-         * Add layers to show on the map. eg: A-card terminals, Velo stations, ...
-         * A single featureLayer consists of:
-         *
-         * url: the url to the mapServer containing the features to be shown on the map.
-         * icon: the marker to use to show featureLayer locations.
-         *
-         * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
-         * see: FeatureLayerIconModel
-         */
-        @Input() featureLayers: FeatureLayerModel[] = [];
-        /* The input field placeholder text. */
-        @Input() placeholder = 'Locaties zoeken...';
-        /* Label to show above the search field. */
-        @Input() label = '';
-        /* Label to use when no results were found. */
-        @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
-        /* Aria label for clear input button. */
-        @Input() clearInputAriaLabel = 'Input veld leegmaken';
-        /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
-        @Input() tileLayer: LeafletTileLayerModel;
-        /* Search input length requirement before triggering a search. */
-        @Input() minInputLength = 2;
-        /* The amount of results to return */
-        @Input() locationsLimit = 5;
-        /* The layers to search locations for */
-        @Input() locationLayers = ['straatnaam'];
-        /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
-        @Input() prioritizeLayer = 'straatnaam';
-        /* Sort locations by certain key, overrides prioritizeLayer. */
-        @Input() sortBy = '';
-        /* AddPolygon event */
-        @Output() addPolygon = new EventEmitter<any>();
-        /* AddLine event */
-        @Output() addLine = new EventEmitter<any>();
-        /* EditFeature event */
-        @Output() editFeature = new EventEmitter<any>();
-        /* LocationSelect event: fired when selecting a location. */
-        @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
+    /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
+    @Input() baseUrl;
+    /* The default zoom level on map load. */
+    @Input() defaultZoom = 14;
+    /* The zoom level when a location is selected. */
+    @Input() onSelectZoom = 16;
+    /* The initial map center on load. */
+    @Input() mapCenter: Array<number> = [51.215, 4.425];
+    /* Show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
+    @Input() hasSidebar = false;
+    /* Show or hide the map. */
+    @Input() showMap = true;
+    /* Toggle the clear button */
+    @Input() showClearInputButton = true;
+    /**
+    * Add layers to show on the map. eg: A-card terminals, Velo stations, ...
+    * A single featureLayer consists of:
+    *
+    * url: the url to the mapServer containing the features to be shown on the map.
+    * icon: the marker to use to show featureLayer locations.
+    *
+    * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
+    * see: FeatureLayerIconModel
+    */
+    @Input() featureLayers: FeatureLayerModel[] = [];
+    /* The input field placeholder text. */
+    @Input() placeholder = 'Locaties zoeken...';
+    /* Label to use when no results were found. */
+    @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+    /* Aria label for clear input button. */
+    @Input() clearInputAriaLabel = 'Input veld leegmaken';
+    /* Aria label for picking a location on the map */
+    @Input() locationPickAriaLabel = 'Kies een locatie op de map';
+    /* Aria label for zooming in */
+    @Input() zoomInAriaLabel = 'Zoom in';
+    /* Aria label for zooming out  */
+    @Input() zoomOutAriaLabel = 'Zoom out';
+    /* Default tile layer button label */
+    @Input() defaultTileLayerLabel = 'Kaart';
+    /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
+    @Input() tileLayer: LeafletTileLayerModel;
+    /* Search input length requirement before triggering a search. */
+    @Input() minInputLength = 2;
+    /* The amount of results to return */
+    @Input() locationsLimit = 5;
+    /* The layers to search locations for */
+    @Input() locationLayers = ['straatnaam'];
+    /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
+    @Input() prioritizeLayer = 'straatnaam';
+    /* Sort locations by certain key, overrides prioritizeLayer. */
+    @Input() sortBy = '';
+    /* AddPolygon event */
+    @Output() addPolygon = new EventEmitter<any>();
+    /* AddLine event */
+    @Output() addLine = new EventEmitter<any>();
+    /* EditFeature event */
+    @Output() editFeature = new EventEmitter<any>();
+    /* LocationSelect event: fired when selecting a location. */
+    @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
 
 }
 ```

@@ -12,8 +12,8 @@
     "copy-license": "cp license dist/ngx-location-picker",
     "copy-readme": "cp projects/ngx-location-picker/README.md dist/ngx-location-picker",
     "copy-files": "npm run copy-license && npm run copy-readme",
-    "npm_pack": "cd dist/ngx-location-picker && npm pack",
-    "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm_pack"
+    "npm-pack": "cd dist/ngx-location-picker && npm pack",
+    "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },
   "dependencies": {
     "@acpaas-ui/ngx-components": "^2.1.1",
@@ -31,7 +31,7 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@a-ui/core": "^3.2.2",
+    "@a-ui/core": "^4.0.0",
     "@angular-devkit/build-angular": "~0.13.0",
     "@angular-devkit/build-ng-packagr": "~0.13.0",
     "@angular/cli": "~7.3.8",

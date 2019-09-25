@@ -8,13 +8,13 @@
   </div>
 
   <form (ngSubmit)="onSubmitNgModel()">
-    <ngx-location-picker
+    <aui-location-picker
       name="locationPickerModel"
       [baseUrl]="baseUrl"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
       [tileLayer]="satelliteMapLayer"
-    ></ngx-location-picker>
+    ></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 
     <pre>{{ selectedLocationModel | json }}</pre>

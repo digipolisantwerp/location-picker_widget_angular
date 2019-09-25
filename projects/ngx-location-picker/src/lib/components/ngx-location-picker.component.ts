@@ -11,7 +11,7 @@ import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 
 @Component({
-  selector: 'ngx-location-picker',
+  selector: 'aui-location-picker',
   templateUrl: './ngx-location-picker.component.html',
   styleUrls: ['./ngx-location-picker.component.scss'],
   providers: [
@@ -51,12 +51,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() featureLayers: FeatureLayerModel[] = [];
   /* The input field placeholder text. */
   @Input() placeholder = 'Locaties zoeken...';
-  /* Label to show above the search field. */
-  @Input() label = '';
   /* Label to use when no results were found. */
   @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
   /* Aria label for clear input button. */
   @Input() clearInputAriaLabel = 'Input veld leegmaken';
+  /* Aria label for picking a location on the map */
+  @Input() locationPickAriaLabel = 'Kies een locatie op de map';
+  /* Aria label for zooming in */
+  @Input() zoomInAriaLabel = 'Zoom in';
+  /* Aria label for zooming out  */
+  @Input() zoomOutAriaLabel = 'Zoom out';
+  /* Default tile layer button label */
+  @Input() defaultTileLayerLabel = 'Kaart';
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
   @Input() tileLayer: LeafletTileLayerModel;
   /* Search input length requirement before triggering a search. */

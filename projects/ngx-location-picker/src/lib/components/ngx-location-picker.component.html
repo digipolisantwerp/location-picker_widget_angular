@@ -1,5 +1,4 @@
 <div class="a-input" [class.has-map]="showMap">
-  <label *ngIf="label" class="a-input__label" for="leaflet-search">{{ label }}</label>
   <div class="a-input__search" [class.has-sidebar]="hasSidebar">
     <div class="a-input__wrapper has-inline-addon">
       <input
@@ -58,7 +57,7 @@
         (click)="pickLocationOnMap()"
         [class.is-active]="pickLocationActive"
       >
-        <i class="fa fa-map-marker" aria-hidden="true" aria-label="Pick location on map"></i>
+        <i class="fa fa-map-marker" aria-hidden="true" [attr.aria-label]="locationPickAriaLabel"></i>
       </button>
 
       <div class="m-button-group m-button-group--vertical">
@@ -67,14 +66,14 @@
           class="a-button a-button--small has-icon a-button--block button-zoom-in"
           (click)="zoomIn()"
         >
-          <i class="fa fa-plus" aria-hidden="true" aria-label="Zoom in"></i>
+          <i class="fa fa-plus" aria-hidden="true" [attr.aria-label]="zoomInAriaLabel"></i>
         </button>
         <button
           type="button"
           class="a-button a-button--small has-icon a-button--block button-zoom-out"
           (click)="zoomOut()"
         >
-          <i class="fa fa-minus" aria-hidden="true" aria-label="Zoom out"></i>
+          <i class="fa fa-minus" aria-hidden="true" [attr.aria-label]="zoomOutAriaLabel"></i>
         </button>
       </div>
 
@@ -85,7 +84,7 @@
           (click)="toggleTileLayer()"
           [disabled]="isDefaultTileLayer"
         >
-          Kaart
+          {{ defaultTileLayerLabel }}
         </button>
         <button
           type="button"
