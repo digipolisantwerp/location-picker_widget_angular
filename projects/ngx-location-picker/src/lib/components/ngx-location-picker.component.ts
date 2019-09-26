@@ -207,8 +207,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *
    * @since 4.0.0
    */
-  writeValue(location: LocationModel | AddressModel | CoordinateModel): void {
-    if (location && location.label) {
+  writeValue(location: any): void {
+    if ((location && location.label) || (location && location.position && location.position.wgs84)) {
       this.selectedLocation = location;
       this.locationSelect.emit(location);
     }
@@ -337,10 +337,25 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
-      } else if ($event.position && $event.position.wgs84) {
-        const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
-        this.addMapMarker(coords);
-      } else if ($event.location.position.geometry) {
+      } else if ($event.position) {
+        if ($event.position.wgs84) {
+          const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
+          this.addMapMarker(coords);
+        } else if ($event.position.geometry) {
+          const geoJson = {
+            type: 'Feature',
+            properties: {
+              name: $event.label,
+            },
+            geometry: {
+              type: $event.position.geometryShape,
+              coordinates: $event.position.geometry
+            }
+          };
+
+          this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+        }
+      } else if ($event.location && $event.location.position && $event.location.position.geometry) {
         const geoJson = {
           type: 'Feature',
           properties: {
@@ -526,6 +541,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.pickLocationActive = false;
 
     if ($event.latlng) {
+      this.writeValue({ position: { wgs84: { lat: $event.latlng.lat, lng: $event.latlng.lng } } });
+
       this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
       this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
       this.addMapMarker([$event.latlng.lat, $event.latlng.lng]);
