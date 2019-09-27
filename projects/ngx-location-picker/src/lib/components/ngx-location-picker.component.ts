@@ -96,6 +96,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   pickLocationActive = false;
   /* Keeps track whether the search was triggered by picking a location on the map */
   pickedLocation = false;
+  /* Whether we're locating a user or not */
+  isLocating = false;
   /* The locations returned from the server. */
   foundLocations: LocationModel[] | AddressModel[] | CoordinateModel[] = [];
   /* Leaflet notification message */
@@ -284,6 +286,24 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
 
     this.pickLocationActive = !this.pickLocationActive;
+  }
+
+  /**
+   * Tries to determine the current users position
+   *
+   * @since 4.0.0
+   */
+  getDeviceLocation() {
+    this.isLocating = true;
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.isLocating = false;
+      this.pickedLocation = true;
+
+      if (position && position.coords) {
+        this.setLocationDynamically(position.coords.latitude, position.coords.longitude);
+      }
+    });
   }
 
   /**
@@ -528,13 +548,22 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.pickedLocation = true;
 
     if ($event.latlng) {
-      this.resetFoundLocations();
-      this.writeValue({position: {wgs84: {lat: $event.latlng.lat, lng: $event.latlng.lng}}});
-
-      this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
-      this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
-      this.addMapMarker([$event.latlng.lat, $event.latlng.lng]);
+      this.setLocationDynamically($event.latlng.lat, $event.latlng.lng);
     }
+  }
+
+  /**
+   * Sets a dynamically fetched location when using locate-me or pick location on map
+   *
+   * @since 4.0.0
+   */
+  private setLocationDynamically(lat, lng) {
+    this.resetFoundLocations();
+    this.writeValue({position: {wgs84: {lat, lng}}});
+
+    this.selectedLocation.label = `${lat},${lng}`;
+    this.onSearch(`${lat},${lng}`);
+    this.addMapMarker([lat, lng]);
   }
 
   /**

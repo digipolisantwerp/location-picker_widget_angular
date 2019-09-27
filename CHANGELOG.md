@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.10]
+
+- Improved UX when using coordinates and not selecting a location from the found locations list
+- Fixed/improved locate me button
+
 ## [4.0.0-beta.9]
 
 - Added: when using the pick-location-on-map and no result was selected from the list, the coordinates will be used as selected location and the selectedLocation event will fire.

@@ -105,7 +105,15 @@
       </div>
     </div>
     <div controls bottom right>
-      <aui-leaflet-locate-control [zoomLevel]="onSelectZoom"></aui-leaflet-locate-control>
+      <button
+        type="button"
+        class="a-button a-button--small has-icon"
+        [disabled]="isLocating"
+        (click)="getDeviceLocation()"
+      >
+        <i *ngIf="!isLocating" class="fa fa-crosshairs"></i>
+        <span *ngIf="isLocating" class="a-spinner a-spinner--sm"></span>
+      </button>
     </div>
     <div *ngIf="hasSidebar">
       <ng-content></ng-content>
