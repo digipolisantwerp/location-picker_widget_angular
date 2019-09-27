@@ -94,6 +94,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   didSearch = false;
   /* Whether the user clicked the pick location from map button or not. */
   pickLocationActive = false;
+  /* Keeps track whether the search was triggered by picking a location on the map */
+  pickedLocation = false;
   /* The locations returned from the server. */
   foundLocations: LocationModel[] | AddressModel[] | CoordinateModel[] = [];
   /* Leaflet notification message */
@@ -256,8 +258,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   emptyField() {
     this.selectedLocation = {};
+    this.resetFoundLocations();
+
     this.didSearch = false;
     this.searching = false;
+    this.pickedLocation = false;
 
     if (this.showMap) {
       this.leafletMap.setView(this.mapCenter, this.defaultZoom);
@@ -327,6 +332,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   onLocationSelect($event: any) {
     this.didSearch = false;
+    this.pickedLocation = false;
 
     if (this.showMap) {
       this.removeGeometry();
@@ -342,32 +348,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
           this.addMapMarker(coords);
         } else if ($event.position.geometry) {
-          const geoJson = {
-            type: 'Feature',
-            properties: {
-              name: $event.label,
-            },
-            geometry: {
-              type: $event.position.geometryShape,
-              coordinates: $event.position.geometry
-            }
-          };
-
-          this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
-        const geoJson = {
-          type: 'Feature',
-          properties: {
-            name: $event.label,
-          },
-          geometry: {
-            type: $event.location.position.geometryShape,
-            coordinates: $event.location.position.geometry
-          }
-        };
-
-        this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
       } else {
         this.setNotification({
           status: 'm-alert--danger',
@@ -429,6 +413,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (event.key === 'Escape') {
       this.leafletMap.map.removeEventListener('click');
       this.pickLocationActive = false;
+      this.pickedLocation = false;
     }
 
     if (this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
@@ -437,6 +422,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
        */
       if (event.key === 'Enter') {
         this.onLocationSelect(this.foundLocations[this.highlightedLocationResult]);
+        this.pickedLocation = false;
       }
 
       /**
@@ -539,9 +525,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private registerMapClick($event) {
     this.leafletMap.map.removeEventListener('click');
     this.pickLocationActive = false;
+    this.pickedLocation = true;
 
     if ($event.latlng) {
-      this.writeValue({ position: { wgs84: { lat: $event.latlng.lat, lng: $event.latlng.lng } } });
+      this.resetFoundLocations();
+      this.writeValue({position: {wgs84: {lat: $event.latlng.lat, lng: $event.latlng.lng}}});
 
       this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
       this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
@@ -609,6 +597,35 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
+   * Add found geo shape to leaflet
+   *
+   * @since 4.0.0
+   */
+  private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
+    const geoJson = {
+      type: 'Feature',
+      properties: {
+        name: label,
+      },
+      geometry: {
+        type: geometryShape,
+        coordinates: geometry
+      }
+    };
+
+    this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+  }
+
+  /**
+   * Resets found locations to empty array
+   *
+   * @since 4.0.0
+   */
+  private resetFoundLocations() {
+    this.foundLocations = [];
+  }
+
+  /**
    * Removes added geometry area from leaflet instance
    *
    * @since 4.0.0
@@ -620,7 +637,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Show a notification on the leaflet map.
+   * Show a notification on the leaflet.
    *
    * @since 4.0.0
    */
