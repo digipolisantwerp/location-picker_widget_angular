@@ -19,8 +19,6 @@ import {CoordinateModel} from '../types/coordinate.model';
 /**
  * NgxLocationPickerService
  * Provide functions for handling location or address searches
- *
- * @since 4.0.0
  */
 export class NgxLocationPickerService {
 
@@ -31,8 +29,6 @@ export class NgxLocationPickerService {
      *
      * @param httpClient (httpClient used for making requests to the api)
      * @param locationPickerHelper (Helper functions class)
-     *
-     * @since 4.0.0
      */
     constructor(
         private httpClient: HttpClient,
@@ -50,7 +46,6 @@ export class NgxLocationPickerService {
      * @param prioritizelayer (the layer to boost)
      * @param sort (key to sort results by)
      *
-     * @since 4.0.0
      * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
      */
     delegateSearch(
@@ -94,7 +89,6 @@ export class NgxLocationPickerService {
      *
      * @param query (the map service to load layers from)
      *
-     * @since 4.0.0
      * @return Observable<LayerModel[]>
      */
     getMapLayers(query: LayerQueryModel): Observable<LayerModel[]> {
@@ -108,7 +102,6 @@ export class NgxLocationPickerService {
      *
      * @param query (the location to look for)
      *
-     * @since 4.0.0
      * @return Observable<LocationModel[]>
      */
     private searchLocations(query: LocationQueryModel): Observable<LocationModel[]> {
@@ -122,7 +115,6 @@ export class NgxLocationPickerService {
      *
      * @param query (the address to look for, consists of a street name and house number)
      *
-     * @since 4.0.0
      * @return Observable<AddressModel[]>
      */
     private searchAddresses(query: AddressQueryModel): Observable<AddressModel[]> {
@@ -136,7 +128,6 @@ export class NgxLocationPickerService {
      *
      * @param query (the address id to get)
      *
-     * @since 4.0.0
      * @return Observable<AddressModel[]>
      */
     private searchAddressById(query: AddressIdQueryModel): Observable<AddressModel[]> {
@@ -150,7 +141,6 @@ export class NgxLocationPickerService {
      *
      * @param query (search query containing coordinates and other parameters)
      *
-     * @since 4.0.0
      * @return Observable<CoordinateModel[]>
      */
     private searchLocationsByCoordinates(query: CoordinateQueryModel): Observable<CoordinateModel[]> {

@@ -1,6 +1,6 @@
-# NgxLocationPicker
+# Location Picker Smart Widget UI (Angular)
 
-Location Picker for Angular 6+. Provides easy to use interface for searching locations or addresses within the city of Antwerp. For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker_widget_angular/tree/v1), which will still receive bug fixes if needed.
+The Location Picker Smart Widget UI provides an easy to use interface for searching locations or addresses within the city of Antwerp. For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker_widget_angular/tree/v1), which will still receive bug fixes if needed.
 
 This library was tested in Angular 6, 7 and 8.
 

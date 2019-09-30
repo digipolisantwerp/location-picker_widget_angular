@@ -133,8 +133,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Checks if input field has a value
-   *
-   * @since 4.0.0
    */
   get inputHasValue(): boolean {
     return (this.selectedLocation && !this.selectedLocation.label);
@@ -142,25 +140,27 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Checks if foundLocations array has items.
-   *
-   * @since 4.0.0
    */
   get hasResults(): boolean {
     return (this.foundLocations && this.foundLocations.length > 0);
   }
 
+  /**
+   * Check if current tile layer is the default one.
+   */
   get isDefaultTileLayer(): boolean {
     return (this.tileLayerType === LeafletTileLayerType.DEFAULT);
   }
 
+  /**
+   * Check if current tile layer is user defined.
+   */
   get isCustomTileLayer(): boolean {
     return (this.tileLayerType === LeafletTileLayerType.CUSTOM);
   }
 
   /**
    * NgxLocationPickerComponent constructor, injects required dependencies
-   *
-   * @since 4.0.0
    */
   constructor(
     private locationPickerService: NgxLocationPickerService,
@@ -171,8 +171,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * On component init
-   *
-   * @since 4.0.0
    */
   ngOnInit() {
     /* if baseUrl is not set, throw an error. */
@@ -188,8 +186,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * On component destroy
-   *
-   * @since 4.0.0
    */
   ngOnDestroy() {
     /* Unsubscribe input change subscription on component destroy */
@@ -204,10 +200,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Writes a new value to the element.
-   *
-   * @since 4.0.0
    */
-  writeValue(location: any): void {
+  writeValue(location: any, reset: boolean = false): void {
+    if (reset) {
+      this.didSearch = false;
+      this.searching = false;
+      this.selectedLocation = {};
+      this.locationSelect.emit(location);
+    }
+
     if ((location && location.label) || (location && location.position && location.position.wgs84)) {
       this.selectedLocation = location;
       this.locationSelect.emit(location);
@@ -216,8 +217,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Registers a callback function that is called when the control's value changes in the UI.
-   *
-   * @since 4.0.0
    */
   registerOnChange(fn) {
     this.propagateChange = fn;
@@ -225,16 +224,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Registers a callback function is called by the forms API on initialization to update the form model on blur.
-   *
-   * @since 4.0.0
    */
   registerOnTouched() {
   }
 
   /**
    * Zooms the map in
-   *
-   * @since 4.0.0
    */
   zoomIn() {
     this.leafletMap.zoomIn();
@@ -242,8 +237,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Zooms the map out
-   *
-   * @since 4.0.0
    */
   zoomOut() {
     this.leafletMap.zoomOut();
@@ -251,13 +244,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Clear search field value, If map is visible, resets to it's original position.
-   *
-   * @since 4.0.0
    */
   emptyField() {
-    this.selectedLocation = {};
-    this.didSearch = false;
-    this.searching = false;
+    this.writeValue({}, true);
 
     if (this.showMap) {
       this.leafletMap.setView(this.mapCenter, this.defaultZoom);
@@ -268,8 +257,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Allows location search by clicking somewhere on the map.
-   *
-   * @since 4.0.0
    */
   pickLocationOnMap() {
     if (this.pickLocationActive) {
@@ -283,15 +270,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Trigger search when input string is longer than 2 characters
-   *
-   * @since 4.0.0
    */
   onSearch(searchValue) {
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
-    if (!searchValue) {
-      this.didSearch = false;
+    if (!searchValue.trim()) {
+      this.emptyField();
     }
 
     if (searchValue.length >= this.minInputLength) {
@@ -322,8 +307,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * When a location is selected from the list.
-   *
-   * @since 4.0.0
    */
   onLocationSelect($event: any) {
     this.didSearch = false;
@@ -382,18 +365,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Implements keyboard and mouse commands
-   *
-   * @since 4.0.0
    */
   @HostListener('window:wheel', ['$event'])
   @HostListener('window:keydown', ['$event'])
   onKeyCommand(event) {
-    /**
-     * zoom in/out using ctrl + scroll to zoom in or out.
-     * Show notification if only scroll is used.
-     */
+    /* zoom in/out using ctrl + scroll to zoom in or out. Show notification if only scroll is used. */
     if (event.type === 'wheel' && this.cursorOnLeaflet) {
-      if (event.ctrlKey || event.metaKey) {
+      if (event.shiftKey) {
         const direction = (event.deltaY > 0) ? 'out' : 'in';
 
         this.renderer.addClass(document.body, 'is-map-interaction');
@@ -416,32 +394,24 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.renderer.removeClass(document.body, 'is-map-interaction');
     }
 
-    /**
-     * Close flyout when escape key is pressed
-     */
+    /* Close flyout when escape key is pressed */
     if (event.key === 'Escape' && this.didSearch) {
       this.didSearch = false;
     }
 
-    /**
-     * Cancel location search by click when escape key is pressed.
-     */
+    /* Cancel location search by click when escape key is pressed. */
     if (event.key === 'Escape') {
       this.leafletMap.map.removeEventListener('click');
       this.pickLocationActive = false;
     }
 
     if (this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
-      /**
-       * When pressing enter, select first value in found locations list.
-       */
+      /* When pressing enter, select first value in found locations list. */
       if (event.key === 'Enter') {
         this.onLocationSelect(this.foundLocations[this.highlightedLocationResult]);
       }
 
-      /**
-       * When using arrow keys, select next/previous result in found locations list
-       */
+      /* When using arrow keys, select next/previous result in found locations list. */
       if (event.key === 'ArrowUp') {
         if (this.highlightedLocationResult > 0) {
           this.highlightedLocationResult--;
@@ -458,8 +428,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Determines whether the cursor is hovering over the leaflet instance or not.
-   *
-   * @since 4.0.0
    */
   isCursorOnLeaflet(cursorOnLeaflet: boolean) {
     this.cursorOnLeaflet = cursorOnLeaflet;
@@ -467,8 +435,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Toggle tile layer when a custom tile layer is provided
-   *
-   * @since 4.0.0
    */
   toggleTileLayer(custom: boolean = false) {
     this.resetCurrentTileLayers();
@@ -485,8 +451,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Resets the current tile layers
-   *
-   * @since 4.0.0
    */
   private resetCurrentTileLayers() {
     if (this.activeTileLayers.length > 0) {
@@ -500,8 +464,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Init leaflet map with default values and register feature layers if provided.
-   *
-   * @since 4.0.0
    */
   private initLocationPicker() {
     this.leafletMap = new LeafletMap({
@@ -533,15 +495,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Capture coordinates from clicking the map and run a search.
-   *
-   * @since 4.0.0
    */
   private registerMapClick($event) {
     this.leafletMap.map.removeEventListener('click');
     this.pickLocationActive = false;
 
     if ($event.latlng) {
-      this.writeValue({ position: { wgs84: { lat: $event.latlng.lat, lng: $event.latlng.lng } } });
+      this.writeValue({position: {wgs84: {lat: $event.latlng.lat, lng: $event.latlng.lng}}});
 
       this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
       this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
@@ -551,8 +511,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Registers optional feature layers and adds markers to the leaflet instance.
-   *
-   * @since 4.0.0
    */
   private registerFeatureLayers() {
     if (this.featureLayers.length > 0) {
@@ -575,8 +533,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Adds a marker on a given coordinate and zooms in on this location.
    *
    * @param coords array containing lat & lng
-   *
-   * @since 4.0.0
    */
   private addMapMarker(coords) {
     this.removeMarker();
@@ -587,8 +543,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Defines the custom marker markup.
-   *
-   * @since 4.0.0
    */
   private createMarker(color: string = '#0064b4', icon: string = 'fa-map-marker', size: string = '40px') {
     const markerStyle = `color: ${color}; font-size: ${size}`;
@@ -599,8 +553,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Removes specific marker from leaflet instance.
-   *
-   * @since 4.0.0
    */
   private removeMarker() {
     if (this.selectedLocationMarker) {
@@ -609,9 +561,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Removes added geometry area from leaflet instance
-   *
-   * @since 4.0.0
+   * Removes added geometry area from leaflet instance.
    */
   private removeGeometry() {
     if (this.selectedLocationGeometry) {
@@ -621,8 +571,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /**
    * Show a notification on the leaflet map.
-   *
-   * @since 4.0.0
    */
   private setNotification(notification: NotificationModel) {
     this.leafletNotification = notification;

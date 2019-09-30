@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     };
 
     ngOnInit(): void {
-        this.baseUrl = 'https://locationpicker-app1-o.antwerpen.be/api/v1';
+        this.baseUrl = 'https://locationpicker-app1-o.antwerpen.be';
     }
 
     onSubmitNgModel() {

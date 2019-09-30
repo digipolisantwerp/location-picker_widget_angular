@@ -9,8 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "dev": "ng build ngx-location-picker --watch",
-    "copy-license": "cp license dist/ngx-location-picker",
-    "copy-readme": "cp projects/ngx-location-picker/README.md dist/ngx-location-picker",
+    "copy-license": "ncp license dist/ngx-location-picker",
+    "copy-readme": "ncp README.md dist/ngx-location-picker",
     "copy-files": "npm run copy-license && npm run copy-readme",
     "npm-pack": "cd dist/ngx-location-picker && npm pack",
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
@@ -48,6 +48,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "ncp": "^2.0.0",
     "ng-packagr": "^4.2.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",

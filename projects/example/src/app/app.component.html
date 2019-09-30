@@ -10,7 +10,7 @@
   <form (ngSubmit)="onSubmitNgModel()">
     <aui-location-picker
       name="locationPickerModel"
-      [baseUrl]="baseUrl"
+      [baseUrl]="baseUrl + '/api/v1'"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
       [tileLayer]="satelliteMapLayer"

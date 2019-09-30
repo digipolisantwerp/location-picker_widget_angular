@@ -10,8 +10,6 @@ import {AddressQueryModel} from '../types/address-query.model';
 /**
  * NgxLocationPickerHelper
  * Provide helper functions
- *
- * @since 4.0.0
  */
 export class NgxLocationPickerHelper {
 
@@ -26,7 +24,6 @@ export class NgxLocationPickerHelper {
      *
      * @param query (the object containing a set of parameters)
      *
-     * @since 4.0.0
      * @return HttpParams
      */
     toHttpParams(query: any): HttpParams {
@@ -45,7 +42,6 @@ export class NgxLocationPickerHelper {
      *
      * @param obj (the object containing a set of parameters)
      *
-     * @since 4.0.0
      * @return any
      */
     private queryObjectToStringObject(obj: any): any {
@@ -70,7 +66,6 @@ export class NgxLocationPickerHelper {
     /**
      * Determines if the given query input resembles an address or not.
      *
-     * @since 4.0.0
      * @return boolean
      */
     isAddress(query: string): boolean {
@@ -92,7 +87,6 @@ export class NgxLocationPickerHelper {
     /**
      * Determines if the given query input resembles coordinate pairs
      *
-     * @since 4.0.0
      * @return boolean
      */
     isCoordinate(query: string): boolean {
@@ -110,7 +104,6 @@ export class NgxLocationPickerHelper {
     /**
      * Splits the location query in street name and house number.
      *
-     * @since 4.0.0
      * @return streetAndNumber
      */
     extractStreetAndNumber(query: string): AddressQueryModel {
@@ -162,7 +155,6 @@ export class NgxLocationPickerHelper {
     /**
      * Splits the location query in X/Y coordinate.
      *
-     * @since 4.0.0
      * @return coordinate
      */
     extractXYCoord(query: string): LambertModel {
