@@ -1,0 +1,126 @@
+<div class="a-input" [class.has-map]="showMap">
+  <div class="a-input__search" [class.has-sidebar]="hasSidebar">
+    <div class="a-input__wrapper has-inline-addon">
+      <input
+        id="leaflet-search"
+        type="text"
+        name="leaflet-search"
+        [placeholder]="placeholder"
+        [attr.aria-label]="textInputAriaLabel"
+        [(ngModel)]="selectedLocation && selectedLocation.label"
+        (ngModelChange)="onSearch($event)"
+        autocomplete="off"
+        (blur)="didSearch = false"
+      />
+      <div class="inline-addon" *ngIf="showClearInputButton">
+        <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
+        <button
+          class="a-button-transparent a-button--small has-icon"
+          type="button"
+          (click)="emptyField()"
+          [disabled]="inputHasValue"
+        >
+          <i class="fa fa-times" aria-hidden="true" [attr.aria-label]="clearInputAriaLabel"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
+      <div class="m-flyout__content">
+        <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
+        <ng-template #results>
+          <ul class="a-list a-list--reset a-list--lined">
+            <li
+              *ngIf="pickedLocation"
+              (click)="onLocationSelect(selectedLocation)"
+            >
+              <p>Gebruik gekozen coordinaat</p>
+              <small>{{ selectedLocation.label }}</small>
+            </li>
+            <li
+              *ngFor="let location of foundLocations; let ii = index"
+              (click)="onLocationSelect(location)"
+              [class.is-highlighted]="ii === highlightedLocationResult"
+            >
+              <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
+              <small>{{ location.layer }}</small>
+            </li>
+          </ul>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <aui-leaflet
+    *ngIf="showMap"
+    [leafletMap]="leafletMap"
+    [hasSidebar]="hasSidebar"
+    [class.is-picking]="pickLocationActive"
+    (mouseover)="isCursorOnLeaflet(true)"
+    (mouseout)="isCursorOnLeaflet(false)"
+  >
+    <div controls bottom left>
+      <button
+        type="button"
+        class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs button-location-picking"
+        (click)="pickLocationOnMap()"
+        [class.is-active]="pickLocationActive"
+      >
+        <i class="fa fa-map-marker" aria-hidden="true" [attr.aria-label]="locationPickAriaLabel"></i>
+      </button>
+
+      <div class="m-button-group m-button-group--vertical">
+        <button
+          type="button"
+          class="a-button a-button--small has-icon a-button--block button-zoom-in"
+          (click)="zoomIn()"
+        >
+          <i class="fa fa-plus" aria-hidden="true" [attr.aria-label]="zoomInAriaLabel"></i>
+        </button>
+        <button
+          type="button"
+          class="a-button a-button--small has-icon a-button--block button-zoom-out"
+          (click)="zoomOut()"
+        >
+          <i class="fa fa-minus" aria-hidden="true" [attr.aria-label]="zoomOutAriaLabel"></i>
+        </button>
+      </div>
+
+      <div *ngIf="tileLayer" class="m-button-group map-layer-toggle u-margin-top-xs">
+        <button
+          type="button"
+          class="a-button a-button--small"
+          (click)="toggleTileLayer()"
+          [disabled]="isDefaultTileLayer"
+        >
+          {{ defaultTileLayerLabel }}
+        </button>
+        <button
+          type="button"
+          class="a-button a-button--small"
+          (click)="toggleTileLayer(true)"
+          [disabled]="isCustomTileLayer"
+        >
+          {{ tileLayer.buttonLabel }}
+        </button>
+      </div>
+    </div>
+    <div controls bottom right>
+      <button
+        type="button"
+        class="a-button a-button--small has-icon"
+        [attr.aria-label]="locateMeAriaLabel"
+        [disabled]="isLocating"
+        (click)="getDeviceLocation()"
+      >
+        <i *ngIf="!isLocating" class="fa fa-crosshairs"></i>
+        <span *ngIf="isLocating" class="a-spinner a-spinner--sm"></span>
+      </button>
+    </div>
+    <div *ngIf="hasSidebar">
+      <ng-content></ng-content>
+    </div>
+  </aui-leaflet>
+  <div *ngIf="leafletNotification?.text" class="notification-panel m-alert {{ leafletNotification.status }}">
+    <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
+  </div>
+</div>

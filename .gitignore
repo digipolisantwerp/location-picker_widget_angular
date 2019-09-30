@@ -18,6 +18,7 @@ dist.tgz
 *.launch
 .settings/
 *.sublime-workspace
+/projects/example/src/.idea
 
 # IDE - VSCode
 .vscode/*

@@ -1,0 +1,15 @@
+{
+  "name": "@acpaas-ui-widgets/ngx-location-picker",
+  "description": "Location Picker Smart Widget UI package (Angular)",
+  "version": "4.0.0",
+  "license": "See license file",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digipolisantwerp/location-picker_widget_angular"
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@acpaas-ui/ngx-components": "^2.1.1"
+  }
+}

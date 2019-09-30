@@ -3,38 +3,40 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "location-picker_widget_angular": {
-      "root": "",
-      "sourceRoot": "example",
+    "example": {
+      "root": "projects/example/",
+      "sourceRoot": "projects/example/src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist",
-            "index": "example/index.html",
-            "main": "example/main.ts",
-            "tsConfig": "example/tsconfig.app.json",
-            "polyfills": "example/polyfills.ts",
+            "outputPath": "dist/example",
+            "index": "projects/example/src/index.html",
+            "main": "projects/example/src/main.ts",
+            "polyfills": "projects/example/src/polyfills.ts",
+            "tsConfig": "projects/example/tsconfig.app.json",
             "assets": [
-              "example/assets",
-              "example/favicon.ico"
+              "projects/example/src/favicon.ico",
+              "projects/example/src/assets"
             ],
             "styles": [
-              "example/styles.scss"
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-draw/dist/leaflet.draw.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "es5BrowserSupport": true
           },
           "configurations": {
-            "prod": {
+            "production": {
               "fileReplacements": [
                 {
-                  "replace": "example/config/environment.ts",
-                  "with": "example/config/environment.prod.ts"
+                  "replace": "projects/example/src/environments/environment.ts",
+                  "with": "projects/example/src/environments/environment.prod.ts"
                 }
-              ]
-            },
-            "production": {
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -43,44 +45,48 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "location-picker_widget_angular:build"
+            "browserTarget": "example:build"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "location-picker_widget_angular:build:prod"
-            },
             "production": {
-              "browserTarget": "location-picker_widget_angular:build:production"
+              "browserTarget": "example:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "location-picker_widget_angular:build"
+            "browserTarget": "example:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "example/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "example/polyfills.ts",
-            "tsConfig": "example/tsconfig.spec.json",
-            "scripts": [],
+            "main": "projects/example/src/test.ts",
+            "polyfills": "projects/example/src/polyfills.ts",
+            "tsConfig": "projects/example/tsconfig.spec.json",
+            "karmaConfig": "projects/example/karma.conf.js",
             "styles": [
-              "example/styles.scss"
+              "projects/example/src/styles.scss"
             ],
+            "scripts": [],
             "assets": [
-              "example/assets",
-              "example/favicon.ico"
+              "projects/example/src/favicon.ico",
+              "projects/example/src/assets"
             ]
           }
         },
@@ -88,8 +94,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "example/tsconfig.app.json",
-              "example/tsconfig.spec.json"
+              "projects/example/tsconfig.app.json",
+              "projects/example/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -98,22 +104,38 @@
         }
       }
     },
-    "location-picker_widget_angular-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
+    "ngx-location-picker": {
+      "root": "projects/ngx-location-picker",
+      "sourceRoot": "projects/ngx-location-picker/src",
+      "projectType": "library",
+      "prefix": "ngx",
       "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "location-picker_widget_angular:serve"
+            "tsConfig": "projects/ngx-location-picker/tsconfig.lib.json",
+            "project": "projects/ngx-location-picker/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-location-picker/src/test.ts",
+            "tsConfig": "projects/ngx-location-picker/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-location-picker/karma.conf.js",
+            "styles": [
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-draw/dist/leaflet.draw.css"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": [
+              "projects/ngx-location-picker/tsconfig.lib.json",
+              "projects/ngx-location-picker/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]
@@ -122,17 +144,10 @@
       }
     }
   },
-  "defaultProject": "location-picker_widget_angular",
+  "defaultProject": "ngx-lib",
   "schematics": {
-    "@schematics/angular:class": {
-      "spec": false
-    },
     "@schematics/angular:component": {
-      "prefix": "app",
       "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
     }
   }
 }
