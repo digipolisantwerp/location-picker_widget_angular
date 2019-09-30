@@ -196,6 +196,20 @@ selectedLocation = {
     [placeholder]="placeholder"
     [label]="label"
     [noResultsLabel]="noResultsLabel"
+    [clearInputAriaLabel]="clearInputAriaLabel"
+    [defaultTileLayerLabel]="defaultTileLayerLabel"
+    [locateMeAriaLabel]="locateMeAriaLabel"
+    [locationPickAriaLabel]="locationPickAriaLabel"
+    [textInputAriaLabel]="textInputAriaLabel"
+    [zoomInAriaLabel]="zoomInAriaLabel"
+    [zoomOutAriaLabel]="zoomOutAriaLabel"
+    [tileLayer]="tileLayer"
+    [locationLayers]="locationLayers"
+    [locationsLimit]="locationsLimit"
+    [minInputLength]="minInputLength"
+    [prioritizeLayer]="prioritizeLayer"
+    [showClearInputButton]="showClearInputButton"
+    [sortBy]="sortBy"
     (addPolygon)="onAddPolygon($event)"
     (addLine)="onAddLine($event)"
     (editFeature)="onEditFeature($event)"
@@ -249,6 +263,8 @@ class ExampleComponent {
     @Input() zoomOutAriaLabel = 'Zoom out';
     /* Aria label for text input */
     @Input() textInputAriaLabel = 'Locaties zoeken op basis van zoekterm';
+    /* Aria label for locate me button */
+    @Input() locateMeAriaLabel = 'Gebruik mijn locatie';
     /* Default tile layer button label */
     @Input() defaultTileLayerLabel = 'Kaart';
     /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */

@@ -63,6 +63,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() zoomOutAriaLabel = 'Zoom out';
   /* Aria label for text input */
   @Input() textInputAriaLabel = 'Locaties zoeken op basis van zoekterm';
+  /* Aria label for locate me button */
+  @Input() locateMeAriaLabel = 'Gebruik mijn locatie';
+  /* Locate me error notification texts */
+  @Input() locateMeNotSupportedNotification = 'Locatiebepaling wordt niet ondersteund op dit toestel.';
+  @Input() locateMeNotAllowedNotification = 'Gelieve toegang tot je locatie toe te staan.';
+  @Input() locateMeUnavailableNotification = 'Je locatie kon niet worden bepaald.';
+  @Input() locateMeTimeoutNotification = 'Het duurde te lang om je locatie te bepalen.';
+  @Input() locateMeUnknownNotification = 'Er trad een onbekende fout op bij het bepalen van je locatie.';
+  /* No/invalid coordinate error notification text */
+  @Input() coordinateErrorNotification = 'Locatie kan niet op de map getoond worden.';
+  /* Zoom info notification text */
+  @Input() zoomInfoNotification = 'Gebruik de SHIFT toets om te zoomen door te scrollen.';
   /* Default tile layer button label */
   @Input() defaultTileLayerLabel = 'Kaart';
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
@@ -94,6 +106,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   didSearch = false;
   /* Whether the user clicked the pick location from map button or not. */
   pickLocationActive = false;
+  /* Keeps track whether the search was triggered by picking a location on the map */
+  pickedLocation = false;
+  /* Whether we're locating a user or not */
+  isLocating = false;
   /* The locations returned from the server. */
   foundLocations: LocationModel[] | AddressModel[] | CoordinateModel[] = [];
   /* Leaflet notification message */
@@ -205,7 +221,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (reset) {
       this.didSearch = false;
       this.searching = false;
+      this.pickedLocation = false;
       this.selectedLocation = {};
+      this.resetFoundLocations();
       this.locationSelect.emit(location);
     }
 
@@ -269,6 +287,53 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
+   * Tries to determine the current users position
+   */
+  getDeviceLocation() {
+    this.isLocating = true;
+
+    if (navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.isLocating = false;
+        this.pickedLocation = true;
+
+        if (position && position.coords) {
+          this.setLocationDynamically(position.coords.latitude, position.coords.longitude);
+        }
+      }, (error) => {
+        this.isLocating = false;
+        let message = '';
+        switch (error.code) {
+          case 1:
+            message = this.locateMeNotAllowedNotification;
+            break;
+          case 2:
+            message = this.locateMeUnavailableNotification;
+            break;
+          case 3:
+            message = this.locateMeTimeoutNotification;
+            break;
+          default:
+            message = this.locateMeUnknownNotification;
+            break;
+        }
+
+        this.setNotification({
+          status: 'm-alert--danger',
+          text: message,
+          icon: 'fa-exclamation-triangle'
+        });
+      });
+    } else {
+      this.setNotification({
+        status: 'm-alert--danger',
+        text: this.locateMeNotSupportedNotification,
+        icon: 'fa-exclamation-triangle'
+      });
+    }
+  }
+
+  /**
    * Trigger search when input string is longer than 2 characters
    */
   onSearch(searchValue) {
@@ -310,6 +375,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   onLocationSelect($event: any) {
     this.didSearch = false;
+    this.pickedLocation = false;
 
     if (this.showMap) {
       this.removeGeometry();
@@ -325,36 +391,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
           this.addMapMarker(coords);
         } else if ($event.position.geometry) {
-          const geoJson = {
-            type: 'Feature',
-            properties: {
-              name: $event.label,
-            },
-            geometry: {
-              type: $event.position.geometryShape,
-              coordinates: $event.position.geometry
-            }
-          };
-
-          this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
-        const geoJson = {
-          type: 'Feature',
-          properties: {
-            name: $event.label,
-          },
-          geometry: {
-            type: $event.location.position.geometryShape,
-            coordinates: $event.location.position.geometry
-          }
-        };
-
-        this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
       } else {
         this.setNotification({
           status: 'm-alert--danger',
-          text: 'Locatie kan niet op de map getoond worden.',
+          text: this.coordinateErrorNotification,
           icon: 'fa-exclamation-triangle'
         });
       }
@@ -386,7 +430,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
         this.setNotification({
           status: 'default',
-          text: 'Gebruik de CTRL toets om te zoomen door te scrollen.',
+          text: this.zoomInfoNotification,
           icon: 'fa-question-circle'
         });
       }
@@ -403,12 +447,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (event.key === 'Escape') {
       this.leafletMap.map.removeEventListener('click');
       this.pickLocationActive = false;
+      this.pickedLocation = false;
     }
 
     if (this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
       /* When pressing enter, select first value in found locations list. */
       if (event.key === 'Enter') {
         this.onLocationSelect(this.foundLocations[this.highlightedLocationResult]);
+        this.pickedLocation = false;
       }
 
       /* When using arrow keys, select next/previous result in found locations list. */
@@ -499,14 +545,23 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private registerMapClick($event) {
     this.leafletMap.map.removeEventListener('click');
     this.pickLocationActive = false;
+    this.pickedLocation = true;
 
     if ($event.latlng) {
-      this.writeValue({position: {wgs84: {lat: $event.latlng.lat, lng: $event.latlng.lng}}});
-
-      this.selectedLocation.label = `${$event.latlng.lat},${$event.latlng.lng}`;
-      this.onSearch(`${$event.latlng.lat},${$event.latlng.lng}`);
-      this.addMapMarker([$event.latlng.lat, $event.latlng.lng]);
+      this.setLocationDynamically($event.latlng.lat, $event.latlng.lng);
     }
+  }
+
+  /**
+   * Sets a dynamically fetched location when using locate-me or pick location on map
+   */
+  private setLocationDynamically(lat, lng) {
+    this.resetFoundLocations();
+    this.writeValue({position: {wgs84: {lat, lng}}});
+
+    this.selectedLocation.label = `${lat},${lng}`;
+    this.onSearch(`${lat},${lng}`);
+    this.addMapMarker([lat, lng]);
   }
 
   /**
@@ -558,6 +613,31 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.selectedLocationMarker) {
       this.leafletMap.removeLayer(this.selectedLocationMarker);
     }
+  }
+
+  /**
+   * Add found geo shape to leaflet
+   */
+  private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
+    const geoJson = {
+      type: 'Feature',
+      properties: {
+        name: label,
+      },
+      geometry: {
+        type: geometryShape,
+        coordinates: geometry
+      }
+    };
+
+    this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+  }
+
+  /**
+   * Resets found locations to empty array
+   */
+  private resetFoundLocations() {
+    this.foundLocations = [];
   }
 
   /**
