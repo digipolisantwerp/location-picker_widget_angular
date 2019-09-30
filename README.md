@@ -210,6 +210,13 @@ selectedLocation = {
     [prioritizeLayer]="prioritizeLayer"
     [showClearInputButton]="showClearInputButton"
     [sortBy]="sortBy"
+    [coordinateErrorNotification]="coordinateErrorNotification"
+    [locateMeNotAllowedNotification]="locateMeNotAllowedNotification"
+    [locateMeNotSupportedNotification]="locateMeNotSupportedNotification"
+    [locateMeTimeoutNotification]="locateMeTimeoutNotification"
+    [locateMeUnavailableNotification]="locateMeUnavailableNotification"
+    [locateMeUnknownNotification]="locateMeUnknownNotification"
+    [zoomInfoNotification]="zoomInfoNotification"
     (addPolygon)="onAddPolygon($event)"
     (addLine)="onAddLine($event)"
     (editFeature)="onEditFeature($event)"
@@ -265,6 +272,16 @@ class ExampleComponent {
     @Input() textInputAriaLabel = 'Locaties zoeken op basis van zoekterm';
     /* Aria label for locate me button */
     @Input() locateMeAriaLabel = 'Gebruik mijn locatie';
+    /* Locate me error notification texts */
+    @Input() locateMeNotSupportedNotification = 'Locatiebepaling wordt niet ondersteund op dit toestel.';
+    @Input() locateMeNotAllowedNotification = 'Gelieve toegang tot je locatie toe te staan.';
+    @Input() locateMeUnavailableNotification = 'Je locatie kon niet worden bepaald.';
+    @Input() locateMeTimeoutNotification = 'Het duurde te lang om je locatie te bepalen.';
+    @Input() locateMeUnknownNotification = 'Er trad een onbekende fout op bij het bepalen van je locatie.';
+    /* No/invalid coordinate error notification text */
+    @Input() coordinateErrorNotification = 'Locatie kan niet op de map getoond worden.';
+    /* Zoom info notification text */
+    @Input() zoomInfoNotification = 'Gebruik de SHIFT toets om te zoomen door te scrollen.';
     /* Default tile layer button label */
     @Input() defaultTileLayerLabel = 'Kaart';
     /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */

@@ -382,29 +382,30 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-        this.addMapMarker(coords);
+        this.addMapMarker(coords, $event);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
-        this.addMapMarker(coords);
+        this.addMapMarker(coords, $event);
       } else if ($event.position) {
         if ($event.position.wgs84) {
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
-          this.addMapMarker(coords);
+          this.addMapMarker(coords, $event);
         } else if ($event.position.geometry) {
-          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
+          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry, $event);
         }
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
-        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
+        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry, $event);
       } else {
+        this.writeValue($event);
         this.setNotification({
           status: 'm-alert--danger',
           text: this.coordinateErrorNotification,
           icon: 'fa-exclamation-triangle'
         });
       }
+    } else {
+      this.writeValue($event);
     }
-
-    this.writeValue($event);
   }
 
   /**
@@ -417,7 +418,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (event.type === 'wheel' && this.cursorOnLeaflet) {
       if (event.shiftKey) {
         const direction = (event.deltaY > 0) ? 'out' : 'in';
-
         this.renderer.addClass(document.body, 'is-map-interaction');
 
         if (direction === 'out') {
@@ -556,12 +556,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Sets a dynamically fetched location when using locate-me or pick location on map
    */
   private setLocationDynamically(lat, lng) {
-    this.resetFoundLocations();
-    this.writeValue({position: {wgs84: {lat, lng}}});
+    const location = {position: {wgs84: {lat, lng}}, label: `${lat},${lng}`};
 
-    this.selectedLocation.label = `${lat},${lng}`;
+    this.resetFoundLocations();
     this.onSearch(`${lat},${lng}`);
-    this.addMapMarker([lat, lng]);
+    this.addMapMarker([lat, lng], location);
   }
 
   /**
@@ -588,12 +587,19 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Adds a marker on a given coordinate and zooms in on this location.
    *
    * @param coords array containing lat & lng
+   * @param location the selected location
    */
-  private addMapMarker(coords) {
+  private addMapMarker(coords, location = null) {
     this.removeMarker();
 
     this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
     this.leafletMap.setView(coords, this.onSelectZoom);
+
+    if (location) {
+      console.log(location);
+
+      this.writeValue(location);
+    }
   }
 
   /**
@@ -618,7 +624,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Add found geo shape to leaflet
    */
-  private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
+  private addMapGeoJson(label: string, geometryShape: string, geometry: any, location = null) {
     const geoJson = {
       type: 'Feature',
       properties: {
@@ -631,6 +637,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     };
 
     this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+
+    if (location) {
+      if (location.position) {
+        location.position.wgs84 = this.selectedLocationGeometry.getBounds().getCenter();
+      }
+
+      if (location.location && location.location.position) {
+        location.location.position.wgs84 = this.selectedLocationGeometry.getBounds().getCenter();
+      }
+
+      this.writeValue(location);
+    }
   }
 
   /**

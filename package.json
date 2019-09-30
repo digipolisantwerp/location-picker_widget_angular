@@ -9,9 +9,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "dev": "ng build ngx-location-picker --watch",
-    "copy-license": "ncp license dist/ngx-location-picker",
-    "copy-readme": "ncp README.md dist/ngx-location-picker",
-    "copy-files": "npm run copy-license && npm run copy-readme",
+    "copy-license": "ncp license dist/ngx-location-picker/license",
+    "copy-readme": "ncp README.md dist/ngx-location-picker/README.md",
+    "copy-screenshot": "ncp desktop-view.png dist/ngx-location-picker/desktop-view.png",
+    "copy-files": "npm run copy-license && npm run copy-readme && npm run copy-screenshot",
     "npm-pack": "cd dist/ngx-location-picker && npm pack",
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },

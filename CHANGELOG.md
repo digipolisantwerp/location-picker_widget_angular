@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.11]
+
+- locationChange event now fires when clearing input
+- Notification labels can be changed now
+- Strings containing a number without a space are no longer considered an address
+- Readme now contains a full example
+- Updated Readme content
+- Replaced cp command with ncp in package.json
+- Zooming now uses shift key
+- Geometry based locations now have a coordinate as well
+- Added proper error handling on geolocation
+
 ## [4.0.0-beta.10]
 
 - Improved UX when using coordinates and not selecting a location from the found locations list
