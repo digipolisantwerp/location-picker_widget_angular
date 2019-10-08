@@ -27,16 +27,17 @@
 
     <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
       <div class="m-flyout__content">
+        <div
+          *ngIf="pickedLocation"
+          (click)="onLocationSelect(selectedLocation)"
+          class="use-coordinate"
+        >
+          <p>Gebruik gekozen coordinaat</p>
+          <small>{{ selectedLocation.label }}</small>
+        </div>
         <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
         <ng-template #results>
           <ul class="a-list a-list--reset a-list--lined">
-            <li
-              *ngIf="pickedLocation"
-              (click)="onLocationSelect(selectedLocation)"
-            >
-              <p>Gebruik gekozen coordinaat</p>
-              <small>{{ selectedLocation.label }}</small>
-            </li>
             <li
               *ngFor="let location of foundLocations; let ii = index"
               (click)="onLocationSelect(location)"
