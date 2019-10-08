@@ -89,6 +89,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() prioritizeLayer = 'straatnaam';
   /* Sort locations by certain key, overrides prioritizeLayer. */
   @Input() sortBy = '';
+  /* Use geolocation when the component finished loading */
+  @Input() locateUserOnInit = false;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -533,6 +535,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       if (this.selectedLocation && this.selectedLocation.position) {
         const coords: Array<number> = [this.selectedLocation.position.lat, this.selectedLocation.position.lng];
         this.addMapMarker(coords);
+      } else if (this.locateUserOnInit) {
+        /* Get users location on load only when no selectedLocation was set. */
+        this.getDeviceLocation();
       }
 
       this.registerFeatureLayers();
