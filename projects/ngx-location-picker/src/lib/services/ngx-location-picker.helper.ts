@@ -64,6 +64,29 @@ export class NgxLocationPickerHelper {
   }
 
   /**
+   * Normalize search value
+   *
+   * @return string
+   */
+  normalizeSearchValue(value: string) {
+    if (!this.isCoordinate(value)) {
+      const hasBrackets = value.match(/\(.*?\)/);
+
+      if (hasBrackets && hasBrackets.length) {
+        return value.replace(` ${hasBrackets}`, '');
+      } else {
+        const hasComma = value.indexOf(',');
+
+        if (hasComma) {
+          return value.replace(value.substr(hasComma, value.length), '');
+        }
+      }
+    }
+
+    return value;
+  }
+
+  /**
    * Determines if the given query input resembles an address or not.
    *
    * @return boolean
@@ -111,8 +134,6 @@ export class NgxLocationPickerHelper {
       streetname: '',
       housenumber: ''
     };
-
-    query = query.split(',')[0];
 
     const addressParts: Array<string> = (query && query.trim().length > 0) ? query.split(' ') : null;
 
