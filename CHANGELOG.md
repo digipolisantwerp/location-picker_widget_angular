@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [Unreleased]
+
+- [FIXED] 'scroll to' when selecting a location that has a geoShape.
+- [CHANGED] Improved normalization of search query. Adjusting the search query after selecting a location now properly triggers a new search.
 
 ## [4.0.0] - 2019-09-30
 
