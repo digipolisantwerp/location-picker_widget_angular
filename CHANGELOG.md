@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - [FIXED] "choose selected coordinate" will no longer show for non coordinate searches
+- [ADDED] Added markers can now be dragged to a new position
 
 ## [Unreleased]
 
