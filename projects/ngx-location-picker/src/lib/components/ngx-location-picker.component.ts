@@ -355,6 +355,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.addMapMarker([coords.x, coords.y]);
       }
 
+      searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
+
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
         searchValue,
         this.baseUrl,
@@ -601,8 +603,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.leafletMap.setView(coords, this.onSelectZoom);
 
     if (location) {
-      console.log(location);
-
       this.writeValue(location);
     }
   }
@@ -643,14 +643,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
 
-    if (location) {
+    const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
+
+    if (location && shapeCenter) {
       if (location.position) {
-        location.position.wgs84 = this.selectedLocationGeometry.getBounds().getCenter();
+        location.position.wgs84 = shapeCenter;
       }
 
       if (location.location && location.location.position) {
-        location.location.position.wgs84 = this.selectedLocationGeometry.getBounds().getCenter();
+        location.location.position.wgs84 = shapeCenter;
       }
+
+      this.leafletMap.setView(shapeCenter, this.onSelectZoom);
 
       this.writeValue(location);
     }
