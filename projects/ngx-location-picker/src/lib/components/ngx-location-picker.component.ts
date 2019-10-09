@@ -342,6 +342,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
+    if (!this.locationPickerHelper.isCoordinate(searchValue)) {
+      this.pickedLocation = false;
+    }
+
     if (!searchValue.trim()) {
       this.emptyField();
     }
