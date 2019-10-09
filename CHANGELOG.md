@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- [FIXED] "choose selected coordinate" will no longer show for non coordinate searches
+
+## [Unreleased]
+
 - [ADDED] New option for fetching user location on Init
 
 ## [Unreleased]
