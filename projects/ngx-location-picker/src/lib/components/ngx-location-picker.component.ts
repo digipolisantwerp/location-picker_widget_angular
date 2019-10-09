@@ -121,6 +121,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Current tile layer type default or custom */
   tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
+  /* Current leaflet state */
+  private mapLoaded = false;
   /* Current active location marker on the map */
   private selectedLocationMarker;
   /* Current active geometry on the map */
@@ -144,8 +146,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     return this._selectedLocation;
   }
 
-  set selectedLocation(val) {
-    this._selectedLocation = val;
+  set selectedLocation(location) {
+    if (this.mapLoaded && location && location.position && location.position.lat) {
+      this.setInitialLocation(location.position);
+    }
+
+    this._selectedLocation = location;
     this.propagateChange(this._selectedLocation);
   }
 
@@ -342,7 +348,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
-    if (!this.locationPickerHelper.isCoordinate(searchValue)) {
+    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
       this.pickedLocation = false;
     }
 
@@ -535,12 +541,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     });
 
     this.leafletMap.onInit.subscribe(() => {
+      this.mapLoaded = true;
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
-        const coords: Array<number> = [this.selectedLocation.position.lat, this.selectedLocation.position.lng];
-        this.addMapMarker(coords);
+        this.setInitialLocation(this.selectedLocation.position);
       } else if (this.locateUserOnInit) {
         /* Get users location on load only when no selectedLocation was set. */
         this.getDeviceLocation();
@@ -548,6 +554,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       this.registerFeatureLayers();
     });
+  }
+
+  /**
+   * Adds a marker when selectedLocation was updated from outside our component.
+   */
+  private setInitialLocation(coordinates) {
+    const coords: Array<number> = [coordinates.lat, coordinates.lng];
+    this.addMapMarker(coords);
   }
 
   /**
