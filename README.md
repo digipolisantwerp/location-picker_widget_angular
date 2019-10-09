@@ -217,6 +217,7 @@ selectedLocation = {
     [locateMeUnavailableNotification]="locateMeUnavailableNotification"
     [locateMeUnknownNotification]="locateMeUnknownNotification"
     [zoomInfoNotification]="zoomInfoNotification"
+    [locateUserOnInit]="locateUserOnInit"
     (addPolygon)="onAddPolygon($event)"
     (addLine)="onAddLine($event)"
     (editFeature)="onEditFeature($event)"
@@ -296,6 +297,8 @@ class ExampleComponent {
     @Input() prioritizeLayer = 'straatnaam';
     /* Sort locations by certain key, overrides prioritizeLayer. */
     @Input() sortBy = '';
+    /* Use geolocation when the component finished loading */
+    @Input() locateUserOnInit = false;
     /* AddPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* AddLine event */
