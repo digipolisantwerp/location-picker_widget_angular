@@ -175,7 +175,6 @@ Method 2 and 3 can also be used to set an initial value:
 ```ts
 selectedLocation = {
     label: 'Generaal Armstrongweg 1, 2020 Antwerpen',
-    // Not required but can be useful to show a marker on the map.
     position: {
         lat: 0,
         lng: 0

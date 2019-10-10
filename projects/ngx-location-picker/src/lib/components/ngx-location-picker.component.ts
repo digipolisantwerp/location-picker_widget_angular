@@ -123,6 +123,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /* Current leaflet state */
   private mapLoaded = false;
+  /* Keep a reference to our geolocation object */
+  private geoLocate;
+  /* Keep a reference of our geolocation watch id */
+  private geoLocateId;
   /* Current active location marker on the map */
   private selectedLocationMarker;
   /* Current active geometry on the map */
@@ -148,7 +152,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   set selectedLocation(location) {
     if (this.mapLoaded && location && location.position && location.position.lat) {
-      this.setInitialLocation(location.position);
+      this.emptyField();
+      this.setInitialLocation(location);
+
+      location = {
+        ...location,
+        position: {
+          wgs84: location.position
+        }
+      };
     }
 
     this._selectedLocation = location;
@@ -301,13 +313,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.isLocating = true;
 
     if (navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      this.geoLocate = navigator.geolocation;
+
+      this.geoLocateId = this.geoLocate.watchPosition((position) => {
         this.isLocating = false;
         this.pickedLocation = true;
 
         if (position && position.coords) {
           this.setLocationDynamically(position.coords.latitude, position.coords.longitude);
         }
+
+        this.cancelGeolocation();
       }, (error) => {
         this.isLocating = false;
         let message = '';
@@ -344,12 +360,16 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Trigger search when input string is longer than 2 characters
    */
-  onSearch(searchValue) {
+  onSearch(searchValue, forcedCoordinateSearch: boolean = false) {
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
     if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
       this.pickedLocation = false;
+    }
+
+    if (forcedCoordinateSearch) {
+      this.pickedLocation = true;
     }
 
     if (!searchValue.trim()) {
@@ -546,7 +566,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
-        this.setInitialLocation(this.selectedLocation.position);
+        this.setInitialLocation(this.selectedLocation);
       } else if (this.locateUserOnInit) {
         /* Get users location on load only when no selectedLocation was set. */
         this.getDeviceLocation();
@@ -557,11 +577,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Adds a marker when selectedLocation was updated from outside our component.
+   * Triggers a search when selectedLocation was updated from outside our component.
    */
-  private setInitialLocation(coordinates) {
-    const coords: Array<number> = [coordinates.lat, coordinates.lng];
-    this.addMapMarker(coords);
+  private setInitialLocation(initialLocation) {
+    this.cancelGeolocation();
+
+    this.onSearch(
+      `${initialLocation.position.lat},${initialLocation.position.lng}`,
+      (initialLocation.label && this.locationPickerHelper.isCoordinate(initialLocation.label))
+    );
   }
 
   /**
@@ -704,6 +728,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private removeGeometry() {
     if (this.selectedLocationGeometry) {
       this.leafletMap.removeLayer(this.selectedLocationGeometry);
+    }
+  }
+
+  /**
+   * Cancels geolocation if currently running
+   */
+  private cancelGeolocation() {
+    this.isLocating = false;
+
+    if (this.geoLocate && this.geoLocateId) {
+      this.geoLocate.clearWatch(this.geoLocateId);
     }
   }
 
