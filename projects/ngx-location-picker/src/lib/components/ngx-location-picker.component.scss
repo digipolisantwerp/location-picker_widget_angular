@@ -74,17 +74,33 @@
   display: block;
 
   &__content {
+    border-top: 0;
     box-shadow: none;
 
-    .no-results {
-      padding: 1rem 0 1rem .75rem;
+    .no-results,
+    .use-coordinate {
+      padding: $spacer-sm 0 $spacer-sm $spacer-xs;
       margin: 0;
+    }
+
+    .use-coordinate {
+      cursor: pointer;
+      transition: all $animation-easing $animation-duration;
+      border-bottom: 1px solid $border-color;
+
+      &:hover {
+        background: $grey-lighter;
+      }
+
+      small {
+        margin: $spacer-xs / 2 0 0 0;
+      }
     }
 
     .a-list {
       li {
         cursor: pointer;
-        transition: all ease-in-out .2s;
+        transition: all $animation-easing $animation-duration;
 
         &:first-child {
           border-top: 0;
@@ -99,7 +115,7 @@
         }
 
         small {
-          margin: 0;
+          margin: $spacer-xs / 2 0 0 0;
         }
 
         &.is-highlighted {

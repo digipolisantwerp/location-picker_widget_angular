@@ -121,6 +121,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Current tile layer type default or custom */
   tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
+  /* Current leaflet state */
+  private mapLoaded = false;
   /* Current active location marker on the map */
   private selectedLocationMarker;
   /* Current active geometry on the map */
@@ -144,8 +146,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     return this._selectedLocation;
   }
 
-  set selectedLocation(val) {
-    this._selectedLocation = val;
+  set selectedLocation(location) {
+    if (this.mapLoaded && location && location.position && location.position.lat) {
+      this.setInitialLocation(location.position);
+    }
+
+    this._selectedLocation = location;
     this.propagateChange(this._selectedLocation);
   }
 
@@ -342,6 +348,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
+    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
+      this.pickedLocation = false;
+    }
+
     if (!searchValue.trim()) {
       this.emptyField();
     }
@@ -352,7 +362,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
         const coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
+        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`};
+
         this.addMapMarker([coords.x, coords.y]);
+        this.writeValue(tempLocation);
       }
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
@@ -381,34 +394,31 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.didSearch = false;
     this.pickedLocation = false;
 
-    if (this.showMap) {
-      this.removeGeometry();
+    this.writeValue($event);
 
+    if (this.showMap) {
       if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-        this.addMapMarker(coords, $event);
+        this.addMapMarker(coords);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
-        this.addMapMarker(coords, $event);
+        this.addMapMarker(coords);
       } else if ($event.position) {
         if ($event.position.wgs84) {
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
-          this.addMapMarker(coords, $event);
+          this.addMapMarker(coords);
         } else if ($event.position.geometry) {
-          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry, $event);
+          this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
-        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry, $event);
+        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
       } else {
-        this.writeValue($event);
         this.setNotification({
           status: 'm-alert--danger',
           text: this.coordinateErrorNotification,
           icon: 'fa-exclamation-triangle'
         });
       }
-    } else {
-      this.writeValue($event);
     }
   }
 
@@ -531,12 +541,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     });
 
     this.leafletMap.onInit.subscribe(() => {
+      this.mapLoaded = true;
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
-        const coords: Array<number> = [this.selectedLocation.position.lat, this.selectedLocation.position.lng];
-        this.addMapMarker(coords);
+        this.setInitialLocation(this.selectedLocation.position);
       } else if (this.locateUserOnInit) {
         /* Get users location on load only when no selectedLocation was set. */
         this.getDeviceLocation();
@@ -547,9 +557,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
+   * Adds a marker when selectedLocation was updated from outside our component.
+   */
+  private setInitialLocation(coordinates) {
+    const coords: Array<number> = [coordinates.lat, coordinates.lng];
+    this.addMapMarker(coords);
+  }
+
+  /**
    * Capture coordinates from clicking the map and run a search.
    */
   private registerMapClick($event) {
+    this.removeGeometry();
     this.leafletMap.map.removeEventListener('click');
     this.pickLocationActive = false;
     this.pickedLocation = true;
@@ -563,11 +582,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Sets a dynamically fetched location when using locate-me or pick location on map
    */
   private setLocationDynamically(lat, lng) {
-    const location = {position: {wgs84: {lat, lng}}, label: `${lat},${lng}`};
-
     this.resetFoundLocations();
     this.onSearch(`${lat},${lng}`);
-    this.addMapMarker([lat, lng], location);
   }
 
   /**
@@ -598,9 +614,21 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   private addMapMarker(coords, location = null) {
     this.removeMarker();
+    this.removeGeometry();
 
     this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
     this.leafletMap.setView(coords, this.onSelectZoom);
+
+    this.selectedLocationMarker.dragging.enable();
+
+    this.selectedLocationMarker.on('dragend', (event) => {
+      const newCoords = this.selectedLocationMarker.getLatLng();
+      const searchValue = (newCoords) ? `${newCoords.lat},${newCoords.lng}` : '';
+
+      this.pickedLocation = true;
+      this.resetFoundLocations();
+      this.onSearch(searchValue);
+    });
 
     if (location) {
       this.writeValue(location);
@@ -627,9 +655,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Add found geo shape to leaflet
+   * Add found geo shape to leaflet and determine center coordinates
    */
-  private addMapGeoJson(label: string, geometryShape: string, geometry: any, location = null) {
+  private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
+    this.removeMarker();
+    this.removeGeometry();
+
     const geoJson = {
       type: 'Feature',
       properties: {
@@ -645,18 +676,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
 
-    if (location && shapeCenter) {
-      if (location.position) {
-        location.position.wgs84 = shapeCenter;
+    if (this.selectedLocation && shapeCenter) {
+      if (this.selectedLocation.position) {
+        this.selectedLocation.position.wgs84 = shapeCenter;
       }
 
-      if (location.location && location.location.position) {
-        location.location.position.wgs84 = shapeCenter;
+      if (this.selectedLocation.location && this.selectedLocation.location.position) {
+        this.selectedLocation.location.position.wgs84 = shapeCenter;
       }
 
       this.leafletMap.setView(shapeCenter, this.onSelectZoom);
 
-      this.writeValue(location);
+      this.writeValue(this.selectedLocation);
     }
   }
 
