@@ -15,6 +15,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- [FIXED] Setting a location externally now properly cancels geolocation when still locating
+- [FIXED] Setting a location externally now properly triggers a search
+
 ## [4.1.0] - 2019-10-10
 
 ### Added
