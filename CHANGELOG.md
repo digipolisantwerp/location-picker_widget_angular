@@ -15,18 +15,20 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-- [FIXED] Selected location will now be properly updated from external sources
-- [FIXED] "choose selected coordinate" will no longer show for non coordinate searches
+## [4.1.0] - 2019-10-10
+
+### Added
 - [ADDED] Added markers can now be dragged to a new position
-
-## [Unreleased]
-
 - [ADDED] New option for fetching user location on Init
 
-## [Unreleased]
-
+### Fixed
+- [FIXED] Selected location will now be properly updated from external sources
+- [FIXED] "choose selected coordinate" will no longer show for non coordinate searches
 - [FIXED] 'scroll to' when selecting a location that has a geoShape.
+
+### Changed
 - [CHANGED] Improved normalization of search query. Adjusting the search query after selecting a location now properly triggers a new search.
+
 
 ## [4.0.0] - 2019-09-30
 
@@ -70,7 +72,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.0.0...v4.1.0
+[4.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.1...v3.0.0
 [2.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v1.1.0...v2.0.0
