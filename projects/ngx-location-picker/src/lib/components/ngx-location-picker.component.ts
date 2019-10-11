@@ -152,7 +152,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   set selectedLocation(location) {
     if (this.mapLoaded && location && location.position && location.position.lat) {
-      this.emptyField();
+      this.writeValue({}, true);
       this.setInitialLocation(location);
 
       location = {
@@ -364,6 +364,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.leafletNotification = null;
     this.highlightedLocationResult = 0;
 
+    this.cancelGeolocation();
+
     if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
       this.pickedLocation = false;
     }
@@ -566,7 +568,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
-        this.setInitialLocation(this.selectedLocation);
+        this.selectedLocation = this.selectedLocation;
       } else if (this.locateUserOnInit) {
         /* Get users location on load only when no selectedLocation was set. */
         this.getDeviceLocation();
