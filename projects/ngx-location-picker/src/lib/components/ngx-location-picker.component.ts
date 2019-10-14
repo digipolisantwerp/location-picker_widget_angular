@@ -637,10 +637,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *
    * @param coords array containing lat & lng
    * @param location the selected location
+   * @param keepGeometry whether or not the remove existing geometry
    */
-  private addMapMarker(coords, location = null) {
+  private addMapMarker(coords, location = null, keepGeometry: boolean = false) {
     this.removeMarker();
-    this.removeGeometry();
+
+    if (!keepGeometry) {
+      this.removeGeometry();
+    }
 
     this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
     this.leafletMap.setView(coords, this.onSelectZoom);
@@ -711,9 +715,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.selectedLocation.location.position.wgs84 = shapeCenter;
       }
 
-      this.leafletMap.setView(shapeCenter, this.onSelectZoom);
-
-      this.writeValue(this.selectedLocation);
+      this.addMapMarker(shapeCenter, this.selectedLocation, true);
     }
   }
 
