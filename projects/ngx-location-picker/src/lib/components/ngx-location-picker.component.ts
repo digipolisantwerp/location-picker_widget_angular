@@ -450,6 +450,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @HostListener('window:wheel', ['$event'])
   @HostListener('window:keydown', ['$event'])
   onKeyCommand(event) {
+    /* Disable accidental submit when enter key is pressed */
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+
     /* zoom in/out using ctrl + scroll to zoom in or out. Show notification if only scroll is used. */
     if (event.type === 'wheel' && this.cursorOnLeaflet) {
       if (event.shiftKey) {

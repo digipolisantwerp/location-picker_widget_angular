@@ -43,7 +43,7 @@
               (click)="onLocationSelect(location)"
               [class.is-highlighted]="ii === highlightedLocationResult"
             >
-              <p class="u-text-capitalize" [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
+              <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
               <small>{{ location.layer }}</small>
             </li>
           </ul>

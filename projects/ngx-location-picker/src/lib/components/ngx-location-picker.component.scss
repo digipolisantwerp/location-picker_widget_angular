@@ -118,6 +118,10 @@
           margin: $spacer-xs / 2 0 0 0;
         }
 
+        p::first-letter {
+          text-transform: uppercase;
+        }
+
         &.is-highlighted {
           background: $grey-lighter;
         }
