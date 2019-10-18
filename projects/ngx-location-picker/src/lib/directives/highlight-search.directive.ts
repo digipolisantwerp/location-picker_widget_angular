@@ -12,8 +12,8 @@ export class HighlightSearchDirective implements PipeTransform {
     }
 
     try {
-      const re = new RegExp(args, 'gi');
-      return value.replace(re, `<strong>${args}</strong>`);
+      const regEx = new RegExp(args, 'ig');
+      return value.replace(regEx, (match) => `<strong>${match}</strong>`);
     } catch (e) {
       // We do nothing.
     }
