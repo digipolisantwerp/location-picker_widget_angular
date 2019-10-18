@@ -114,6 +114,10 @@
           background: $grey-lighter;
         }
 
+        p::first-letter {
+          text-transform: uppercase;
+        }
+
         small {
           margin: $spacer-xs / 2 0 0 0;
         }

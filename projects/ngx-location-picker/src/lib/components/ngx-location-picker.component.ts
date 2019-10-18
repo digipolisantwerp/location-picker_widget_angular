@@ -9,6 +9,9 @@ import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
 import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {CascadingRulesModel} from '../types/cascading-rules.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -85,12 +88,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locationsLimit = 5;
   /* The layers to search locations for */
   @Input() locationLayers = ['straatnaam'];
-  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
+  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. Overrides sortBy. */
   @Input() prioritizeLayer = 'straatnaam';
-  /* Sort locations by certain key, overrides prioritizeLayer. */
+  /* Sort locations by certain key. */
   @Input() sortBy = '';
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
+  /* Set time to wait after user stops typing before triggering a search */
+  @Input() debounceTime = 200;
+  /* whether or not to return a single cascading result */
+  @Input() cascadingReturnSingle = true;
+  /* Cascading configuration for doing reverse lookups by coordinates */
+  @Input() cascadingRules: Array<CascadingRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -121,6 +130,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Current tile layer type default or custom */
   tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
+  /* Input change subject */
+  private searchQueryChanged: Subject<string> = new Subject<string>();
   /* Current leaflet state */
   private mapLoaded = false;
   /* Keep a reference to our geolocation object */
@@ -203,6 +214,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     private locationPickerHelper: NgxLocationPickerHelper,
     private renderer: Renderer2
   ) {
+    this.inputChangeSubscription = this.searchQueryChanged
+      .pipe(debounceTime(this.debounceTime), distinctUntilChanged())
+      .subscribe((query) => {
+        this.onSearch(query);
+      });
   }
 
   /**
@@ -278,6 +294,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   zoomOut() {
     this.leafletMap.zoomOut();
+  }
+
+  /**
+   * On input change event
+   */
+  onInputChange(query: string) {
+    this.searchQueryChanged.next(query);
   }
 
   /**
@@ -398,7 +421,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.locationsLimit,
         this.locationLayers,
         this.prioritizeLayer,
-        this.sortBy
+        this.sortBy,
+        this.cascadingReturnSingle,
+        this.cascadingRules
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
       }, (error) => {
@@ -450,6 +475,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @HostListener('window:wheel', ['$event'])
   @HostListener('window:keydown', ['$event'])
   onKeyCommand(event) {
+    /* Disable accidental submit when enter key is pressed */
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+
     /* zoom in/out using ctrl + scroll to zoom in or out. Show notification if only scroll is used. */
     if (event.type === 'wheel' && this.cursorOnLeaflet) {
       if (event.shiftKey) {

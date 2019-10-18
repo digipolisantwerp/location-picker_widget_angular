@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
 import {LambertModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
+import {CascadingRulesModel, CascadingRulesType} from '../types/cascading-rules.model';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +78,7 @@ export class NgxLocationPickerHelper {
       } else {
         const hasComma = value.indexOf(',');
 
-        if (hasComma) {
+        if (hasComma > -1) {
           return value.replace(value.substr(hasComma, value.length), '');
         }
       }
@@ -186,6 +187,49 @@ export class NgxLocationPickerHelper {
     };
 
     return coordinate;
+  }
+
+  /**
+   * Returns the default cascading configuration.
+   *
+   * @return cascadingRules
+   */
+  getDefaultCascadingConfig(): Array<CascadingRulesModel> {
+    return [
+      {
+        type: CascadingRulesType.POINTWITHIN,
+        mapService: 'https://geoint.antwerpen.be/arcgissql/rest/services/P_Meldingen/meldingen/MapServer',
+        tolerance: 0,
+        returnGeometry: true,
+        layerIds: [6]
+      },
+      {
+        type: CascadingRulesType.REVERSEGEOCODE,
+        buffer: 25,
+        limit: 5,
+        relevance: true
+      },
+      {
+        type: CascadingRulesType.POINTNEARBY,
+        mapService: 'https://geoint.antwerpen.be/arcgissql/rest/services/P_Meldingen/meldingen/MapServer',
+        buffer: 20,
+        returnGeometry: true,
+        layerId: 9
+      },
+      {
+        type: CascadingRulesType.REVERSEGEOCODE,
+        buffer: 100,
+        limit: 5,
+        relevance: true
+      },
+      {
+        type: CascadingRulesType.POINTNEARBY,
+        mapService: 'https://geoint.antwerpen.be/arcgissql/rest/services/P_Meldingen/meldingen/MapServer',
+        buffer: 100,
+        returnGeometry: true,
+        layerId: 2
+      }
+    ];
   }
 
 }
