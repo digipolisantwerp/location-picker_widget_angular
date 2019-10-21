@@ -129,6 +129,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private geoLocateId;
   /* Current active location marker on the map */
   private selectedLocationMarker;
+  /* Active marker for calculated location */
+  private calculatedLocationMarker;
   /* Current active geometry on the map */
   private selectedLocationGeometry;
   /* Observable subscription for the input event */
@@ -421,7 +423,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.showMap) {
       if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-        this.addMapMarker(coords);
+        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
+          '#000000',
+          'fa-circle',
+          '10px'
+        ));
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
@@ -642,10 +648,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *
    * @param coords array containing lat & lng
    * @param location the selected location
-   * @param keepGeometry whether or not the remove existing geometry
+   * @param keepGeometry whether or not to remove existing geometry
+   * @param keepMarker whether or not to remove existing marker
    */
-  private addMapMarker(coords, location = null, keepGeometry: boolean = false) {
-    this.removeMarker();
+  private addMapMarker(coords, location = null, keepGeometry: boolean = false, keepMarker: boolean = false) {
+    if (!keepMarker) {
+      this.removeMarker();
+    }
 
     if (!keepGeometry) {
       this.removeGeometry();
@@ -687,13 +696,16 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.selectedLocationMarker) {
       this.leafletMap.removeLayer(this.selectedLocationMarker);
     }
+
+    if (this.calculatedLocationMarker) {
+      this.leafletMap.removeLayer(this.calculatedLocationMarker);
+    }
   }
 
   /**
    * Add found geo shape to leaflet and determine center coordinates
    */
   private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
-    this.removeMarker();
     this.removeGeometry();
 
     const geoJson = {
@@ -719,8 +731,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       if (this.selectedLocation.location && this.selectedLocation.location.position) {
         this.selectedLocation.location.position.wgs84 = shapeCenter;
       }
-
-      this.addMapMarker(shapeCenter, this.selectedLocation, true);
     }
   }
 
