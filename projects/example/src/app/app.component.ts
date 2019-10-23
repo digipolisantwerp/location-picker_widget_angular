@@ -11,14 +11,6 @@ export class AppComponent implements OnInit {
   baseUrl = '';
   selectedLocationModel;
 
-  satelliteMapLayer: LeafletTileLayerModel = {
-    layer: {
-      name: 'Satellite View',
-      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-    },
-    buttonLabel: 'Luchtfoto'
-  };
-
   ngOnInit(): void {
     this.baseUrl = 'http://localhost:3000';
   }

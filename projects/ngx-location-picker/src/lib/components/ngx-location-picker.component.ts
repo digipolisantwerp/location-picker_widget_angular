@@ -99,7 +99,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* whether or not to return a single cascading result */
   @Input() cascadingReturnSingle = true;
   /* Cascading configuration for doing reverse lookups by coordinates */
-  @Input() cascadingRules: Array<CascadingRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
+  @Input() cascadingRules: Array<CascadingRulesModel> = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
