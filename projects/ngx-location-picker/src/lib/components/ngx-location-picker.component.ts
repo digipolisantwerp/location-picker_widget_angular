@@ -426,7 +426,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
           '#000000',
           'fa-circle',
-          '10px'
+          '10px',
+          {top: '-3px', left: '2px'}
         ));
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
@@ -682,8 +683,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Defines the custom marker markup.
    */
-  private createMarker(color: string = '#0064b4', icon: string = 'fa-map-marker', size: string = '40px') {
-    const markerStyle = `color: ${color}; font-size: ${size}`;
+  private createMarker(
+    color: string = '#0064b4',
+    icon: string = 'fa-map-marker',
+    size: string = '40px',
+    position: { top: string, left: string } = {
+      top: '-36px',
+      left: '-5px'
+    }) {
+    const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
     const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
 
     return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
