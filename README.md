@@ -182,6 +182,14 @@ selectedLocation = {
 };
 ```
 
+**Minimal example**
+```html
+<aui-location-picker
+    [baseUrl]="baseUrl"
+></aui-location-picker>
+```
+
+
 **Full example**
 ```html
 <aui-location-picker
@@ -195,6 +203,7 @@ selectedLocation = {
     [placeholder]="placeholder"
     [label]="label"
     [noResultsLabel]="noResultsLabel"
+    [defaultOptionLabel]="defaultOptionLabel"
     [clearInputAriaLabel]="clearInputAriaLabel"
     [defaultTileLayerLabel]="defaultTileLayerLabel"
     [locateMeAriaLabel]="locateMeAriaLabel"
@@ -260,6 +269,8 @@ class ExampleComponent {
     @Input() placeholder = 'Locaties zoeken...';
     /* Label to use when no results were found. */
     @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+    /* Label to use for "use selected coordinates option" */
+    @Input() defaultOptionLabel = 'Gebruik gekozen coordinaat';
     /* Aria label for clear input button. */
     @Input() clearInputAriaLabel = 'Input veld leegmaken';
     /* Aria label for picking a location on the map */

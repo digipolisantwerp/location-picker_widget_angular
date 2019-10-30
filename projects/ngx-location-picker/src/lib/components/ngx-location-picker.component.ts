@@ -53,6 +53,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() placeholder = 'Locaties zoeken...';
   /* Label to use when no results were found. */
   @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+  /* Label to use for "use selected coordinates option" */
+  @Input() defaultOptionLabel = 'Gebruik gekozen coordinaat';
   /* Aria label for clear input button. */
   @Input() clearInputAriaLabel = 'Input veld leegmaken';
   /* Aria label for picking a location on the map */
