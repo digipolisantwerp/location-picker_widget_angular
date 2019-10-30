@@ -418,7 +418,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   onLocationSelect($event: any) {
     this.didSearch = false;
-    this.pickedLocation = false;
 
     this.writeValue($event);
 
@@ -450,6 +449,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           icon: 'fa-exclamation-triangle'
         });
       }
+
+      this.pickedLocation = false;
     }
   }
 
@@ -732,6 +733,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
 
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
+
+    if (!this.pickedLocation) {
+      this.leafletMap.setView(shapeCenter, this.onSelectZoom);
+    }
 
     if (this.selectedLocation && shapeCenter) {
       if (this.selectedLocation.position) {
