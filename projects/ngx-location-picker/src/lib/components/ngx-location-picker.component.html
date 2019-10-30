@@ -27,14 +27,6 @@
 
     <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
       <div class="m-flyout__content">
-        <div
-          *ngIf="pickedLocation"
-          (click)="onLocationSelect(selectedLocation)"
-          class="use-coordinate"
-        >
-          <p>Gebruik gekozen coordinaat</p>
-          <small>{{ selectedLocation.label }}</small>
-        </div>
         <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
         <ng-template #results>
           <ul class="a-list a-list--reset a-list--lined">
@@ -48,6 +40,14 @@
             </li>
           </ul>
         </ng-template>
+        <div
+          *ngIf="pickedLocation"
+          (click)="onLocationSelect(selectedLocation)"
+          class="use-coordinate"
+        >
+          <p>{{ defaultOptionLabel }}</p>
+          <small>{{ selectedLocation.label }}</small>
+        </div>
       </div>
     </div>
   </div>
