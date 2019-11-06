@@ -734,12 +734,19 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
 
-    if (!this.pickedLocation) {
-      this.removeMarker();
-      this.leafletMap.setView(shapeCenter, this.onSelectZoom);
-    }
-
     if (this.selectedLocation && shapeCenter) {
+      if (!this.pickedLocation) {
+        this.addMapMarker(shapeCenter, null, true, false);
+        this.leafletMap.setView(shapeCenter, this.onSelectZoom);
+      } else {
+        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
+          '#000000',
+          'fa-circle',
+          '10px',
+          {top: '-3px', left: '2px'}
+        ));
+      }
+
       if (this.selectedLocation.position) {
         this.selectedLocation.position.wgs84 = shapeCenter;
       }
