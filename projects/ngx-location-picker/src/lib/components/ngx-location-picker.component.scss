@@ -85,7 +85,8 @@
       transition: all $animation-easing $animation-duration;
       border-top: 1px solid $border-color;
 
-      &:hover {
+      &:hover,
+      &.is-highlighted {
         background: $grey-lighter;
       }
 

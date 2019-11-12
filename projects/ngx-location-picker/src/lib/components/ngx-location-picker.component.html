@@ -27,7 +27,7 @@
 
     <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
       <div class="m-flyout__content">
-        <small *ngIf="!hasResults; else results" class="no-results">{{ noResultsLabel }}</small>
+        <small *ngIf="!hasResults && !searching; else results" class="no-results">{{ noResultsLabel }}</small>
         <ng-template #results>
           <ul class="a-list a-list--reset a-list--lined">
             <li
@@ -41,9 +41,10 @@
           </ul>
         </ng-template>
         <div
-          *ngIf="pickedLocation"
+          *ngIf="!hasResults && pickedLocation && !searching"
           (click)="onLocationSelect(selectedLocation)"
           class="use-coordinate"
+          [class.is-highlighted]="!hasResults && pickedLocation"
         >
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
