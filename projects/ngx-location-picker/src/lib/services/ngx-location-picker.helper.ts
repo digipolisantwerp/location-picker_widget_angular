@@ -77,7 +77,7 @@ export class NgxLocationPickerHelper {
       } else {
         const hasComma = value.indexOf(',');
 
-        if (hasComma) {
+        if (hasComma > -1) {
           return value.replace(value.substr(hasComma, value.length), '');
         }
       }

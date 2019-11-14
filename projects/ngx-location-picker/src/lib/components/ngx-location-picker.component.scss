@@ -7,9 +7,6 @@
 
   .ngx-location-picker-marker {
     position: relative;
-    top: -36px;
-    left: -5px;
-    font-size: 40px;
   }
 
   .is-picking .leaflet-grab {
@@ -86,9 +83,10 @@
     .use-coordinate {
       cursor: pointer;
       transition: all $animation-easing $animation-duration;
-      border-bottom: 1px solid $border-color;
+      border-top: 1px solid $border-color;
 
-      &:hover {
+      &:hover,
+      &.is-highlighted {
         background: $grey-lighter;
       }
 
@@ -116,6 +114,10 @@
 
         small {
           margin: $spacer-xs / 2 0 0 0;
+        }
+
+        p::first-letter {
+          text-transform: uppercase;
         }
 
         &.is-highlighted {

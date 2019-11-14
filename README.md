@@ -175,13 +175,20 @@ Method 2 and 3 can also be used to set an initial value:
 ```ts
 selectedLocation = {
     label: 'Generaal Armstrongweg 1, 2020 Antwerpen',
-    // Not required but can be useful to show a marker on the map.
     position: {
         lat: 0,
         lng: 0
     }
 };
 ```
+
+**Minimal example**
+```html
+<aui-location-picker
+    [baseUrl]="baseUrl"
+></aui-location-picker>
+```
+
 
 **Full example**
 ```html
@@ -196,6 +203,7 @@ selectedLocation = {
     [placeholder]="placeholder"
     [label]="label"
     [noResultsLabel]="noResultsLabel"
+    [defaultOptionLabel]="defaultOptionLabel"
     [clearInputAriaLabel]="clearInputAriaLabel"
     [defaultTileLayerLabel]="defaultTileLayerLabel"
     [locateMeAriaLabel]="locateMeAriaLabel"
@@ -261,6 +269,8 @@ class ExampleComponent {
     @Input() placeholder = 'Locaties zoeken...';
     /* Label to use when no results were found. */
     @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+    /* Label to use for "use selected coordinates option" */
+    @Input() defaultOptionLabel = 'Gebruik gekozen coordinaat';
     /* Aria label for clear input button. */
     @Input() clearInputAriaLabel = 'Input veld leegmaken';
     /* Aria label for picking a location on the map */
