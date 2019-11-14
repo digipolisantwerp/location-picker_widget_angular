@@ -13,11 +13,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [4.2.0] - 2019-11-14
 
 - [FIXED] Setting a location externally now properly cancels geolocation when still locating
 - [FIXED] Setting a location externally now properly triggers a search
 - [ADDED] Searching for locations that only have geometry data available will now also show a marker at the geometry center.
+
 
 ## [4.1.0] - 2019-10-10
 
@@ -76,7 +77,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.2.0...HEAD
+[4.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.1.0...v4.2.0
 [4.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.1...v3.0.0
