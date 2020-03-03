@@ -55,7 +55,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* The input field placeholder text. */
   @Input() placeholder = 'Locaties zoeken...';
   /* Label to use when no results were found. */
-  @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+  @Input() noResultsLabel = 'Er werd geen gekende locatie gevonden.';
+  /* Label to use for "use selected coordinates option" */
+  @Input() defaultOptionLabel = 'Gebruik coördinaat';
   /* Aria label for clear input button. */
   @Input() clearInputAriaLabel = 'Input veld leegmaken';
   /* Aria label for picking a location on the map */
@@ -140,6 +142,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private geoLocateId;
   /* Current active location marker on the map */
   private selectedLocationMarker;
+  /* Active marker for calculated location */
+  private calculatedLocationMarker;
   /* Current active geometry on the map */
   private selectedLocationGeometry;
   /* Observable subscription for the input event */
@@ -168,9 +172,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       location = {
         ...location,
-        position: {
-          wgs84: location.position
-        }
+        actualLocation: location.position
       };
     }
 
@@ -426,6 +428,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.cascadingRules
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
+
+        if (this.foundLocations.length && this.pickedLocation) {
+          this.onLocationSelect(this.foundLocations[0], true);
+        }
       }, (error) => {
         console.log(error);
       }, () => {
@@ -437,16 +443,21 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * When a location is selected from the list.
    */
-  onLocationSelect($event: any) {
-    this.didSearch = false;
-    this.pickedLocation = false;
+  onLocationSelect($event: any, didSearch: boolean = false) {
+    this.didSearch = didSearch;
+    this.removeMarker(true);
 
     this.writeValue($event);
 
     if (this.showMap) {
       if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-        this.addMapMarker(coords);
+        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
+          '#000000',
+          'fa-circle',
+          '10px',
+          {top: '-3px', left: '2px'}
+        ));
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
@@ -466,6 +477,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           icon: 'fa-exclamation-triangle'
         });
       }
+
+      this.pickedLocation = didSearch;
     }
   }
 
@@ -516,13 +529,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.pickedLocation = false;
     }
 
-    if (this.foundLocations && this.foundLocations.length > 0 && this.didSearch) {
-      /* When pressing enter, select first value in found locations list. */
-      if (event.key === 'Enter') {
+    /* When pressing enter, select first value in found locations list. */
+    if (event.key === 'Enter' && this.didSearch) {
+      if (this.hasResults) {
         this.onLocationSelect(this.foundLocations[this.highlightedLocationResult]);
-        this.pickedLocation = false;
+      } else {
+        this.onLocationSelect(this.selectedLocation);
       }
 
+      this.pickedLocation = false;
+    }
+
+    if (this.hasResults && this.didSearch) {
       /* When using arrow keys, select next/previous result in found locations list. */
       if (event.key === 'ArrowUp') {
         if (this.highlightedLocationResult > 0) {
@@ -667,10 +685,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *
    * @param coords array containing lat & lng
    * @param location the selected location
-   * @param keepGeometry whether or not the remove existing geometry
+   * @param keepGeometry whether or not to remove existing geometry
+   * @param keepMarker whether or not to remove existing marker
    */
-  private addMapMarker(coords, location = null, keepGeometry: boolean = false) {
-    this.removeMarker();
+  private addMapMarker(coords, location = null, keepGeometry: boolean = false, keepMarker: boolean = false) {
+    if (!keepMarker) {
+      this.removeMarker();
+    }
 
     if (!keepGeometry) {
       this.removeGeometry();
@@ -698,8 +719,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Defines the custom marker markup.
    */
-  private createMarker(color: string = '#0064b4', icon: string = 'fa-map-marker', size: string = '40px') {
-    const markerStyle = `color: ${color}; font-size: ${size}`;
+  private createMarker(
+    color: string = '#0064b4',
+    icon: string = 'fa-map-marker',
+    size: string = '40px',
+    position: { top: string, left: string } = {
+      top: '-36px',
+      left: '-5px'
+    }) {
+    const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
     const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
 
     return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
@@ -708,9 +736,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Removes specific marker from leaflet instance.
    */
-  private removeMarker() {
-    if (this.selectedLocationMarker) {
+  private removeMarker(calculatedOnly: boolean = false) {
+    if (this.selectedLocationMarker && !calculatedOnly) {
       this.leafletMap.removeLayer(this.selectedLocationMarker);
+    }
+
+    if (this.calculatedLocationMarker) {
+      this.leafletMap.removeLayer(this.calculatedLocationMarker);
     }
   }
 
@@ -718,7 +750,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Add found geo shape to leaflet and determine center coordinates
    */
   private addMapGeoJson(label: string, geometryShape: string, geometry: any) {
-    this.removeMarker();
     this.removeGeometry();
 
     const geoJson = {
@@ -737,6 +768,18 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
 
     if (this.selectedLocation && shapeCenter) {
+      if (!this.pickedLocation) {
+        this.addMapMarker(shapeCenter, null, true, false);
+        this.leafletMap.setView(shapeCenter, this.onSelectZoom);
+      } else {
+        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
+          '#000000',
+          'fa-circle',
+          '10px',
+          {top: '-3px', left: '2px'}
+        ));
+      }
+
       if (this.selectedLocation.position) {
         this.selectedLocation.position.wgs84 = shapeCenter;
       }
@@ -744,8 +787,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       if (this.selectedLocation.location && this.selectedLocation.location.position) {
         this.selectedLocation.location.position.wgs84 = shapeCenter;
       }
-
-      this.addMapMarker(shapeCenter, this.selectedLocation, true);
     }
   }
 
