@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {LeafletTileLayerModel} from '../../../ngx-location-picker/src/lib/types/leaflet-tile-layer.model';
 
 @Component({
   selector: 'app-root',
