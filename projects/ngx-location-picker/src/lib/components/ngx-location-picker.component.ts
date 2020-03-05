@@ -1,6 +1,6 @@
 import {Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {baseMapAntwerp, baseMapWorldGray, LeafletMap} from '@acpaas-ui/ngx-components/map';
+import {baseMapAntwerp, baseMapWorldGray, LeafletMap, MapService} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LambertModel, LocationModel} from '../types/location.model';
@@ -147,8 +147,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {
-  };
+  propagateChange = (_: any) => {}
 
   get selectedLocation() {
     return this._selectedLocation;
@@ -197,6 +196,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     return (this.tileLayerType === LeafletTileLayerType.CUSTOM);
   }
 
+  public mapService: MapService = new MapService('browser');
+
   /**
    * NgxLocationPickerComponent constructor, injects required dependencies
    */
@@ -204,8 +205,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     private locationPickerService: NgxLocationPickerService,
     private locationPickerHelper: NgxLocationPickerHelper,
     private renderer: Renderer2
-  ) {
-  }
+  ) {}
 
   /**
    * On component init
@@ -583,7 +583,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       onEditFeature: (feature) => {
         this.editFeature.emit(feature);
       },
-    });
+    }, this.mapService);
 
     this.leafletMap.onInit.subscribe(() => {
       this.mapLoaded = true;
