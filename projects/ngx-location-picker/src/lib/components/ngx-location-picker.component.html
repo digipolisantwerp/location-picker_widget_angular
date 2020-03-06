@@ -20,7 +20,7 @@
           (click)="emptyField()"
           [disabled]="inputHasValue"
         >
-          <i class="fa fa-times" aria-hidden="true" [attr.aria-label]="clearInputAriaLabel"></i>
+          <span class="fa fa-times" [attr.aria-label]="clearInputAriaLabel"></span>
         </button>
       </div>
     </div>
@@ -67,7 +67,7 @@
         (click)="pickLocationOnMap()"
         [class.is-active]="pickLocationActive"
       >
-        <i class="fa fa-map-marker" aria-hidden="true" [attr.aria-label]="locationPickAriaLabel"></i>
+        <span class="fa fa-map-marker" [attr.aria-label]="locationPickAriaLabel"></span>
       </button>
 
       <div class="m-button-group m-button-group--vertical">
@@ -76,14 +76,14 @@
           class="a-button a-button--small has-icon a-button--block button-zoom-in"
           (click)="zoomIn()"
         >
-          <i class="fa fa-plus" aria-hidden="true" [attr.aria-label]="zoomInAriaLabel"></i>
+          <span class="fa fa-plus" [attr.aria-label]="zoomInAriaLabel"></span>
         </button>
         <button
           type="button"
           class="a-button a-button--small has-icon a-button--block button-zoom-out"
           (click)="zoomOut()"
         >
-          <i class="fa fa-minus" aria-hidden="true" [attr.aria-label]="zoomOutAriaLabel"></i>
+          <span class="fa fa-minus" [attr.aria-label]="zoomOutAriaLabel"></span>
         </button>
       </div>
 
@@ -114,7 +114,7 @@
         [disabled]="isLocating"
         (click)="getDeviceLocation()"
       >
-        <i *ngIf="!isLocating" class="fa fa-crosshairs"></i>
+        <span *ngIf="!isLocating" class="fa fa-crosshairs"></span>
         <span *ngIf="isLocating" class="a-spinner a-spinner--sm"></span>
       </button>
     </div>
@@ -123,6 +123,6 @@
     </div>
   </aui-leaflet>
   <div *ngIf="leafletNotification?.text" class="notification-panel m-alert {{ leafletNotification.status }}">
-    <p><i class="fa {{ leafletNotification.icon }}"></i> {{ leafletNotification.text }}</p>
+    <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
   </div>
 </div>

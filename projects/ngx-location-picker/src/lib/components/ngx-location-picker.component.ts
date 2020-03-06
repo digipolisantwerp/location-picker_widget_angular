@@ -50,13 +50,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   @Input() featureLayers: FeatureLayerModel[] = [];
   /* The input field placeholder text. */
-  @Input() placeholder = 'Locaties zoeken...';
+  @Input() placeholder = 'Zoek een locatie…';
   /* Label to use when no results were found. */
   @Input() noResultsLabel = 'Er werd geen gekende locatie gevonden.';
   /* Label to use for "use selected coordinates option" */
-  @Input() defaultOptionLabel = 'Gebruik coördinaat';
+  @Input() defaultOptionLabel = 'Gebruik gekozen coördinaat';
   /* Aria label for clear input button. */
-  @Input() clearInputAriaLabel = 'Input veld leegmaken';
+  @Input() clearInputAriaLabel = 'Tekstveld leegmaken';
   /* Aria label for picking a location on the map */
   @Input() locationPickAriaLabel = 'Kies een locatie op de map';
   /* Aria label for zooming in */
@@ -76,7 +76,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* No/invalid coordinate error notification text */
   @Input() coordinateErrorNotification = 'Locatie kan niet op de map getoond worden.';
   /* Zoom info notification text */
-  @Input() zoomInfoNotification = 'Gebruik de SHIFT toets om te zoomen door te scrollen.';
+  @Input() zoomInfoNotification = 'Gebruik de Shift toets om te zoomen door te scrollen.';
   /* Default tile layer button label */
   @Input() defaultTileLayerLabel = 'Kaart';
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
@@ -703,7 +703,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       left: '-5px'
     }) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
+    const markerIcon = `<span class="fa ${icon}" aria-hidden="true"></span>`;
 
     return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
   }

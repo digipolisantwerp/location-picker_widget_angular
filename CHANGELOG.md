@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.0.0] - 2020-03-06
+
+### Added
+- [BREAKING] Made the chatbot widget WCAG 2.1 AA compliant.
+
+
 ## [4.2.0] - 2019-11-14
 
 - [FIXED] Setting a location externally now properly cancels geolocation when still locating
@@ -77,8 +83,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.2.0...HEAD
-[4.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.1.0...v4.2.0
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.2.0...v5.0.0
 [4.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.1...v3.0.0
