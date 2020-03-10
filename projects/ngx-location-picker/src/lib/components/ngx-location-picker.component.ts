@@ -147,7 +147,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {}
+  propagateChange = (_: any) => {};
 
   get selectedLocation() {
     return this._selectedLocation;
@@ -196,15 +196,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     return (this.tileLayerType === LeafletTileLayerType.CUSTOM);
   }
 
-  public mapService: MapService = new MapService('browser');
-
   /**
    * NgxLocationPickerComponent constructor, injects required dependencies
    */
   constructor(
     private locationPickerService: NgxLocationPickerService,
     private locationPickerHelper: NgxLocationPickerHelper,
-    private renderer: Renderer2
+    private mapService: MapService,
+    private renderer: Renderer2,
   ) {}
 
   /**
