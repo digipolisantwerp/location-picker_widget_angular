@@ -35,7 +35,7 @@ Finally include the required styles:
 Add Antwerp core branding stylesheet in your index.html file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.0.0/main.min.css">
+<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.1.1/main.min.css">
 ```
 
 Add required leaflet styles in your angular.json file.
@@ -266,13 +266,13 @@ class ExampleComponent {
     */
     @Input() featureLayers: FeatureLayerModel[] = [];
     /* The input field placeholder text. */
-    @Input() placeholder = 'Locaties zoeken...';
+    @Input() placeholder = 'Zoek een locatie…';
     /* Label to use when no results were found. */
     @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
     /* Label to use for "use selected coordinates option" */
-    @Input() defaultOptionLabel = 'Gebruik gekozen coordinaat';
+    @Input() defaultOptionLabel = 'Gebruik gekozen coördinaat';
     /* Aria label for clear input button. */
-    @Input() clearInputAriaLabel = 'Input veld leegmaken';
+    @Input() clearInputAriaLabel = 'Tekstveld leegmaken';
     /* Aria label for picking a location on the map */
     @Input() locationPickAriaLabel = 'Kies een locatie op de map';
     /* Aria label for zooming in */
@@ -292,7 +292,7 @@ class ExampleComponent {
     /* No/invalid coordinate error notification text */
     @Input() coordinateErrorNotification = 'Locatie kan niet op de map getoond worden.';
     /* Zoom info notification text */
-    @Input() zoomInfoNotification = 'Gebruik de SHIFT toets om te zoomen door te scrollen.';
+    @Input() zoomInfoNotification = 'Gebruik de Shift toets om te zoomen door te scrollen.';
     /* Default tile layer button label */
     @Input() defaultTileLayerLabel = 'Kaart';
     /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */

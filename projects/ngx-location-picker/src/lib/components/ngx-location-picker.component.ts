@@ -1,6 +1,6 @@
 import {Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {baseMapAntwerp, baseMapWorldGray, LeafletMap} from '@acpaas-ui/ngx-components/map';
+import {baseMapAntwerp, baseMapWorldGray, LeafletMap, MapService} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LambertModel, LocationModel} from '../types/location.model';
@@ -50,13 +50,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   @Input() featureLayers: FeatureLayerModel[] = [];
   /* The input field placeholder text. */
-  @Input() placeholder = 'Locaties zoeken...';
+  @Input() placeholder = 'Zoek een locatie…';
   /* Label to use when no results were found. */
   @Input() noResultsLabel = 'Er werd geen gekende locatie gevonden.';
   /* Label to use for "use selected coordinates option" */
-  @Input() defaultOptionLabel = 'Gebruik coördinaat';
+  @Input() defaultOptionLabel = 'Gebruik gekozen coördinaat';
   /* Aria label for clear input button. */
-  @Input() clearInputAriaLabel = 'Input veld leegmaken';
+  @Input() clearInputAriaLabel = 'Tekstveld leegmaken';
   /* Aria label for picking a location on the map */
   @Input() locationPickAriaLabel = 'Kies een locatie op de map';
   /* Aria label for zooming in */
@@ -76,7 +76,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* No/invalid coordinate error notification text */
   @Input() coordinateErrorNotification = 'Locatie kan niet op de map getoond worden.';
   /* Zoom info notification text */
-  @Input() zoomInfoNotification = 'Gebruik de SHIFT toets om te zoomen door te scrollen.';
+  @Input() zoomInfoNotification = 'Gebruik de Shift toets om te zoomen door te scrollen.';
   /* Default tile layer button label */
   @Input() defaultTileLayerLabel = 'Kaart';
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
@@ -147,8 +147,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {
-  };
+  propagateChange = (_: any) => {};
 
   get selectedLocation() {
     return this._selectedLocation;
@@ -203,9 +202,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   constructor(
     private locationPickerService: NgxLocationPickerService,
     private locationPickerHelper: NgxLocationPickerHelper,
-    private renderer: Renderer2
-  ) {
-  }
+    private mapService: MapService,
+    private renderer: Renderer2,
+  ) {}
 
   /**
    * On component init
@@ -583,7 +582,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       onEditFeature: (feature) => {
         this.editFeature.emit(feature);
       },
-    });
+    }, this.mapService);
 
     this.leafletMap.onInit.subscribe(() => {
       this.mapLoaded = true;
@@ -703,7 +702,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       left: '-5px'
     }) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<i class="fa ${icon}" aria-hidden="true"></i>`;
+    const markerIcon = `<span class="fa ${icon}" aria-hidden="true"></span>`;
 
     return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
   }
