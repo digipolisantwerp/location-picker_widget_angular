@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [4.3.0] - 2020-03-09
+## [4.3.0] - 2020-03-11
 
 ### Added
 - Made the chatbot widget WCAG 2.1 AA compliant.
