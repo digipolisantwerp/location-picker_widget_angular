@@ -5,6 +5,10 @@
     overflow: hidden;
   }
 
+  .o-leaflet__map:focus {
+    box-shadow: 0 0 0 3px $input-border-focus;
+  }
+
   .ngx-location-picker-marker {
     position: relative;
   }
