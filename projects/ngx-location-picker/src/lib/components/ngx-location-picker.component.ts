@@ -659,7 +659,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   private setLocationDynamically(lat, lng) {
     this.resetFoundLocations();
-    this.onSearch(`${lat},${lng}`);
+    this.onSearch(`${lat.toFixed(6)},${lng.toFixed(6)}`);
   }
 
   /**
@@ -706,7 +706,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     this.selectedLocationMarker.on('dragend', (event) => {
       const newCoords = this.selectedLocationMarker.getLatLng();
-      const searchValue = (newCoords) ? `${newCoords.lat},${newCoords.lng}` : '';
+      const searchValue = (newCoords) ? `${newCoords.lat.toFixed(6)},${newCoords.lng.toFixed(6)}` : '';
 
       this.pickedLocation = true;
       this.resetFoundLocations();
@@ -827,6 +827,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     setTimeout(() => {
       this.leafletNotification = null;
-    }, 4000);
+    }, 3000);
   }
 }

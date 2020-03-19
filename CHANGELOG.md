@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [Unreleased]
+- [ADDED] debounce time for search queries
+- [CHANGED] notification position on leaflet
+- [ADDED] proper rounding on coordinate sets (lat/lng)
+- [ADDED] option to disable triggering a search when providing an initial location
+
+
 ## [4.3.0] - 2020-03-11
 
 ### Added

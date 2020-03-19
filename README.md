@@ -173,12 +173,13 @@ Note: There are 3 methods of getting values after selecting a location:
 Method 2 and 3 can also be used to set an initial value:
 
 ```ts
-selectedLocation = {
+selectedLocation: InitialLocationModel = {
     label: 'Generaal Armstrongweg 1, 2020 Antwerpen',
     position: {
         lat: 0,
         lng: 0
-    }
+    },
+    options: {triggerSearch: false} // Optional: wheter to trigger a search or not.
 };
 ```
 
