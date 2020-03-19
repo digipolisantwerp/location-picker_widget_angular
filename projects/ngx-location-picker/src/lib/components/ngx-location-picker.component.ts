@@ -9,6 +9,9 @@ import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
 import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {InitialLocationModel} from '../types/initial-location.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -87,12 +90,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locationsLimit = 5;
   /* The layers to search locations for */
   @Input() locationLayers = ['straatnaam'];
-  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. */
+  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. Overrides sortBy. */
   @Input() prioritizeLayer = 'straatnaam';
-  /* Sort locations by certain key, overrides prioritizeLayer. */
+  /* Sort locations by certain key. */
   @Input() sortBy = '';
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
+  /* Set time to wait after user stops typing before triggering a search */
+  @Input() debounceTime = 200;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -123,6 +128,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Current tile layer type default or custom */
   tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
+  /* Input change subject */
+  private searchQueryChanged: Subject<string> = new Subject<string>();
   /* Current leaflet state */
   private mapLoaded = false;
   /* Keep a reference to our geolocation object */
@@ -147,16 +154,19 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {};
+  propagateChange = (_: any) => {
+  };
 
   get selectedLocation() {
     return this._selectedLocation;
   }
 
   set selectedLocation(location) {
-    if (this.mapLoaded && location && location.position && location.position.lat) {
+    if (this.mapLoaded && location && location.position && location.position.lat && location.position.lng) {
       this.writeValue({}, true);
       this.setInitialLocation(location);
+
+      delete location.options;
 
       location = {
         ...location,
@@ -204,7 +214,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     private locationPickerHelper: NgxLocationPickerHelper,
     private mapService: MapService,
     private renderer: Renderer2,
-  ) {}
+  ) {
+    this.inputChangeSubscription = this.searchQueryChanged
+      .pipe(debounceTime(this.debounceTime), distinctUntilChanged())
+      .subscribe((query) => {
+        this.onSearch(query);
+      });
+  }
 
   /**
    * On component init
@@ -279,6 +295,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   zoomOut() {
     this.leafletMap.zoomOut();
+  }
+
+  /**
+   * On input change event
+   */
+  onInputChange(query: string) {
+    this.searchQueryChanged.next(query);
   }
 
   /**
@@ -603,13 +626,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Triggers a search when selectedLocation was updated from outside our component.
    */
-  private setInitialLocation(initialLocation) {
+  private setInitialLocation(initialLocation: InitialLocationModel) {
     this.cancelGeolocation();
 
-    this.onSearch(
-      `${initialLocation.position.lat},${initialLocation.position.lng}`,
-      (initialLocation.label && this.locationPickerHelper.isCoordinate(initialLocation.label))
-    );
+    if (!('options' in initialLocation) || !('triggerSearch' in initialLocation.options) || initialLocation.options.triggerSearch) {
+      this.onSearch(
+        `${initialLocation.position.lat},${initialLocation.position.lng}`,
+        (initialLocation.label && this.locationPickerHelper.isCoordinate(initialLocation.label))
+      );
+    } else {
+      this.addMapMarker([initialLocation.position.lat, initialLocation.position.lng]);
+    }
   }
 
   /**
@@ -625,6 +652,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.setLocationDynamically($event.latlng.lat, $event.latlng.lng);
     }
   }
+
 
   /**
    * Sets a dynamically fetched location when using locate-me or pick location on map

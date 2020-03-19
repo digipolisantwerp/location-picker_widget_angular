@@ -8,7 +8,7 @@
         [placeholder]="placeholder"
         [attr.aria-label]="textInputAriaLabel"
         [(ngModel)]="selectedLocation && selectedLocation.label"
-        (ngModelChange)="onSearch($event)"
+        (ngModelChange)="onInputChange($event)"
         autocomplete="off"
         (blur)="didSearch = false"
       />
