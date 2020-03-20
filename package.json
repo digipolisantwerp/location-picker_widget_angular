@@ -30,12 +30,11 @@
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
     "@angular/forms": "^6.0.0",
-    "@acpaas-ui/ngx-components": "^1.0.3"
+    "@acpaas-ui/ngx-components": "^3.0.0"
   },
   "devDependencies": {
-    "@a-ui/core": "~3.0.3",
-    "@a-ui/flexboxgrid": "~1.0.1",
-    "@acpaas-ui/ngx-components": "^1.0.3",
+    "@a-ui/core": "^4.1.0",
+    "@acpaas-ui/ngx-components": "^3.0.0",
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular/animations": "6.1.9",
     "@angular/cli": "^6.2.3",
