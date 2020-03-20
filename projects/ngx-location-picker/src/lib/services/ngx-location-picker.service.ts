@@ -49,12 +49,12 @@ export class NgxLocationPickerService {
      * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
      */
     delegateSearch(
-        search: string,
-        baseUrl: string,
-        limit: number = 5,
-        layers: Array<string> = ['straatnaam'],
-        prioritizelayer: string = 'straatnaam',
-        sort: string = 'name'
+      search: string,
+      baseUrl: string,
+      limit: number = 5,
+      layers: Array<string> = ['straatnaam'],
+      prioritizelayer: Array<string> = ['straatnaam'],
+      sort: string = 'name'
     ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
         this.locationPickerApi = baseUrl;
 

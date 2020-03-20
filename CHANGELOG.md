@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - [CHANGED] notification position on leaflet
 - [ADDED] proper rounding on coordinate sets (lat/lng)
 - [ADDED] option to disable triggering a search when providing an initial location
+- [CHANGED] prioritizeLayer renamed to prioritizeLayers and now uses an array of layer names
 
 
 ## [4.3.0] - 2020-03-11
