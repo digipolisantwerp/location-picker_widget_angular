@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [3.1.0] - 2020-03-20
+
+### Added
+- Added support for ACPaaS UI v3.x.x
+
+
 ## [3.0.0] - 2019-06-20
 
 ### Changed
@@ -39,7 +45,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.1...v3.0.0
 [2.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v1.1.0...v2.0.0
