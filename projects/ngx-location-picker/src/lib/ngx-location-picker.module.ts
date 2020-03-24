@@ -2,9 +2,10 @@ import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LeafletModule, MapService} from '@acpaas-ui/ngx-components/map';
+import {LeafletModule} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerComponent} from './components/ngx-location-picker.component';
 import {HighlightSearchDirective} from './directives/highlight-search.directive';
+import {MAP_SERVICE_PROVIDER} from './map.provider';
 
 @NgModule({
     declarations: [
@@ -22,10 +23,7 @@ import {HighlightSearchDirective} from './directives/highlight-search.directive'
         NgxLocationPickerComponent,
     ],
     providers: [
-        {
-            provide: MapService,
-            useValue: new MapService('browser'),
-        }
+        MAP_SERVICE_PROVIDER
     ]
 })
 export class LocationPickerModule {
