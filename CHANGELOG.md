@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [4.3.1] - 2020-03-24
+
+### Fixed
+- Fixed an AOT compilation issue.
+
+
 ## [4.3.0] - 2020-03-11
 
 ### Added
@@ -83,7 +89,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.1...HEAD
+[4.3.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.0...v4.3.1
 [4.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.2.0...v4.3.0
 [4.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v3.0.0...v4.0.0
