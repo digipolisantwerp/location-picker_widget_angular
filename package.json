@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build example --prod",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "dev": "ng build ngx-location-picker --watch",
