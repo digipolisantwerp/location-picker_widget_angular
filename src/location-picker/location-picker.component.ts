@@ -18,21 +18,21 @@ import {
 } from 'rxjs/operators';
 
 import { AutoCompleteComponent } from '@acpaas-ui/ngx-components/forms';
-import { LocationPickerValue } from './location-picker.types';
-import { LocationPickerService } from './location-picker.service';
+import { LocationPickerV1Value } from './location-picker.types';
+import { LocationPickerV1Service } from './location-picker.service';
 
 @Component({
     selector: 'aui-location-picker',
     templateUrl: './location-picker.component.html',
     styleUrls: ['./location-picker.component.scss']
 })
-export class LocationPickerComponent
+export class LocationPickerV1Component
     // ControlValueAccessor as per
     // https://blog.thoughtram.io/angular/2016/07/27/custom-form-controls-in-angular-2.html
     implements OnInit, ControlValueAccessor {
 
     // see set data below
-    private _data: LocationPickerValue[];
+    private _data: LocationPickerV1Value[];
 
     /**
      * The URL to the BFF.
@@ -47,15 +47,15 @@ export class LocationPickerComponent
     /** the type of values to search for, comma-separated list of "street", "number" or "poi" */
     @Input() public types = 'street,number,poi';
     /** the value that is displayed */
-    @Input() public value: LocationPickerValue;
+    @Input() public value: LocationPickerV1Value;
     /** how long to buffer keystrokes before requesting search results */
     @Input() public bufferInputMs = 500;
     /** the event fired when the value changes */
-    @Output() public valueChange: EventEmitter<LocationPickerValue> =
-        new EventEmitter<LocationPickerValue>();
+    @Output() public valueChange: EventEmitter<LocationPickerV1Value> =
+        new EventEmitter<LocationPickerV1Value>();
 
     /** the results in the auto-complete list */
-    public searchResults: LocationPickerValue[];
+    public searchResults: LocationPickerV1Value[];
     /** monitors changes in the query value to search for */
     private searchChange$: Observer<string>;
     /** the autocomplete component */
@@ -66,7 +66,7 @@ export class LocationPickerComponent
     private propagateChange = (_: any) => {};
 
     constructor(
-        private locationService: LocationPickerService,
+        private locationService: LocationPickerV1Service,
         private element: ElementRef
     ) {}
 
@@ -117,15 +117,15 @@ export class LocationPickerComponent
         }
     }
 
-    public onSelect(data: Event | LocationPickerValue) {
+    public onSelect(data: Event | LocationPickerV1Value) {
         if (data instanceof Event) {
             // do nothing: we don't respond to text selection events
         } else {
-            this.writeValue(data as LocationPickerValue);
+            this.writeValue(data as LocationPickerV1Value);
         }
     }
 
-    public formatLabel(input: LocationPickerValue): string {
+    public formatLabel(input: LocationPickerV1Value): string {
         const search = this.autocomplete.query;
         const inputString = input.name || input.id || '';
         const regEx = new RegExp(search, 'ig');
@@ -134,8 +134,8 @@ export class LocationPickerComponent
 
     // ControlValueAccessor interface
 
-    public writeValue(value: LocationPickerValue|any) {
-        this.value = value as LocationPickerValue;
+    public writeValue(value: LocationPickerV1Value|any) {
+        this.value = value as LocationPickerV1Value;
         this.valueChange.emit(this.value);
         if (this.propagateChange) {
             this.propagateChange(this.value);

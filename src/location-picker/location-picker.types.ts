@@ -1,4 +1,4 @@
-export interface LocationPickerValue {
+export interface LocationPickerV1Value {
     /** the unique of of this location */
     id: string;
     /** the user-visible name of this location */

@@ -1,17 +1,17 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ElementRef } from '@angular/core';
 
-import { LocationPickerComponent, LocationPickerService, LocationPickerValue, LocationPickerModule } from '..';
+import { LocationPickerV1Component, LocationPickerV1Service, LocationPickerV1Value, LocationPickerV1Module } from '..';
 import { of } from 'rxjs';
 
-describe('LocationPickerComponent', () => {
+describe('LocationPickerV1Component', () => {
 
-    let fixture: ComponentFixture<LocationPickerComponent>;
-    let comp: LocationPickerComponent;
+    let fixture: ComponentFixture<LocationPickerV1Component>;
+    let comp: LocationPickerV1Component;
     let element: any;
-    let testValues: LocationPickerValue[];
+    let testValues: LocationPickerV1Value[];
 
-    class MockLocationPickerService {
+    class MockLocationPickerV1Service {
         getLocationsByQuery(dataSource: any, search: string) {
             return of(testValues);
         }
@@ -30,13 +30,13 @@ describe('LocationPickerComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [LocationPickerModule],
+            imports: [LocationPickerV1Module],
             providers: [
-                { provide: LocationPickerService, useClass: MockLocationPickerService }
+                { provide: LocationPickerV1Service, useClass: MockLocationPickerV1Service }
             ]
         });
         provideTestValues(1);
-        fixture = TestBed.createComponent(LocationPickerComponent);
+        fixture = TestBed.createComponent(LocationPickerV1Component);
         comp = fixture.componentInstance;
         comp.bufferInputMs = 0;
         element = fixture.nativeElement;
