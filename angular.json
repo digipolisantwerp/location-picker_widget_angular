@@ -144,7 +144,7 @@
       }
     }
   },
-  "defaultProject": "ngx-lib",
+  "defaultProject": "ngx-location-picker",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"
