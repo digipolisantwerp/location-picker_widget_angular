@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ## [2.2.0] - 2020-03-25
 
 ### Changed
-- Changed the scope of this (deprecated) package
+- [BREAKING] Changed the scope of this (deprecated) package
 
 
 ## [2.1.0] - 2020-03-20
