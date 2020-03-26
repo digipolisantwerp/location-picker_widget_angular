@@ -1,5 +1,5 @@
 <header>
-  <h1>Location Picker Demo</h1>
+  <h1>Location Picker v1 Demo</h1>
 </header>
 <div class="u-container u-bg-light">
     <p>Antwerp street names:</p>
@@ -9,7 +9,7 @@
         [(value)]="picker1"
         url="http://localhost:9999/api/locations">
     </aui-location-picker>
-    <div *ngIf="picker1">Current value: 
+    <div *ngIf="picker1">Current value:
         <pre>{{ picker1 | json }}</pre>
     </div>
     <p>Streets, addresses and points of interest (default behavior):</p>
@@ -18,7 +18,7 @@
         [(value)]="picker2"
         url="http://localhost:9999/api/locations">
     </aui-location-picker>
-    <div *ngIf="picker2">Current value: 
+    <div *ngIf="picker2">Current value:
         <pre>{{ picker2 | json }}</pre>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
-import { LocationPickerValue } from '../../src/location-picker/location-picker.types';
+import { LocationPickerV1Value } from '../../src/location-picker/location-picker.types';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,10 @@ import { LocationPickerValue } from '../../src/location-picker/location-picker.t
 })
 export class AppComponent {
       // person in first field
-      picker1: LocationPickerValue;
+      picker1: LocationPickerV1Value;
 
       // person in first field
-      picker2: LocationPickerValue = {
+      picker2: LocationPickerV1Value = {
         id: '87548',
         name: 'Piep-in-\'t-Riet',
         layer: 'straatnaam',

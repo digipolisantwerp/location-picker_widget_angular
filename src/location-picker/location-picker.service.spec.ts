@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { LocationPickerService, LocationPickerValue } from '..';
+import { LocationPickerV1Service, LocationPickerV1Value } from '..';
 
-describe('LocationPickerService', () => {
-    const testValues: LocationPickerValue[] = [{
+describe('LocationPickerV1Service', () => {
+    const testValues: LocationPickerV1Value[] = [{
         id: '0',
         name: 'Zero',
         locationType: 'street'
@@ -14,7 +14,7 @@ describe('LocationPickerService', () => {
         locationType: 'street'
     }];
 
-    let service: LocationPickerService;
+    let service: LocationPickerV1Service;
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
@@ -23,10 +23,10 @@ describe('LocationPickerService', () => {
                 HttpClientTestingModule
             ],
             providers: [
-                LocationPickerService
+                LocationPickerV1Service
             ]
         });
-        service = TestBed.get(LocationPickerService);
+        service = TestBed.get(LocationPickerV1Service);
         httpMock = TestBed.get(HttpTestingController);
     });
 

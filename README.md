@@ -1,4 +1,6 @@
-# Location Picker Smart Widget UI (Angular)
+# Location Picker Smart Widget UI (Angular) - v1
+
+>> Important! There are several versions of this package. The reason we introduced this version is to use multiple versions in one app that would otherwise conflict with each other. The scope of this (deprecated) version is `@acpaas-ui-widgets/ngx-location-picker-v1`. The scope of the newer version is `@acpaas-ui-widgets/ngx-location-picker`. Also note that the name of the module has also changed.
 
 This is the Angular 6+ UI for a Smart Widget implementing a picker field to choose a location (street, address or point of interest). It is matched by a [corresponding back-end service](https://github.com/digipolisantwerp/location-picker_service_nodejs) which is needed when running it in remote mode. A default implementation for selecting locations in antwerp is provided.
 
@@ -11,7 +13,7 @@ There is a demo app, see below for instructions on running it.
 ### Installing
 
 ```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker
+> npm install @acpaas-ui-widgets/ngx-location-picker-v1
 ```
 
 ### Using
@@ -21,12 +23,12 @@ A BFF service should be running (see demo app instructions below for how to star
 Import the component in your module:
 
 ```ts
-import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
+import { LocationPickerV1Module } from '@acpaas-ui-widgets/ngx-location-picker-v1';
 
 @NgModule({
   imports: [
     ...,
-    LocationPickerModule
+    LocationPickerV1Module
   ],
   ...
 })
@@ -38,19 +40,13 @@ In the index.html, include the core branding stylesheet:
 <link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.1.1/main.min.css">
 ```
 
-> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker_widget_angular/tree/v1), which will still receive bug fixes if needed.
-
-```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker@"<2.0.0"
-```
-
 ### In your template:
 
 ```html
-<aui-location-picker
+<aui-location-picker-v1
     url="http://localhost:9999/api/locations"
     [(value)]="location">
-</aui-location-picker>
+</aui-location-picker-v1>
 ```
 
 (replace the url of the BFF service)
@@ -61,7 +57,7 @@ In the component code:
 class YourComponent {
 
     // you can assign an initial value here
-    location: LocationPickerValue;
+    location: LocationPickerV1Value;
 
     ...
 }
@@ -88,7 +84,7 @@ The back-end service implements the following protocol:
 - GET /path/to/endpoint?search=...&types=...
 - search = the text that the user typed on which to match
 - types = a comma-separated list of types to return, default value = "street,number,poi"
-- result = JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
+- result = JSON-encoded array of [LocationPickerV1Value](src/location-picker-v1/location-picker-v1.types.ts) objects
 
 ## Run the demo app
 

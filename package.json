@@ -1,6 +1,6 @@
 {
-  "name": "@acpaas-ui-widgets/ngx-location-picker",
-  "description": "Location Picker Smart Widget UI package (Angular)",
+  "name": "@acpaas-ui-widgets/ngx-location-picker-v1",
+  "description": "Location Picker v1 Smart Widget UI package (Angular)",
   "author": {
     "name": "Joeri Sebrechts",
     "email": "joeri.sebrechts@digipolis.be"

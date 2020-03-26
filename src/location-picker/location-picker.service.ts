@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
-import { LocationPickerValue } from './location-picker.types';
+import { LocationPickerV1Value } from './location-picker.types';
 
 @Injectable()
-export class LocationPickerService {
+export class LocationPickerV1Service {
     constructor(
         private http: HttpClient
     ) {}
@@ -20,13 +20,13 @@ export class LocationPickerService {
         search: string,
         /** The types of locations to search for (comma-separated) */
         types: string
-    ): Observable<LocationPickerValue[]> {
+    ): Observable<LocationPickerV1Value[]> {
         if (typeof dataSource === 'string') {
             const uri = dataSource +
                 ((dataSource.indexOf('?') < 0) ? '?' : '&') +
                 'search=' + search +
                 (types ? '&types=' + types : '');
-            return this.http.get<LocationPickerValue[]>(uri);
+            return this.http.get<LocationPickerV1Value[]>(uri);
         } else {
             // should never happen
             throw new TypeError('unsupported dataSource type "' + (typeof dataSource) + '"');

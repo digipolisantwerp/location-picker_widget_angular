@@ -5,15 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AutoCompleteModule } from '@acpaas-ui/ngx-components/forms';
 
-import { LocationPickerComponent } from './location-picker/location-picker.component';
-import { LocationPickerService } from './location-picker/location-picker.service';
+import { LocationPickerV1Component } from './location-picker/location-picker.component';
+import { LocationPickerV1Service } from './location-picker/location-picker.service';
 
 @NgModule({
   imports: [ CommonModule, FormsModule, AutoCompleteModule, HttpClientModule ],
-  declarations: [ LocationPickerComponent ],
-  providers: [ LocationPickerService ],
-  exports: [ LocationPickerComponent ]
+  declarations: [ LocationPickerV1Component ],
+  providers: [ LocationPickerV1Service ],
+  exports: [ LocationPickerV1Component ]
 })
 
-export class LocationPickerModule {
+export class LocationPickerV1Module {
 }
