@@ -14,11 +14,18 @@ All notable changes to this project will be documented in this file.
 -->
 
 ## [Unreleased]
-- [ADDED] debounce time for search queries
-- [CHANGED] notification position on leaflet
-- [ADDED] proper rounding on coordinate sets (lat/lng)
-- [ADDED] option to disable triggering a search when providing an initial location
-- [CHANGED] prioritizeLayer renamed to prioritizeLayers and now uses an array of layer names
+
+
+## [4.4.0] - 2020-03-30
+
+### Added
+- Added debounce time for search queries
+- Added proper rounding on coordinate sets (lat/lng)
+- Added option to disable triggering a search when providing an initial location
+
+### Changed
+- Changed notification position on leaflet
+- Renamed `prioritizeLayer` to `prioritizeLayers` (now uses an array of layer names)
 
 
 ## [4.3.1] - 2020-03-24
@@ -97,7 +104,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.4.0...HEAD
+[4.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.1...v4.4.0
 [4.3.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.0...v4.3.1
 [4.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.2.0...v4.3.0
 [4.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.0.0...v4.1.0
