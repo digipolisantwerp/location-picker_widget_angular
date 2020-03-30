@@ -78,7 +78,7 @@ describe('NgxLocationPickerComponent', () => {
 
     fixture.detectChanges();
 
-    const spy = spyOn(component, 'onSearch');
+    const spy = spyOn(component, 'onInputChange');
     const input = fixture.debugElement.nativeElement.querySelector('input[type=text]');
     input.value = 'fo';
     input.dispatchEvent(new Event('input'));
