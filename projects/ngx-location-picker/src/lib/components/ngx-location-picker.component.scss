@@ -63,13 +63,15 @@
   }
 }
 
-.notification-panel {
-  margin-top: $spacer-xs;
-  z-index: 10;
-  width: 100%;
+.m-location-picker {
+  &__notification-panel {
+    margin-top: $spacer-xs;
+    z-index: 10;
+    width: 100%;
 
-  &.m-alert {
-    padding: $spacer-xs;
+    &.m-alert {
+      padding: $spacer-xs;
+    }
   }
 }
 

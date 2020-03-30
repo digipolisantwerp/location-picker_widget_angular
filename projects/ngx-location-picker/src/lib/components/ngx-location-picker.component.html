@@ -51,9 +51,10 @@
         </div>
       </div>
     </div>
-
-    <div *ngIf="leafletNotification?.text" class="notification-panel m-alert {{ leafletNotification.status }}">
-      <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
+    <div aria-live="assertive">
+      <div *ngIf="leafletNotification?.text" class="m-location-picker__notification-panel m-alert {{ leafletNotification.status }}">
+        <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
+      </div>
     </div>
   </div>
   <aui-leaflet

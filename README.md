@@ -179,7 +179,7 @@ selectedLocation: InitialLocationModel = {
         lat: 0,
         lng: 0
     },
-    options: {triggerSearch: false} // Optional: wheter to trigger a search or not.
+    options: {triggerSearch: false} // Optional: whether to trigger a search or not.
 };
 ```
 
