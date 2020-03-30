@@ -8,7 +8,7 @@
         [placeholder]="placeholder"
         [attr.aria-label]="textInputAriaLabel"
         [(ngModel)]="selectedLocation && selectedLocation.label"
-        (ngModelChange)="onSearch($event)"
+        (ngModelChange)="onInputChange($event)"
         autocomplete="off"
         (blur)="didSearch = false"
       />
@@ -49,6 +49,11 @@
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
         </div>
+      </div>
+    </div>
+    <div aria-live="assertive">
+      <div *ngIf="leafletNotification?.text" class="m-location-picker__notification-panel m-alert {{ leafletNotification.status }}">
+        <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
       </div>
     </div>
   </div>
@@ -122,7 +127,4 @@
       <ng-content></ng-content>
     </div>
   </aui-leaflet>
-  <div *ngIf="leafletNotification?.text" class="notification-panel m-alert {{ leafletNotification.status }}">
-    <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
-  </div>
 </div>
