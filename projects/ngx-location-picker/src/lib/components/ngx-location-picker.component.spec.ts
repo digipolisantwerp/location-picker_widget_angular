@@ -5,6 +5,7 @@ import {CommonModule} from '@angular/common';
 import {NgxLocationPickerComponent} from './ngx-location-picker.component';
 import {LeafletModule} from '@acpaas-ui/ngx-components/map';
 import {HighlightSearchDirective} from '../directives/highlight-search.directive';
+import {MAP_SERVICE_PROVIDER} from '../map.provider';
 
 describe('NgxLocationPickerComponent', () => {
 
@@ -21,6 +22,9 @@ describe('NgxLocationPickerComponent', () => {
           CommonModule,
           ReactiveFormsModule,
           LeafletModule
+        ],
+        providers: [
+          MAP_SERVICE_PROVIDER
         ]
       })
       .compileComponents();
