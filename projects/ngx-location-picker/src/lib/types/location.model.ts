@@ -6,7 +6,7 @@ export interface LocationModel {
     layer?: string;
     streetNameId?: number;
     streetName?: string;
-    postCode?: number;
+    postCodes?: Array<number>;
     antwerpDistrict?: string;
     municipality?: string;
     label?: string;
