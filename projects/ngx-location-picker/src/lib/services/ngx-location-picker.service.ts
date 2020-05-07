@@ -56,7 +56,7 @@ export class NgxLocationPickerService {
     baseUrl: string,
     limit: number,
     layers: Array<string>,
-    prioritizelayer: string,
+    prioritizelayer: Array<string> = ['straatnaam'],
     sort: string,
     cascadingReturnSingle: boolean,
     cascadingRules: Array<CascadingRulesModel>

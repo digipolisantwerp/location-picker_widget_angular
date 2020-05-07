@@ -12,6 +12,7 @@ import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {CascadingRulesModel} from '../types/cascading-rules.model';
+import {InitialLocationModel} from '../types/initial-location.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -90,8 +91,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locationsLimit = 5;
   /* The layers to search locations for */
   @Input() locationLayers = ['straatnaam'];
-  /* Prioritize a layer, boosts results from a given layer to the top of the found locations. Overrides sortBy. */
-  @Input() prioritizeLayer = 'straatnaam';
+  /**
+   * Prioritize specific layers, boosts results from given layers to the top of the found locations.
+   * The order of the values in the array determines the priority. Overrides sortBy.
+   */
+  @Input() prioritizeLayers = ['straatnaam'];
   /* Sort locations by certain key. */
   @Input() sortBy = '';
   /* Use geolocation when the component finished loading */
@@ -158,16 +162,19 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {};
+  propagateChange = (_: any) => {
+  };
 
   get selectedLocation() {
     return this._selectedLocation;
   }
 
   set selectedLocation(location) {
-    if (this.mapLoaded && location && location.position && location.position.lat) {
+    if (this.mapLoaded && location && location.position && location.position.lat && location.position.lng) {
       this.writeValue({}, true);
       this.setInitialLocation(location);
+
+      delete location.options;
 
       location = {
         ...location,
@@ -422,7 +429,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.baseUrl,
         this.locationsLimit,
         this.locationLayers,
-        this.prioritizeLayer,
+        this.prioritizeLayers,
         this.sortBy,
         this.cascadingReturnSingle,
         this.cascadingRules
@@ -629,13 +636,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Triggers a search when selectedLocation was updated from outside our component.
    */
-  private setInitialLocation(initialLocation) {
+  private setInitialLocation(initialLocation: InitialLocationModel) {
     this.cancelGeolocation();
 
-    this.onSearch(
-      `${initialLocation.position.lat},${initialLocation.position.lng}`,
-      (initialLocation.label && this.locationPickerHelper.isCoordinate(initialLocation.label))
-    );
+    if (!('options' in initialLocation) || !('triggerSearch' in initialLocation.options) || initialLocation.options.triggerSearch) {
+      this.onSearch(
+        `${initialLocation.position.lat},${initialLocation.position.lng}`,
+        (initialLocation.label && this.locationPickerHelper.isCoordinate(initialLocation.label))
+      );
+    } else {
+      this.addMapMarker([initialLocation.position.lat, initialLocation.position.lng]);
+    }
   }
 
   /**
@@ -652,12 +663,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
   }
 
+
   /**
    * Sets a dynamically fetched location when using locate-me or pick location on map
    */
   private setLocationDynamically(lat, lng) {
     this.resetFoundLocations();
-    this.onSearch(`${lat},${lng}`);
+    this.onSearch(`${lat.toFixed(6)},${lng.toFixed(6)}`);
   }
 
   /**
@@ -704,7 +716,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     this.selectedLocationMarker.on('dragend', (event) => {
       const newCoords = this.selectedLocationMarker.getLatLng();
-      const searchValue = (newCoords) ? `${newCoords.lat},${newCoords.lng}` : '';
+      const searchValue = (newCoords) ? `${newCoords.lat.toFixed(6)},${newCoords.lng.toFixed(6)}` : '';
 
       this.pickedLocation = true;
       this.resetFoundLocations();
@@ -825,6 +837,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     setTimeout(() => {
       this.leafletNotification = null;
-    }, 4000);
+    }, 3000);
   }
 }

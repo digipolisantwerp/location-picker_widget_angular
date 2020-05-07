@@ -1,7 +1,7 @@
 export interface LocationQueryModel {
     search: string;
     sort: string;
-    prioritizelayer: string;
+    prioritizelayer: Array<string>;
     limit: number;
     layers: Array<string>;
 }

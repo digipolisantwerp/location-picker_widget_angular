@@ -173,12 +173,13 @@ Note: There are 3 methods of getting values after selecting a location:
 Method 2 and 3 can also be used to set an initial value:
 
 ```ts
-selectedLocation = {
+selectedLocation: InitialLocationModel = {
     label: 'Generaal Armstrongweg 1, 2020 Antwerpen',
     position: {
         lat: 0,
         lng: 0
-    }
+    },
+    options: {triggerSearch: false} // Optional: whether to trigger a search or not.
 };
 ```
 
@@ -215,7 +216,7 @@ selectedLocation = {
     [locationLayers]="locationLayers"
     [locationsLimit]="locationsLimit"
     [minInputLength]="minInputLength"
-    [prioritizeLayer]="prioritizeLayer"
+    [prioritizeLayers]="prioritizeLayer"
     [showClearInputButton]="showClearInputButton"
     [sortBy]="sortBy"
     [coordinateErrorNotification]="coordinateErrorNotification"
@@ -306,9 +307,12 @@ class ExampleComponent {
     @Input() locationsLimit = 5;
     /* The layers to search locations for */
     @Input() locationLayers = ['straatnaam'];
-    /* Prioritize a layer, boosts results from a given layer to the top of the found locations. Overrides sortBy. */
-    @Input() prioritizeLayer = 'straatnaam';
-    /* Sort locations by certain key. */
+    /**
+     * Prioritize specific layers, boosts results from given layers to the top of the found locations.
+     * The order of the values in the array determines the priority. Overrides sortBy.
+     */
+    @Input() prioritizeLayers = ['straatnaam'];
+    /* Sort locations by certain key, overrides prioritizeLayer. */
     @Input() sortBy = '';
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
