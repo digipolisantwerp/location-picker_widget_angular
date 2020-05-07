@@ -104,8 +104,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() debounceTime = 200;
   /* whether or not to return a single cascading result */
   @Input() cascadingReturnSingle = true;
+  /* Limit total cascading result, useful when returnSingle is false */
+  @Input() cascadingLimit = 10;
   /* Cascading configuration for doing reverse lookups by coordinates */
-  @Input() cascadingRules: Array<CascadingRulesModel> = [];
+  @Input() cascadingRules: CascadingRulesModel[] = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -432,6 +434,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.prioritizeLayers,
         this.sortBy,
         this.cascadingReturnSingle,
+        this.cascadingLimit,
         this.cascadingRules
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;

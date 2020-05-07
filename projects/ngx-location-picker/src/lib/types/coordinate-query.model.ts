@@ -1,6 +1,6 @@
 export interface CoordinateQueryModel {
   xcoord: number;
   ycoord: number;
-  returnsingle: boolean;
-  cascadingrules: string;
+  returnsingle?: boolean;
+  totalresults?: number;
 }

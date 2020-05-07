@@ -1,17 +1,25 @@
 export interface CascadingRulesModel {
   type?: CascadingRulesType;
-  mapService?: string;
-  layerId?: number;
-  layerIds?: Array<number>;
-  buffer?: number;
-  tolerance?: number;
-  returnGeometry?: boolean;
-  relevance?: boolean;
-  limit?: number;
+  addressOptions?: ReverseGeocodeOptionsModel;
+  locationOptions?: GeoFeaturesOptionsModel;
 }
 
 export enum CascadingRulesType {
-  POINTWITHIN = 'pointWithin',
-  POINTNEARBY = 'pointNearby',
-  REVERSEGEOCODE = 'reverseGeocode'
+  LOCATION = 'location',
+  ADDRESS = 'address'
+}
+
+export interface ReverseGeocodeOptionsModel {
+  buffer?: number;
+  count?: number;
+  relevance?: boolean;
+}
+
+export interface GeoFeaturesOptionsModel {
+  mapService?: string;
+  layerIds?: string;
+  returnGeometry?: boolean;
+  tolerance?: number;
+  buffer?: number;
+  count?: number;
 }

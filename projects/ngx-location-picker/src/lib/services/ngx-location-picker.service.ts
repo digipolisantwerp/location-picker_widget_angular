@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {NgxLocationPickerHelper} from './ngx-location-picker.helper';
-import {LambertModel, LocationModel} from '../types/location.model';
-import {AddressQueryModel} from '../types/address-query.model';
-import {LocationQueryModel} from '../types/location-query.model';
-import {LayerQueryModel} from '../types/layer-query.model';
-import {LayerModel} from '../types/layer.model';
-import {AddressIdQueryModel} from '../types/address-id-query.model';
-import {CoordinateQueryModel} from '../types/coordinate-query.model';
-import {AddressModel} from '../types/address.model';
-import {CoordinateModel} from '../types/coordinate.model';
-import {CascadingRulesModel} from '../types/cascading-rules.model';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { NgxLocationPickerHelper } from './ngx-location-picker.helper';
+import { LambertModel, LocationModel } from '../types/location.model';
+import { AddressQueryModel } from '../types/address-query.model';
+import { LocationQueryModel } from '../types/location-query.model';
+import { LayerQueryModel } from '../types/layer-query.model';
+import { LayerModel } from '../types/layer.model';
+import { AddressIdQueryModel } from '../types/address-id-query.model';
+import { CoordinateQueryModel } from '../types/coordinate-query.model';
+import { AddressModel } from '../types/address.model';
+import { CoordinateModel } from '../types/coordinate.model';
+import { CascadingRulesModel } from '../types/cascading-rules.model';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +59,8 @@ export class NgxLocationPickerService {
     prioritizelayer: Array<string> = ['straatnaam'],
     sort: string,
     cascadingReturnSingle: boolean,
-    cascadingRules: Array<CascadingRulesModel>
+    cascadingLimit: number,
+    cascadingRules: CascadingRulesModel[]
   ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
     this.locationPickerApi = baseUrl;
 
@@ -69,10 +70,10 @@ export class NgxLocationPickerService {
         xcoord: coordinate.x,
         ycoord: coordinate.y,
         returnsingle: cascadingReturnSingle,
-        cascadingrules: JSON.stringify(cascadingRules)
+        totalresults: cascadingLimit
       };
 
-      return this.searchLocationsByCoordinates(requestQuery);
+      return this.searchLocationsByCoordinates(requestQuery, cascadingRules);
     } else if (this.locationPickerHelper.isAddress(search)) {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search);
 
@@ -100,7 +101,7 @@ export class NgxLocationPickerService {
   getMapLayers(query: LayerQueryModel): Observable<LayerModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.get<LayerModel[]>(`${this.locationPickerApi}/layers`, {params: parameters});
+    return this.httpClient.get<LayerModel[]>(`${this.locationPickerApi}/layers`, { params: parameters });
   }
 
   /**
@@ -113,7 +114,7 @@ export class NgxLocationPickerService {
   private searchLocations(query: LocationQueryModel): Observable<LocationModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.get<LocationModel[]>(`${this.locationPickerApi}/locations`, {params: parameters});
+    return this.httpClient.get<LocationModel[]>(`${this.locationPickerApi}/locations`, { params: parameters });
   }
 
   /**
@@ -126,7 +127,7 @@ export class NgxLocationPickerService {
   private searchAddresses(query: AddressQueryModel): Observable<AddressModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses`, {params: parameters});
+    return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses`, { params: parameters });
   }
 
   /**
@@ -139,7 +140,7 @@ export class NgxLocationPickerService {
   private searchAddressById(query: AddressIdQueryModel): Observable<AddressModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses/${query.id}`, {params: parameters});
+    return this.httpClient.get<AddressModel[]>(`${this.locationPickerApi}/addresses/${query.id}`, { params: parameters });
   }
 
   /**
@@ -149,9 +150,12 @@ export class NgxLocationPickerService {
    *
    * @return Observable<CoordinateModel[]>
    */
-  private searchLocationsByCoordinates(query: CoordinateQueryModel): Observable<CoordinateModel[]> {
+  private searchLocationsByCoordinates(
+    query: CoordinateQueryModel,
+    cascadingRules: Array<CascadingRulesModel>
+  ): Observable<CoordinateModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.get<any>(`${this.locationPickerApi}/coordinates`, {params: parameters});
+    return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`, cascadingRules, { params: parameters });
   }
 }
