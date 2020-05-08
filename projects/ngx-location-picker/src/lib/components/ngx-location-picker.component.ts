@@ -481,6 +481,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
         this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
       } else {
+        this.removeGeometry();
+        this.removeMarker();
         this.setNotification({
           status: 'm-alert--danger',
           text: this.coordinateErrorNotification,
