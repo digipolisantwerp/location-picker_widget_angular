@@ -780,7 +780,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       }
     };
 
-    this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    try {
+      this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    } catch (error) {
+      console.log(error);
+      // when addGeoJson throw an error ==> remove loading icon
+      this.searching = false;
+    }
 
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
 
