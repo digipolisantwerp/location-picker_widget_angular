@@ -314,7 +314,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.writeValue({}, true);
 
     if (this.showMap) {
-      this.leafletMap.setView(this.mapCenter, this.defaultZoom);
       this.removeGeometry();
       this.removeMarker();
     }
@@ -770,12 +769,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
 
+    const bounds = this.selectedLocationGeometry.getBounds();
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
 
     if (this.selectedLocation && shapeCenter) {
       if (!this.pickedLocation) {
         this.addMapMarker(shapeCenter, null, true, false);
         this.leafletMap.setView(shapeCenter, this.onSelectZoom);
+        this.leafletMap.map.fitBounds(bounds);
       } else {
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
           '#000000',
