@@ -126,6 +126,30 @@ export class NgxLocationPickerHelper {
   }
 
   /**
+   * Determines if the given query input resembles alternative coordinate pairs ex: 51,205729 4,388629
+   *
+   * @return boolean
+   */
+  isAlternativeCoordinateNotation(query: string): boolean {
+    const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(' ') : null;
+
+    if (coordinateParts.length === 2) {
+      if (!isNaN(Number(coordinateParts[0].replace(',', '.'))) && !isNaN(Number(coordinateParts[1].replace(',', '.')))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  convertAlternativeCoordinateToNormalNotation(query: string): string {
+    const commaChar = /\,/gi;
+    const spaceChar = / /gi;
+
+    return query.replace(commaChar, '.').replace(spaceChar, ',');
+  }
+
+  /**
    * Splits the location query in street name and house number.
    *
    * @return streetAndNumber
@@ -187,6 +211,26 @@ export class NgxLocationPickerHelper {
     };
 
     return coordinate;
+  }
+
+  /**
+   * Checks wether given coordinates are WGS84 (response true) or Lambert (response false)
+   *
+   * @param x given x coordinate
+   * @param y given y coordinate
+   *
+   * @return isWgs84
+   */
+  isWgs84Coordinates(x?: number, y?: number): boolean {
+    const minX = 49.4;
+    const maxX = 51.6;
+    const minY = 2.3;
+    const maxY = 6.45;
+
+    if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+      return true;
+    }
+    return false;
   }
 
 }

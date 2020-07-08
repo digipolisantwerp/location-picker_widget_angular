@@ -399,6 +399,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
     this.cancelGeolocation();
 
+    if (searchValue && this.locationPickerHelper.isAlternativeCoordinateNotation(searchValue)) {
+      searchValue = this.locationPickerHelper.convertAlternativeCoordinateToNormalNotation(searchValue);
+    }
+
     if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
       this.pickedLocation = false;
     }
@@ -419,7 +423,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         const coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
         const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`};
 
-        this.addMapMarker([coords.x, coords.y]);
+        if (this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
+          this.addMapMarker([coords.x, coords.y]);
+        }
         this.writeValue(tempLocation);
       }
 
@@ -467,6 +473,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           '10px',
           {top: '-3px', left: '2px'}
         ));
+        this.leafletMap.setView(coords, this.onSelectZoom);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
