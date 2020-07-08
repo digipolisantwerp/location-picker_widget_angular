@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- LocationModel: added postCode: number AND postCodes: Array<number>
+- LocationModel: renamed type postCode: number to postCodes: Array\<number>
 
 ## [4.4.0] - 2020-03-30
 

@@ -11,6 +11,7 @@ import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {CascadingRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
 
 @Component({
@@ -101,6 +102,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
   @Input() debounceTime = 200;
+  /* whether or not to return a single cascading result */
+  @Input() cascadingReturnSingle = true;
+  /* Limit total cascading result, useful when returnSingle is false */
+  @Input() cascadingLimit = 10;
+  /* Cascading configuration for doing reverse lookups by coordinates */
+  @Input() cascadingRules: CascadingRulesModel[] = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -424,7 +431,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.locationsLimit,
         this.locationLayers,
         this.prioritizeLayers,
-        this.sortBy
+        this.sortBy,
+        this.cascadingReturnSingle,
+        this.cascadingLimit,
+        this.cascadingRules
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
 
@@ -470,6 +480,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       } else if ($event.location && $event.location.position && $event.location.position.geometry) {
         this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
       } else {
+        this.removeGeometry();
+        this.removeMarker();
         this.setNotification({
           status: 'm-alert--danger',
           text: this.coordinateErrorNotification,
@@ -767,7 +779,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       }
     };
 
-    this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    try {
+      this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    } catch (error) {
+      console.log(error);
+      // when addGeoJson throw an error ==> remove loading icon
+      this.searching = false;
+    }
 
     const bounds = this.selectedLocationGeometry.getBounds();
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
