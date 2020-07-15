@@ -12,6 +12,7 @@ import { CoordinateQueryModel } from '../types/coordinate-query.model';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
 import { CascadingRulesModel } from '../types/cascading-rules.model';
+import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,39 +53,32 @@ export class NgxLocationPickerService {
    * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
    */
   delegateSearch(
-    search: string,
-    baseUrl: string,
-    limit: number,
-    layers: Array<string>,
-    prioritizelayer: Array<string> = ['straatnaam'],
-    sort: string,
-    cascadingReturnSingle: boolean,
-    cascadingLimit: number,
-    cascadingRules: CascadingRulesModel[]
+    search: DelegateSearchModel
   ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
-    this.locationPickerApi = baseUrl;
+    search.prioritizelayer = search.prioritizelayer ? search.prioritizelayer : ['straatnaam'];
+    this.locationPickerApi = search.baseUrl;
 
-    if (this.locationPickerHelper.isCoordinate(search)) {
-      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search);
+    if (this.locationPickerHelper.isCoordinate(search.search)) {
+      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search.search);
       const requestQuery: CoordinateQueryModel = {
         xcoord: coordinate.x,
         ycoord: coordinate.y,
-        returnsingle: cascadingReturnSingle,
-        totalresults: cascadingLimit
+        returnsingle: search.cascadingReturnSingle,
+        totalresults: search.cascadingLimit
       };
 
-      return this.searchLocationsByCoordinates(requestQuery, cascadingRules);
-    } else if (this.locationPickerHelper.isAddress(search)) {
-      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search);
+      return this.searchLocationsByCoordinates(requestQuery, search.cascadingRules);
+    } else if (this.locationPickerHelper.isAddress(search.search)) {
+      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search.search);
 
       return this.searchAddresses(addressQuery);
     } else {
       const locationQuery: LocationQueryModel = {
-        layers,
-        limit,
-        search,
-        prioritizelayer,
-        sort
+        layers: search.layers,
+        limit: search.limit,
+        search: search.search,
+        prioritizelayer: search.prioritizelayer,
+        sort: search.sort
       };
 
       return this.searchLocations(locationQuery);

@@ -320,6 +320,8 @@ class ExampleComponent {
     @Input() debounceTime = 50;
     /* whether or not to return a single cascading result */
     @Input() cascadingReturnSingle = true;
+    /* Limit total cascading result, useful when returnSingle is false */
+    @Input() cascadingLimit = 10;
     /* Cascading configuration for doing reverse lookups by coordinates */
     @Input() cascadingRules: Array<CascadingRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
     /* AddPolygon event */

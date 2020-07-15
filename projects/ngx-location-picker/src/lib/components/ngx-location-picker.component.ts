@@ -13,6 +13,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {CascadingRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
+import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -426,16 +427,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
+      const delegateSearch: DelegateSearchModel = {
+        search: searchValue,
+        baseUrl: this.baseUrl,
+        limit: this.locationsLimit,
+        layers: this.locationLayers,
+        prioritizelayer: this.prioritizeLayers,
+        sort: this.sortBy,
+        cascadingReturnSingle: this.cascadingReturnSingle,
+        cascadingLimit: this.cascadingLimit,
+        cascadingRules: this.cascadingRules
+      };
+
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
-        searchValue,
-        this.baseUrl,
-        this.locationsLimit,
-        this.locationLayers,
-        this.prioritizeLayers,
-        this.sortBy,
-        this.cascadingReturnSingle,
-        this.cascadingLimit,
-        this.cascadingRules
+        delegateSearch
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
 
