@@ -41,44 +41,37 @@ export class NgxLocationPickerService {
   /**
    * Main search function. Determines which action to undertake based on the provided search string.
    *
-   * @param search (the search query)
-   * @param baseUrl (required the url to the BFF)
-   * @param limit (the amount of locations to return, only used for querying searchLocations)
-   * @param layers (the layers to look for locations in, only used for querying searchLocations)
-   * @param prioritizelayer (the layer to boost)
-   * @param sort (key to sort results by)
-   * @param cascadingReturnSingle (whether or not to return a single cascading result)
-   * @param cascadingRules (the configuration for doing reverse lookups by coordinates)
+   * @param delegateSearch (the delegateSearch model)
    *
    * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
    */
   delegateSearch(
-    search: DelegateSearchModel
+    delegateSearch: DelegateSearchModel
   ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
-    search.prioritizelayer = search.prioritizelayer ? search.prioritizelayer : ['straatnaam'];
-    this.locationPickerApi = search.baseUrl;
+    delegateSearch.prioritizelayer = delegateSearch.prioritizelayer ? delegateSearch.prioritizelayer : ['straatnaam'];
+    this.locationPickerApi = delegateSearch.baseUrl;
 
-    if (this.locationPickerHelper.isCoordinate(search.search)) {
-      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search.search);
+    if (this.locationPickerHelper.isCoordinate(delegateSearch.search)) {
+      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(delegateSearch.search);
       const requestQuery: CoordinateQueryModel = {
         xcoord: coordinate.x,
         ycoord: coordinate.y,
-        returnsingle: search.cascadingReturnSingle,
-        totalresults: search.cascadingLimit
+        returnsingle: delegateSearch.cascadingReturnSingle,
+        totalresults: delegateSearch.cascadingLimit
       };
 
-      return this.searchLocationsByCoordinates(requestQuery, search.cascadingRules);
-    } else if (this.locationPickerHelper.isAddress(search.search)) {
-      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search.search);
+      return this.searchLocationsByCoordinates(requestQuery, delegateSearch.cascadingRules);
+    } else if (this.locationPickerHelper.isAddress(delegateSearch.search)) {
+      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(delegateSearch.search);
 
       return this.searchAddresses(addressQuery);
     } else {
       const locationQuery: LocationQueryModel = {
-        layers: search.layers,
-        limit: search.limit,
-        search: search.search,
-        prioritizelayer: search.prioritizelayer,
-        sort: search.sort
+        layers: delegateSearch.layers,
+        limit: delegateSearch.limit,
+        search: delegateSearch.search,
+        prioritizelayer: delegateSearch.prioritizelayer,
+        sort: delegateSearch.sort
       };
 
       return this.searchLocations(locationQuery);
