@@ -11,7 +11,7 @@ import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
-import {CascadingRulesModel} from '../types/cascading-rules.model';
+import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
 
@@ -104,11 +104,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Set time to wait after user stops typing before triggering a search */
   @Input() debounceTime = 200;
   /* whether or not to return a single cascading result */
-  @Input() cascadingReturnSingle = true;
+  @Input() cascadingCoordinateReturnSingle = true;
   /* Limit total cascading result, useful when returnSingle is false */
-  @Input() cascadingLimit = 10;
+  @Input() cascadingCoordinateLimit = 10;
   /* Cascading configuration for doing reverse lookups by coordinates */
-  @Input() cascadingRules: CascadingRulesModel[] = [];
+  @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -434,9 +434,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         layers: this.locationLayers,
         prioritizelayer: this.prioritizeLayers,
         sort: this.sortBy,
-        cascadingReturnSingle: this.cascadingReturnSingle,
-        cascadingLimit: this.cascadingLimit,
-        cascadingRules: this.cascadingRules
+        cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
+        cascadingCoordinateLimit: this.cascadingCoordinateLimit,
+        cascadingCoordinateRules: this.cascadingCoordinateRules
       };
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(

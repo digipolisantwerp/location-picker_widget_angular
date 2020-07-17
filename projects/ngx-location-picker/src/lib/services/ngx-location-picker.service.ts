@@ -11,7 +11,7 @@ import { AddressIdQueryModel } from '../types/address-id-query.model';
 import { CoordinateQueryModel } from '../types/coordinate-query.model';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
-import { CascadingRulesModel } from '../types/cascading-rules.model';
+import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Injectable({
@@ -56,11 +56,11 @@ export class NgxLocationPickerService {
       const requestQuery: CoordinateQueryModel = {
         xcoord: coordinate.x,
         ycoord: coordinate.y,
-        returnsingle: delegateSearch.cascadingReturnSingle,
-        totalresults: delegateSearch.cascadingLimit
+        returnsingle: delegateSearch.cascadingCoordinateReturnSingle,
+        totalresults: delegateSearch.cascadingCoordinateLimit
       };
 
-      return this.searchLocationsByCoordinates(requestQuery, delegateSearch.cascadingRules);
+      return this.searchLocationsByCoordinates(requestQuery, delegateSearch.cascadingCoordinateRules);
     } else if (this.locationPickerHelper.isAddress(delegateSearch.search)) {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(delegateSearch.search);
 
@@ -139,10 +139,11 @@ export class NgxLocationPickerService {
    */
   private searchLocationsByCoordinates(
     query: CoordinateQueryModel,
-    cascadingRules: Array<CascadingRulesModel>
+    cascadingCoordinateRules: Array<CascadingCoordinateRulesModel>
   ): Observable<CoordinateModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`, cascadingRules, { params: parameters });
+    return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`,
+     cascadingCoordinateRules, { params: parameters });
   }
 }

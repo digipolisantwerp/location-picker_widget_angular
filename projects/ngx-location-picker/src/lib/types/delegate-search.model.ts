@@ -1,4 +1,4 @@
-import { CascadingRulesModel } from './cascading-rules.model';
+import { CascadingCoordinateRulesModel } from './cascading-rules.model';
 
 export interface DelegateSearchModel {
     search: string;
@@ -7,7 +7,7 @@ export interface DelegateSearchModel {
     layers: Array<string>;
     prioritizelayer: Array<string>;
     sort: string;
-    cascadingReturnSingle: boolean;
-    cascadingLimit: number;
-    cascadingRules: CascadingRulesModel[];
+    cascadingCoordinateReturnSingle: boolean;
+    cascadingCoordinateLimit: number;
+    cascadingCoordinateRules: CascadingCoordinateRulesModel[];
 }
