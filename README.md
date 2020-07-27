@@ -227,6 +227,10 @@ selectedLocation: InitialLocationModel = {
     [locateMeUnknownNotification]="locateMeUnknownNotification"
     [zoomInfoNotification]="zoomInfoNotification"
     [locateUserOnInit]="locateUserOnInit"
+    [debounceTime]="debounceTime"
+    [cascadingCoordinateReturnSingle]="cascadingCoordinateReturnSingle"
+    [cascadingCoordinateLimit]="cascadingCoordinateLimit"
+    [cascadingCoordinateRules]="cascadingCoordinateRules"
     (addPolygon)="onAddPolygon($event)"
     (addLine)="onAddLine($event)"
     (editFeature)="onEditFeature($event)"
@@ -313,6 +317,14 @@ class ExampleComponent {
     @Input() sortBy = '';
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
+    /* Set time to wait after user stops typing before triggering a search */
+    @Input() debounceTime = 50;
+    /* whether or not to return a single cascading result */
+    @Input() cascadingCoordinateReturnSingle = true;
+    /* Limit total cascading result, useful when returnSingle is false */
+    @Input() cascadingCoordinateLimit = 10;
+    /* Cascading configuration for doing reverse lookups by coordinates */
+    @Input() cascadingCoordinateRules: Array<CascadingCoordinateRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
     /* AddPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* AddLine event */

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
 import {LambertModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
+import {CascadingCoordinateRulesModel, CascadingCoordinateRulesType} from '../types/cascading-rules.model';
 
 @Injectable({
   providedIn: 'root'

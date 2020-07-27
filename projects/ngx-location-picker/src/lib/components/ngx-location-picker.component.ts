@@ -11,7 +11,9 @@ import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
+import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -101,6 +103,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
   @Input() debounceTime = 200;
+  /* whether or not to return a single cascading result */
+  @Input() cascadingCoordinateReturnSingle = true;
+  /* Limit total cascading result, useful when returnSingle is false */
+  @Input() cascadingCoordinateLimit = 10;
+  /* Cascading configuration for doing reverse lookups by coordinates */
+  @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -418,13 +426,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
+      const delegateSearch: DelegateSearchModel = {
+        search: searchValue,
+        baseUrl: this.baseUrl,
+        limit: this.locationsLimit,
+        layers: this.locationLayers,
+        prioritizelayer: this.prioritizeLayers,
+        sort: this.sortBy,
+        cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
+        cascadingCoordinateLimit: this.cascadingCoordinateLimit,
+        cascadingCoordinateRules: this.cascadingCoordinateRules
+      };
+
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
-        searchValue,
-        this.baseUrl,
-        this.locationsLimit,
-        this.locationLayers,
-        this.prioritizeLayers,
-        this.sortBy
+        delegateSearch
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
 
@@ -475,6 +490,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           this.addMapMarker(coords);
         }
       } else {
+        this.removeGeometry();
+        this.removeMarker();
         this.setNotification({
           status: 'm-alert--danger',
           text: this.coordinateErrorNotification,
@@ -772,7 +789,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       }
     };
 
-    this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    try {
+      this.selectedLocationGeometry = this.leafletMap.addGeoJSON(geoJson, {});
+    } catch (error) {
+      console.log(error);
+      // when addGeoJson throw an error ==> remove loading icon
+      this.searching = false;
+    }
 
     const bounds = this.selectedLocationGeometry.getBounds();
     const shapeCenter = this.selectedLocationGeometry.getBounds().getCenter();
