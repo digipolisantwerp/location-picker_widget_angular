@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 
-## [4.5.0] - 2020-07-27
+## [4.5.1] - 2020-07-27
 
 ### Added
 - LocationModel: added postCode: number AND postCodes: Array<number>
@@ -25,6 +25,9 @@ All notable changes to this project will be documented in this file.
 - CascadingCoordinateRules: added custom rules to search map servers by point
 - Location selected: sets map size according to selectedGeometry
 - Location deselected: removes default set view (view size and center map)
+
+
+## [4.5.0] - 2020-07-27 - BORKED
 
 
 ## [4.4.0] - 2020-03-30
@@ -115,7 +118,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.1...HEAD
+[4.5.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.1...v4.4.0
 [4.3.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.0...v4.3.1
