@@ -3,6 +3,7 @@ import {HttpParams} from '@angular/common/http';
 import {LambertModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
 import {CascadingCoordinateRulesModel, CascadingCoordinateRulesType} from '../types/cascading-rules.model';
+import proj4 from 'proj4';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,12 @@ export class NgxLocationPickerHelper {
    */
   constructor() {
   }
+
+  // These coordinates respresents border of Belgium
+  minX = 49.4;
+  maxX = 51.6;
+  minY = 2.3;
+  maxY = 6.45;
 
   /**
    * Converts a query object to HttpParams.
@@ -126,6 +133,30 @@ export class NgxLocationPickerHelper {
   }
 
   /**
+   * Determines if the given query input resembles alternative coordinate pairs ex: 51,205729 4,388629
+   *
+   * @return boolean
+   */
+  isAlternativeCoordinateNotation(query: string): boolean {
+    const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(' ') : null;
+
+    if (coordinateParts.length === 2) {
+      if (!isNaN(Number(coordinateParts[0].replace(',', '.'))) && !isNaN(Number(coordinateParts[1].replace(',', '.')))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  convertAlternativeCoordinateToNormalNotation(query: string): string {
+    const commaChar = /\,/gi;
+    const spaceChar = / /gi;
+
+    return query.replace(commaChar, '.').replace(spaceChar, ',');
+  }
+
+  /**
    * Splits the location query in street name and house number.
    *
    * @return streetAndNumber
@@ -187,6 +218,39 @@ export class NgxLocationPickerHelper {
     };
 
     return coordinate;
+  }
+
+  /**
+   * Checks wether given coordinates are WGS84 (response true) or Lambert (response false)
+   *
+   * @param x given x coordinate
+   * @param y given y coordinate
+   *
+   * @return isWgs84
+   */
+  isWgs84Coordinates(x?: number, y?: number): boolean {
+    if (x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Converts lambertcoordinates to wgs84 coordinate
+   *
+   * @param lambertCoordinate lambertmodel coordinates
+   *
+   * @return wgs84coordinates
+   */
+  convertLambertToWgs84Coordinates(lambertCoordinate: LambertModel): LambertModel {
+    // tslint:disable-next-line: max-line-length
+    const lambertProj = '+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs';
+    const result =  proj4(lambertProj, 'WGS84', [lambertCoordinate.x, lambertCoordinate.y]);
+    const coordinates: LambertModel = {
+      x: result[0] >= this.minX && result[0] <= this.maxX ? result[0] : result[1] >= this.minX && result[1] <= this.maxX ? result[1] : 0,
+      y: result[0] >= this.minY && result[0] <= this.maxY ? result[0] : result[1] >= this.minY && result[1] <= this.maxY ? result[1] : 0
+    };
+    return coordinates;
   }
 
 }
