@@ -21,6 +21,7 @@ export class NgxLocationPickerHelper {
   constructor() {
   }
 
+  // These coordinates respresents border of Belgium
   minX = 49.4;
   maxX = 51.6;
   minY = 2.3;
