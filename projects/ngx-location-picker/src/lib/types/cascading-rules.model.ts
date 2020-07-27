@@ -1,10 +1,10 @@
-export interface CascadingRulesModel {
-  type?: CascadingRulesType;
+export interface CascadingCoordinateRulesModel {
+  type?: CascadingCoordinateRulesType;
   addressOptions?: ReverseGeocodeOptionsModel;
   locationOptions?: GeoFeaturesOptionsModel;
 }
 
-export enum CascadingRulesType {
+export enum CascadingCoordinateRulesType {
   LOCATION = 'location',
   ADDRESS = 'address'
 }

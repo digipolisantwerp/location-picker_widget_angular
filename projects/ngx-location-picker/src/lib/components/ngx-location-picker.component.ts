@@ -11,8 +11,9 @@ import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
 import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
-import {CascadingRulesModel} from '../types/cascading-rules.model';
+import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
+import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -103,11 +104,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Set time to wait after user stops typing before triggering a search */
   @Input() debounceTime = 200;
   /* whether or not to return a single cascading result */
-  @Input() cascadingReturnSingle = true;
+  @Input() cascadingCoordinateReturnSingle = true;
   /* Limit total cascading result, useful when returnSingle is false */
-  @Input() cascadingLimit = 10;
+  @Input() cascadingCoordinateLimit = 10;
   /* Cascading configuration for doing reverse lookups by coordinates */
-  @Input() cascadingRules: CascadingRulesModel[] = [];
+  @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -432,16 +433,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
+      const delegateSearch: DelegateSearchModel = {
+        search: searchValue,
+        baseUrl: this.baseUrl,
+        limit: this.locationsLimit,
+        layers: this.locationLayers,
+        prioritizelayer: this.prioritizeLayers,
+        sort: this.sortBy,
+        cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
+        cascadingCoordinateLimit: this.cascadingCoordinateLimit,
+        cascadingCoordinateRules: this.cascadingCoordinateRules
+      };
+
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
-        searchValue,
-        this.baseUrl,
-        this.locationsLimit,
-        this.locationLayers,
-        this.prioritizeLayers,
-        this.sortBy,
-        this.cascadingReturnSingle,
-        this.cascadingLimit,
-        this.cascadingRules
+        delegateSearch
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
 
@@ -485,8 +490,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         } else if ($event.position.geometry) {
           this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
-      } else if ($event.location && $event.location.position && $event.location.position.geometry) {
-        this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
+      } else if ($event.location && $event.location.position && ($event.location.position.geometry || $event.location.position.wgs84)) {
+        if ( $event.location.position.geometry) {
+          this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
+        } else {
+          const coords: Array<number> = [$event.location.position.wgs84.lat, $event.location.position.wgs84.lng];
+          this.addMapMarker(coords);
+        }
       } else {
         this.removeGeometry();
         this.removeMarker();

@@ -11,7 +11,8 @@ import { AddressIdQueryModel } from '../types/address-id-query.model';
 import { CoordinateQueryModel } from '../types/coordinate-query.model';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
-import { CascadingRulesModel } from '../types/cascading-rules.model';
+import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
+import { DelegateSearchModel } from '../types/delegate-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,51 +41,37 @@ export class NgxLocationPickerService {
   /**
    * Main search function. Determines which action to undertake based on the provided search string.
    *
-   * @param search (the search query)
-   * @param baseUrl (required the url to the BFF)
-   * @param limit (the amount of locations to return, only used for querying searchLocations)
-   * @param layers (the layers to look for locations in, only used for querying searchLocations)
-   * @param prioritizelayer (the layer to boost)
-   * @param sort (key to sort results by)
-   * @param cascadingReturnSingle (whether or not to return a single cascading result)
-   * @param cascadingRules (the configuration for doing reverse lookups by coordinates)
+   * @param delegateSearch (the delegateSearch model)
    *
    * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
    */
   delegateSearch(
-    search: string,
-    baseUrl: string,
-    limit: number,
-    layers: Array<string>,
-    prioritizelayer: Array<string> = ['straatnaam'],
-    sort: string,
-    cascadingReturnSingle: boolean,
-    cascadingLimit: number,
-    cascadingRules: CascadingRulesModel[]
+    delegateSearch: DelegateSearchModel
   ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
-    this.locationPickerApi = baseUrl;
+    delegateSearch.prioritizelayer = delegateSearch.prioritizelayer ? delegateSearch.prioritizelayer : ['straatnaam'];
+    this.locationPickerApi = delegateSearch.baseUrl;
 
-    if (this.locationPickerHelper.isCoordinate(search)) {
-      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(search);
+    if (this.locationPickerHelper.isCoordinate(delegateSearch.search)) {
+      const coordinate: LambertModel = this.locationPickerHelper.extractXYCoord(delegateSearch.search);
       const requestQuery: CoordinateQueryModel = {
         xcoord: coordinate.x,
         ycoord: coordinate.y,
-        returnsingle: cascadingReturnSingle,
-        totalresults: cascadingLimit
+        returnsingle: delegateSearch.cascadingCoordinateReturnSingle,
+        totalresults: delegateSearch.cascadingCoordinateLimit
       };
 
-      return this.searchLocationsByCoordinates(requestQuery, cascadingRules);
-    } else if (this.locationPickerHelper.isAddress(search)) {
-      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(search);
+      return this.searchLocationsByCoordinates(requestQuery, delegateSearch.cascadingCoordinateRules);
+    } else if (this.locationPickerHelper.isAddress(delegateSearch.search)) {
+      const addressQuery: AddressQueryModel = this.locationPickerHelper.extractStreetAndNumber(delegateSearch.search);
 
       return this.searchAddresses(addressQuery);
     } else {
       const locationQuery: LocationQueryModel = {
-        layers,
-        limit,
-        search,
-        prioritizelayer,
-        sort
+        layers: delegateSearch.layers,
+        limit: delegateSearch.limit,
+        search: delegateSearch.search,
+        prioritizelayer: delegateSearch.prioritizelayer,
+        sort: delegateSearch.sort
       };
 
       return this.searchLocations(locationQuery);
@@ -152,10 +139,11 @@ export class NgxLocationPickerService {
    */
   private searchLocationsByCoordinates(
     query: CoordinateQueryModel,
-    cascadingRules: Array<CascadingRulesModel>
+    cascadingCoordinateRules: Array<CascadingCoordinateRulesModel>
   ): Observable<CoordinateModel[]> {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
-    return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`, cascadingRules, { params: parameters });
+    return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`,
+     cascadingCoordinateRules, { params: parameters });
   }
 }
