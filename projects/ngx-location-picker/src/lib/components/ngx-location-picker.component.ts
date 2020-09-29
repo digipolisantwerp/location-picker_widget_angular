@@ -159,6 +159,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private locationServiceSubscription;
   /* Currently selected location */
   private _selectedLocation: any = {};
+  /* Previous selected location */
+  private previousLocation: LocationModel | AddressModel | CoordinateModel;
   /* Cursor state if hovering over leaflet or not */
   private cursorOnLeaflet = false;
   /* Current active tile layers */
@@ -271,12 +273,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       this.searching = false;
       this.pickedLocation = false;
       this.selectedLocation = {};
+      this.previousLocation = null;
       this.resetFoundLocations();
       this.locationSelect.emit(location);
     }
 
     if ((location && location.label) || (location && location.position && location.position.wgs84)) {
       this.selectedLocation = location;
+      // update previousLocation on new search selectedLocation changes to search query and needs to know previous result for address search
+      this.previousLocation = location;
       this.locationSelect.emit(location);
     }
   }
@@ -442,7 +447,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         sort: this.sortBy,
         cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
         cascadingCoordinateLimit: this.cascadingCoordinateLimit,
-        cascadingCoordinateRules: this.cascadingCoordinateRules
+        cascadingCoordinateRules: this.cascadingCoordinateRules,
+        selectedLocation: this.previousLocation
       };
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(

@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
-import {LambertModel} from '../types/location.model';
+import {LambertModel, LocationModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
 import {CascadingCoordinateRulesModel, CascadingCoordinateRulesType} from '../types/cascading-rules.model';
 import proj4 from 'proj4';
+import { AddressModel } from '../types/address.model';
+import { CoordinateModel } from '../types/coordinate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +60,7 @@ export class NgxLocationPickerHelper {
       const queryValue = obj[key];
       if (typeof queryValue === 'string') {
         retObj[key] = queryValue;
-      } else if (Array.isArray(queryValue)) {
+      } else if (Array.isArray(queryValue) && queryValue.length > 0) {
         const strArr: string[] = [];
         for (const [index, value] of queryValue.entries()) {
           strArr.push((queryValue[index].toString()));
@@ -133,6 +135,15 @@ export class NgxLocationPickerHelper {
   }
 
   /**
+   * Determines if the given object matches LocationModel interface
+   *
+   *
+   */
+ isLocationModel(object: any): object is LocationModel {
+   return 'streetName' in object;
+ }
+
+  /**
    * Determines if the given query input resembles alternative coordinate pairs ex: 51,205729 4,388629
    *
    * @return boolean
@@ -157,13 +168,14 @@ export class NgxLocationPickerHelper {
   }
 
   /**
-   * Splits the location query in street name and house number.
+   * Splits the location query in street name and house number and checks for streetnameid.
    *
    * @return streetAndNumber
    */
-  extractStreetAndNumber(query: string): AddressQueryModel {
+  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
       streetname: '',
+      streetids: [],
       housenumber: ''
     };
 
@@ -201,6 +213,17 @@ export class NgxLocationPickerHelper {
       streetAndNumber.housenumber = query.replace(streetAndNumber.streetname, '').replace(/\s/g, '');
       streetAndNumber.housenumber = streetAndNumber.housenumber.trim().replace(/^\([a-z\s\,]*\)/gi, '');
     }
+
+    // if previous selected location is of type LocationModel and location has streetid 
+    //  ==> check if name corresponds with the streetname to use the streetnameid
+    if (this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
+      if (selectedLocation.streetName.toUpperCase()
+      === streetAndNumber.streetname.toUpperCase()) {
+        streetAndNumber.streetname = '';
+        streetAndNumber.streetids.push(selectedLocation.streetNameId);
+      }
+    }
+
 
     return streetAndNumber;
   }
