@@ -214,9 +214,9 @@ export class NgxLocationPickerHelper {
       streetAndNumber.housenumber = streetAndNumber.housenumber.trim().replace(/^\([a-z\s\,]*\)/gi, '');
     }
 
-    // if previous selected location is of type LocationModel and location has streetid 
+    // if previous selected location is of type LocationModel and location has streetid
     //  ==> check if name corresponds with the streetname to use the streetnameid
-    if (this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
+    if (selectedLocation && this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
       if (selectedLocation.streetName.toUpperCase()
       === streetAndNumber.streetname.toUpperCase()) {
         streetAndNumber.streetname = '';
