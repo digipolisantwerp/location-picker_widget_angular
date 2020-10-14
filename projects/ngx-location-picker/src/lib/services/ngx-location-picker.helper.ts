@@ -104,7 +104,7 @@ export class NgxLocationPickerHelper {
 
     if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
       for (const [index, value] of addressParts.entries()) {
-        const matches = /[0-9]$/.exec(addressParts[index]);
+        const matches = /[0-9]\w?$/.exec(addressParts[index]);
 
         if (matches) {
           return true;
@@ -171,7 +171,7 @@ export class NgxLocationPickerHelper {
 
     if (addressParts) {
       addressParts.map((part, index) => {
-        const matches = /[0-9]$/.exec(part);
+        const matches = /[0-9]\w?$/.exec(part);
 
         if ((index > 0) && matches) {
           if (!!streetAndNumber.housenumber || matches.index === 0) {
@@ -187,6 +187,8 @@ export class NgxLocationPickerHelper {
         if (/\d$/.test(part) && ((index + 1) === addressParts.length)) {
           streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, '');
           streetAndNumber.streetname += part.replace(/\d*$/, '');
+        }  else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
+          streetAndNumber.housenumber += part;
         } else {
           streetAndNumber.streetname += part;
         }
