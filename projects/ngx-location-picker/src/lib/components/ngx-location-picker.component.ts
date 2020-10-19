@@ -35,6 +35,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() defaultZoom = 14;
   /* The zoom level when a location is selected. */
   @Input() onSelectZoom = 16;
+  /* The zoom level will change after location selected (to fit selected geometry). */
+  @Input() changeZoomLevelOnLocationSelect = true;
   /* The initial map center on load. */
   @Input() mapCenter: Array<number> = [51.215, 4.425];
   /* Show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
@@ -732,7 +734,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     }
 
     this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
-    this.leafletMap.setView(coords, this.onSelectZoom);
 
     this.selectedLocationMarker.dragging.enable();
 
@@ -812,7 +813,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       if (!this.pickedLocation) {
         this.addMapMarker(shapeCenter, null, true, false);
         this.leafletMap.setView(shapeCenter, this.onSelectZoom);
-        this.leafletMap.map.fitBounds(bounds);
+        if (this.changeZoomLevelOnLocationSelect) {
+          this.leafletMap.map.fitBounds(bounds);
+        }
       } else {
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
           '#000000',
@@ -820,7 +823,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           '10px',
           {top: '-3px', left: '2px'}
         ));
+        // only change map zoomlevel if the selection is not the default selection after location was picked
+        if (this.changeZoomLevelOnLocationSelect && !this.didSearch) {
+          this.leafletMap.map.fitBounds(bounds);
+        }
       }
+
 
       if (this.selectedLocation.position) {
         this.selectedLocation.position.wgs84 = shapeCenter;
