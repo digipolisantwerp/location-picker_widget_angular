@@ -485,10 +485,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
+        this.leafletMap.setView(coords, this.onSelectZoom);
       } else if ($event.position) {
         if ($event.position.wgs84) {
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
           this.addMapMarker(coords);
+          this.leafletMap.setView(coords, this.onSelectZoom);
         } else if ($event.position.geometry) {
           this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
@@ -498,6 +500,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         } else {
           const coords: Array<number> = [$event.location.position.wgs84.lat, $event.location.position.wgs84.lng];
           this.addMapMarker(coords);
+          this.leafletMap.setView(coords, this.onSelectZoom);
         }
       } else {
         this.removeGeometry();
