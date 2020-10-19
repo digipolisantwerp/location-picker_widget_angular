@@ -36,7 +36,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* The zoom level when a location is selected. */
   @Input() onSelectZoom = 16;
   /* The zoom level will change after location selected (to fit selected geometry). */
-  @Input() changeZoomLevelOnLocationSelect = true;
+  @Input() changeZoomLevelOnLocationSelect = false;
   /* The initial map center on load. */
   @Input() mapCenter: Array<number> = [51.215, 4.425];
   /* Show a sidebar next to the map leaflet. A sidebar can contain any additional info you like. */
