@@ -13,7 +13,14 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [4.6.0] - 2020-10-23
+
+### Added
+- Search on streetnameid: if previous location was a street, when searching searching for address (street + housenumber) use previous selected streetId
+- Zoom level on location select: adds behaviour to size map to geometry size
+
+### Fixed
+- Search on housenumer: changes regex for housenumbers with and adds check for seperate letter of housenumber
 
 
 ## [4.5.1] - 2020-07-27
@@ -118,7 +125,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.6.0...HEAD
+[4.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.1...v4.6.0
 [4.5.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.3.1...v4.4.0
