@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Centers map and changes zoom level after using locate-me or pick location on map
+
 ## [4.6.0] - 2020-10-23
 
 ### Added
