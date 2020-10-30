@@ -361,7 +361,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.pickedLocation = true;
 
         if (position && position.coords) {
-          this.setLocationDynamically(position.coords.latitude, position.coords.longitude);
+          this.setLocationDynamically(position.coords.latitude, position.coords.longitude, true);
         }
 
         this.cancelGeolocation();
@@ -700,9 +700,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /**
    * Sets a dynamically fetched location when using locate-me or pick location on map
    */
-  private setLocationDynamically(lat, lng) {
+  private setLocationDynamically(lat, lng, setView = false) {
     this.resetFoundLocations();
     this.onSearch(`${lat.toFixed(6)},${lng.toFixed(6)}`);
+    if (setView) {
+      this.leafletMap.setView([lat.toFixed(6), lng.toFixed(6)], this.onSelectZoom);
+    }
   }
 
   /**
