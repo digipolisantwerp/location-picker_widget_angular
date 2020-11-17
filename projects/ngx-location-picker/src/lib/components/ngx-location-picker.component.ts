@@ -33,7 +33,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() baseUrl;
   /* The default zoom level on map load. */
   @Input() defaultZoom = 14;
-  /* Change zoomlevel on location select to onSelectZoom value */
+  /* Change zoom level on location select to onSelectZoom value */
   @Input() changeZoomLevelToSelectZoom = true;
   /* The zoom level when a location is selected. */
   @Input() onSelectZoom = 16;

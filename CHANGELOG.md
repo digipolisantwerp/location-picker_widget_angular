@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 -->
 
 ### Added
-- New property to change zoom behavious after location select
+- New property to change zoom behaviour after location select
 
 ### Fixed
 - Centers map and changes zoom level after using locate-me
