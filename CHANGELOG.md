@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 -->
 
 ### Added
-- New property to change zoom behaviour after location select
+- Made onSelectZoom property nullable. If onSelectZoom is nullable, zoomlevel doesn't change after location selection.
 
 ### Fixed
 - Centers map and changes zoom level after using locate-me

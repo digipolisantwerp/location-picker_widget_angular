@@ -196,7 +196,6 @@ selectedLocation: InitialLocationModel = {
 <aui-location-picker
     [baseUrl]="baseUrl"
     [defaultZoom]="defaultZoom"
-    [changeZoomLevelToSelectZoom]="changeZoomLevelToSelectZoom"
     [onSelectZoom]="onSelectZoom"
     [changeZoomLevelOnLocationSelect]="changeZoomLevelOnLocationSelect"
     [mapCenter]="mapCenter"
@@ -251,10 +250,11 @@ class ExampleComponent {
     @Input() baseUrl;
     /* The default zoom level on map load. */
     @Input() defaultZoom = 14;
-    /* Change zoom level on location select to onSelectZoom value */
-    @Input() changeZoomLevelToSelectZoom = true;
-    /* The zoom level when a location is selected. */
-    @Input() onSelectZoom = 16;
+    /**
+    *  The zoom level when a location is selected.
+    *  If null the zoomlevel won't change after location selection.
+    */
+    @Input() onSelectZoom? = 16;
     /* The zoom level will change after location selected (to fit selected geometry). */
     @Input() changeZoomLevelOnLocationSelect = false;
     /* The initial map center on load. */
