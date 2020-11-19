@@ -33,8 +33,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() baseUrl;
   /* The default zoom level on map load. */
   @Input() defaultZoom = 14;
-  /* The zoom level when a location is selected. */
-  @Input() onSelectZoom = 16;
+  /**
+   *  The zoom level when a location is selected.
+   *  If null the zoomlevel won't change after location selection.
+   */
+  @Input() onSelectZoom? = 16;
   /* The zoom level will change after location selected (to fit selected geometry). */
   @Input() changeZoomLevelOnLocationSelect = false;
   /* The initial map center on load. */
@@ -487,16 +490,16 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           '10px',
           {top: '-3px', left: '2px'}
         ));
-        this.leafletMap.setView(coords, this.onSelectZoom);
+        this.setView(coords);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
         this.addMapMarker(coords);
-        this.leafletMap.setView(coords, this.onSelectZoom);
+        this.setView(coords);
       } else if ($event.position) {
         if ($event.position.wgs84) {
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
           this.addMapMarker(coords);
-          this.leafletMap.setView(coords, this.onSelectZoom);
+          this.setView(coords);
         } else if ($event.position.geometry) {
           this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
@@ -506,7 +509,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         } else {
           const coords: Array<number> = [$event.location.position.wgs84.lat, $event.location.position.wgs84.lng];
           this.addMapMarker(coords);
-          this.leafletMap.setView(coords, this.onSelectZoom);
+          this.setView(coords);
         }
       } else {
         this.removeGeometry();
@@ -709,6 +712,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
+   * Sets leaflet map view to selected coords. With preferred zoomlevel.
+   */
+  private setView(coords: number[]) {
+    if (this.onSelectZoom) {
+      this.leafletMap.setView(coords, this.onSelectZoom);
+    } else {
+      this.leafletMap.setView(coords, this.leafletMap.map.getZoom());
+    }
+  }
+
+  /**
    * Registers optional feature layers and adds markers to the leaflet instance.
    */
   private registerFeatureLayers() {
@@ -824,7 +838,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.selectedLocation && shapeCenter) {
       if (!this.pickedLocation) {
         this.addMapMarker(shapeCenter, null, true, false);
-        this.leafletMap.setView(shapeCenter, this.onSelectZoom);
+        this.setView(shapeCenter);
         if (this.changeZoomLevelOnLocationSelect) {
           this.leafletMap.map.fitBounds(bounds);
         }

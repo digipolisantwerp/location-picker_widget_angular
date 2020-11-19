@@ -250,8 +250,11 @@ class ExampleComponent {
     @Input() baseUrl;
     /* The default zoom level on map load. */
     @Input() defaultZoom = 14;
-    /* The zoom level when a location is selected. */
-    @Input() onSelectZoom = 16;
+    /**
+    *  The zoom level when a location is selected.
+    *  If null the zoomlevel won't change after location selection.
+    */
+    @Input() onSelectZoom? = 16;
     /* The zoom level will change after location selected (to fit selected geometry). */
     @Input() changeZoomLevelOnLocationSelect = false;
     /* The initial map center on load. */

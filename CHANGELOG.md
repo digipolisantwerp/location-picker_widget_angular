@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Added
+- Made onSelectZoom property nullable. If onSelectZoom is null, zoomlevel doesn't change after location selection.
+
 ### Fixed
 - Centers map and changes zoom level after using locate-me
 - Changes picker position to match cursor 
