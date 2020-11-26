@@ -707,7 +707,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.resetFoundLocations();
     this.onSearch(`${lat.toFixed(6)},${lng.toFixed(6)}`);
     if (setView) {
-      this.leafletMap.setView([lat.toFixed(6), lng.toFixed(6)], this.onSelectZoom);
+      this.setView([lat.toFixed(6), lng.toFixed(6)]);
     }
   }
 
