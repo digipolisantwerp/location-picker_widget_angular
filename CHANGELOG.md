@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Fixed issue zoomlevel using locate-me: when onSelectZoom is null uses current zoomLevel.
+
 ## [4.7.0] - 2020-11-26
 
 ### Added
