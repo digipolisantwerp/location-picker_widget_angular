@@ -13,8 +13,11 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [4.7.1] - 2020-11-26
+
 ### Fixed
 - Fixed issue zoomlevel using locate-me: when onSelectZoom is null uses current zoomLevel.
+
 
 ## [4.7.0] - 2020-11-26
 
@@ -138,7 +141,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.1...HEAD
+[4.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.0...v4.7.1
 [4.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.1...v4.6.0
 [4.5.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.0...v4.5.1
