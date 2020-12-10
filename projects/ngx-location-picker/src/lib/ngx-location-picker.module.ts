@@ -7,6 +7,8 @@ import {NgxLocationPickerComponent} from './components/ngx-location-picker.compo
 import {HighlightSearchDirective} from './directives/highlight-search.directive';
 import {MAP_SERVICE_PROVIDER} from './map.provider';
 
+import { LocationViewerModule } from 'ngx-location-viewer';
+
 @NgModule({
     declarations: [
         NgxLocationPickerComponent,
@@ -17,7 +19,8 @@ import {MAP_SERVICE_PROVIDER} from './map.provider';
         FormsModule,
         CommonModule,
         ReactiveFormsModule,
-        LeafletModule
+        LeafletModule,
+        LocationViewerModule
     ],
     exports: [
         NgxLocationPickerComponent,

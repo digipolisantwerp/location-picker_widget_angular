@@ -1,6 +1,5 @@
 import {Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {baseMapAntwerp, baseMapWorldGray, LeafletMap, MapService} from '@acpaas-ui/ngx-components/map';
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LambertModel, LocationModel} from '../types/location.model';
@@ -14,6 +13,7 @@ import {Subject} from 'rxjs';
 import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
+import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions } from 'ngx-location-viewer';
 
 @Component({
   selector: 'aui-location-picker',
@@ -114,6 +114,23 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() cascadingCoordinateLimit = 10;
   /* Cascading configuration for doing reverse lookups by coordinates */
   @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
+  /* Input params to pass through to location viewer */
+  /* Geo API */
+  @Input() geoApiBaseUrl: string;
+  /* Shows layermangement inside the sidebar. Layermanagement is used to add or remove featurelayers. */
+  @Input() showLayerManagement = false;
+  /* Show selection tools */
+  @Input() showSelectionTools = false;
+  /* Show measure tools */
+  @Input() showMeasureTools = false;
+  /* show whatishere button */
+  @Input() showWhatIsHereButton = false;
+  /* Add supporting layers. If provided will be added as DynamicMapLayer to leaflet */
+  @Input() supportingLayerOptions: SupportingLayerOptions;
+  /* Add operationalLayer. If provided will be added as FeaturLayer(clustered) to leaflet */
+  @Input() operationalLayerOptions: OperationalLayerOptions;
+  /* Adds filter layer. If provided will be added as FeatureLayer to leaflet. Is used to filter operationallayer by geometry */
+  @Input() filterLayerOptions: FilterLayerOptions;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -124,7 +141,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
 
   /* Leaflet instance */
-  leafletMap: LeafletMap;
+  leafletMap: LocationViewerMap;
   /* Whether a search request is running or not. */
   searching = false;
   /* Whether a search was initiated or not. */
@@ -141,8 +158,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   leafletNotification: NotificationModel;
   /* The current highlighted index in the location results array */
   highlightedLocationResult = 0;
-  /* Current tile layer type default or custom */
-  tileLayerType: LeafletTileLayerType = LeafletTileLayerType.DEFAULT;
 
   /* Input change subject */
   private searchQueryChanged: Subject<string> = new Subject<string>();
@@ -168,8 +183,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private previousLocation: LocationModel | AddressModel | CoordinateModel;
   /* Cursor state if hovering over leaflet or not */
   private cursorOnLeaflet = false;
-  /* Current active tile layers */
-  private activeTileLayers = [];
 
   /* Used for ControlValueAccessor */
   propagateChange = (_: any) => {
@@ -211,26 +224,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Check if current tile layer is the default one.
-   */
-  get isDefaultTileLayer(): boolean {
-    return (this.tileLayerType === LeafletTileLayerType.DEFAULT);
-  }
-
-  /**
-   * Check if current tile layer is user defined.
-   */
-  get isCustomTileLayer(): boolean {
-    return (this.tileLayerType === LeafletTileLayerType.CUSTOM);
-  }
-
-  /**
    * NgxLocationPickerComponent constructor, injects required dependencies
    */
   constructor(
     private locationPickerService: NgxLocationPickerService,
     private locationPickerHelper: NgxLocationPickerHelper,
-    private mapService: MapService,
+    private locationViewerService: LocationViewerMapService,
     private renderer: Renderer2,
   ) {
     this.inputChangeSubscription = this.searchQueryChanged
@@ -607,39 +606,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   }
 
   /**
-   * Toggle tile layer when a custom tile layer is provided
-   */
-  toggleTileLayer(custom: boolean = false) {
-    this.resetCurrentTileLayers();
-
-    this.tileLayerType = (custom) ? LeafletTileLayerType.CUSTOM : LeafletTileLayerType.DEFAULT;
-
-    if (custom) {
-      this.activeTileLayers.push(this.leafletMap.addTileLayer(this.tileLayer.layer));
-    } else {
-      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
-      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
-    }
-  }
-
-  /**
-   * Resets the current tile layers
-   */
-  private resetCurrentTileLayers() {
-    if (this.activeTileLayers.length > 0) {
-      this.activeTileLayers.map((layer) => {
-        this.leafletMap.removeLayer(layer);
-      });
-    }
-
-    this.activeTileLayers = [];
-  }
-
-  /**
    * Init leaflet map with default values and register feature layers if provided.
    */
   private initLocationPicker() {
-    this.leafletMap = new LeafletMap({
+    this.leafletMap = new LocationViewerMap({
       zoom: this.defaultZoom,
       center: this.mapCenter,
       onAddPolygon: (layer) => {
@@ -651,12 +621,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       onEditFeature: (feature) => {
         this.editFeature.emit(feature);
       },
-    }, this.mapService);
+    }, this.locationViewerService);
 
     this.leafletMap.onInit.subscribe(() => {
       this.mapLoaded = true;
-      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapWorldGray));
-      this.activeTileLayers.push(this.leafletMap.addTileLayer(baseMapAntwerp));
 
       if (this.selectedLocation && this.selectedLocation.position) {
         this.selectedLocation = this.selectedLocation;

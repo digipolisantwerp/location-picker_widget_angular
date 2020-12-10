@@ -10,9 +10,22 @@
   <form (ngSubmit)="onSubmitNgModel()">
     <aui-location-picker
       name="locationPickerModel"
-      [baseUrl]="baseUrl + '/api/v1'"
+      [baseUrl]="baseUrl + '/api/v2'"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
+      [hasSidebar]="false"
+      [tileLayer]="satelliteMapLayer"
+      [cascadingCoordinateReturnSingle]="false"
+      [cascadingCoordinateRules]="cascadingRules"
+      [geoApiBaseUrl]="geoApiBaseUrl"
+      [showLayerManagement]="showLayerManagement"
+      [showSelectionTools]="true"
+      [showMeasureTools]="true"
+      [showWhatIsHereButton]="true"
+      [supportingLayerOptions]="supportingLayerOptions"
+      [operationalLayerOptions]="operationalLayerOptions"
+      [filterLayerOptions]="filterLayerOptions"
+      (filteredResult)="updateResult($event)"
     ></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 
