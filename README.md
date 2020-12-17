@@ -387,6 +387,10 @@ We welcome your bug reports and pull requests.
 
 Please see our [contribution guide](CONTRIBUTING.md).
 
+## Support
+
+Jasper Van Proeyen (<jasper.vanproeyen@digipolis.be>)
+
 ## Publishing
 
 > Only the ACPaaS UI team publishes new packages. [Contact us](https://acpaas-ui.digipolis.be/contact) if you need a new release published.
