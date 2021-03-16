@@ -432,7 +432,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
         let coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
-        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`};
+        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`, actualLocation: { lat: coords.x, lng: coords.y}};
         if (!this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
           coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;

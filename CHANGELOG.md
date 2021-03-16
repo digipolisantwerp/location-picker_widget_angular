@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Updated public API (added used models and fixed CascadingCoordinateRulesType enum import)
 
+### Added
+- Added actualLocation property to tempLocation (selectedLocation on marker placement)
+
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
