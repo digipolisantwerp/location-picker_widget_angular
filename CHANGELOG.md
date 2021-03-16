@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Updated public API (added used models and fixed CascadingCoordinateRulesType enum import)
+
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
