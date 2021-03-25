@@ -114,6 +114,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() cascadingCoordinateLimit = 10;
   /* Cascading configuration for doing reverse lookups by coordinates */
   @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
+  /* If provided, adds coordinate to resultList at index */
+  @Input() addCoordinateToResultsAt?: number = null;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -460,6 +462,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         delegateSearch
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
+
+        //adds used coordinate to result list
+        if (this.addCoordinateToResultsAt) {
+          this.foundLocations.splice(this.addCoordinateToResultsAt, 0, this.previousLocation);
+        }
 
         if (this.foundLocations.length && this.pickedLocation) {
           this.onLocationSelect(this.foundLocations[0], true);

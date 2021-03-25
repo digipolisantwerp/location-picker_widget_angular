@@ -331,6 +331,8 @@ class ExampleComponent {
     @Input() cascadingCoordinateLimit = 10;
     /* Cascading configuration for doing reverse lookups by coordinates */
     @Input() cascadingCoordinateRules: Array<CascadingCoordinateRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
+    /* If provided, adds coordinate to resultList at index */
+    @Input() addCoordinateToResultsAt?: number = null;
     /* AddPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* AddLine event */

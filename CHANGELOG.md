@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added actualLocation property to tempLocation (selectedLocation on marker placement)
+- Option to add used coordinate to resultlist
 
 <!--
 "### Added" for new features.
