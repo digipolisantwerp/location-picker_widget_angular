@@ -19,6 +19,7 @@ export interface LocationModel {
         geometryShape?: string;
         geometry?: any;
     };
+    distance?: number;
 }
 
 export interface LambertModel {
