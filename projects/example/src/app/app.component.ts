@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   satelliteMapLayer: LeafletTileLayerModel = {
     layer: {
       name: 'Satellite View',
-      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
     },
     buttonLabel: 'Luchtfoto'
   };
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }];
 
   supportingLayerOptions: SupportingLayerOptions = {
-    url: 'http://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
+    url: 'https://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
     layerIds: [143, 144, 145, 146, 147],
 };
 
@@ -44,7 +44,7 @@ operationalLayerOptions: OperationalLayerOptions = {
 };
 
 filterLayers: FilterLayerOptions[] = [{
-    url: 'http://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
+    url: 'https://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
     name: 'Routenaam',
     layerId: 78,
     popupLabel: 'Routenaam',

@@ -318,9 +318,9 @@ class ExampleComponent {
     /* The layers to search locations for */
     @Input() locationLayers = ['straatnaam'];
     /**
-    * Prioritize specific layers, boosts results from given layers to the top of the found locations.
-    * The order of the values in the array determines the priority. Overrides sortBy.
-    */
+     * Prioritize specific layers, boosts results from given layers to the top of the found locations.
+     * The order of the values in the array determines the priority. Overrides sortBy.
+     */
     @Input() prioritizeLayers = ['straatnaam'];
     /* Sort locations by certain key. */
     @Input() sortBy = '';
