@@ -13,6 +13,16 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [4.8.0] - 2021-04-19
+
+### Fixed
+- Updated public API (added used models and fixed CascadingCoordinateRulesType enum import)
+
+### Added
+- Added actualLocation property to tempLocation (selectedLocation on marker placement)
+- Option to add used coordinate to resultlist
+
+
 ## [4.7.1] - 2020-11-26
 
 ### Fixed
@@ -141,7 +151,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...HEAD
+[4.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.1...v4.8.0
 [4.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.0...v4.7.1
 [4.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.5.1...v4.6.0

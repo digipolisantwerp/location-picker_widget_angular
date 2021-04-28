@@ -331,6 +331,8 @@ class ExampleComponent {
     @Input() cascadingCoordinateLimit = 10;
     /* Cascading configuration for doing reverse lookups by coordinates */
     @Input() cascadingCoordinateRules: Array<CascadingCoordinateRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
+    /* If provided, adds coordinate to resultList at index */
+    @Input() addCoordinateToResultsAt?: number = null;
     /* AddPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* AddLine event */
@@ -386,6 +388,10 @@ Run `npm run build-lib` to build the project. The build artifacts will be stored
 We welcome your bug reports and pull requests.
 
 Please see our [contribution guide](CONTRIBUTING.md).
+
+## Support
+
+Jasper Van Proeyen (<jasper.vanproeyen@digipolis.be>)
 
 ## Publishing
 

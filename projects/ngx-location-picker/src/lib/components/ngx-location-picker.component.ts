@@ -131,6 +131,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() operationalLayerOptions: OperationalLayerOptions;
   /* Adds filter layer. If provided will be added as FeatureLayer to leaflet. Is used to filter operationallayer by geometry */
   @Input() filterLayerOptions: FilterLayerOptions;
+  /* If provided, adds coordinate to resultList at index */
+  @Input() addCoordinateToResultsAt?: number = null;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -431,7 +433,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
         let coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
-        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`};
+        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`, actualLocation: { lat: coords.x, lng: coords.y}};
         if (!this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
           coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
@@ -459,6 +461,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         delegateSearch
       ).subscribe((response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
         this.foundLocations = response;
+
+        //adds used coordinate to result list
+        if (this.addCoordinateToResultsAt) {
+          this.foundLocations.splice(this.addCoordinateToResultsAt, 0, this.previousLocation);
+        }
 
         if (this.foundLocations.length && this.pickedLocation) {
           this.onLocationSelect(this.foundLocations[0], true);
