@@ -29,6 +29,11 @@ export class NgxLocationPickerHelper {
   minY = 2.3;
   maxY = 6.45;
 
+  // If search string contains one of these words, search for locations instead of address
+  private locationKeywords: string [] = [
+    'kaainummer'
+  ]
+
   /**
    * Converts a query object to HttpParams.
    *
@@ -106,6 +111,12 @@ export class NgxLocationPickerHelper {
 
     if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
       for (const [index, value] of addressParts.entries()) {
+        // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
+        if (this.locationKeywords.includes(addressParts[index].toLowerCase()))
+        {
+          return false;
+        }
+
         const matches = /[0-9]\w?$/.exec(addressParts[index]);
 
         if (matches) {

@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- If 'kaainummer number' is entered search for location instead of address
+
 ## [4.8.0] - 2021-04-19
 
 ### Fixed
