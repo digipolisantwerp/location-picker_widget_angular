@@ -2,12 +2,12 @@ import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LeafletModule} from '@acpaas-ui/ngx-components/map';
+import {LeafletModule} from '@acpaas-ui/ngx-leaflet';
 import {NgxLocationPickerComponent} from './components/ngx-location-picker.component';
 import {HighlightSearchDirective} from './directives/highlight-search.directive';
 import {MAP_SERVICE_PROVIDER} from './map.provider';
 
-import { LocationViewerModule } from 'ngx-location-viewer';
+import { LocationViewerModule } from '@acpaas-ui-widgets/ngx-location-viewer';
 
 @NgModule({
     declarations: [

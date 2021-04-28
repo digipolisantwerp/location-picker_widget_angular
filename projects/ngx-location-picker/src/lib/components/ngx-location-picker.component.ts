@@ -13,7 +13,7 @@ import {Subject} from 'rxjs';
 import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
-import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions } from 'ngx-location-viewer';
+import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions } from '@acpaas-ui-widgets/ngx-location-viewer';
 
 @Component({
   selector: 'aui-location-picker',
@@ -130,7 +130,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Add operationalLayer. If provided will be added as FeaturLayer(clustered) to leaflet */
   @Input() operationalLayerOptions: OperationalLayerOptions;
   /* Adds filter layer. If provided will be added as FeatureLayer to leaflet. Is used to filter operationallayer by geometry */
-  @Input() filterLayerOptions: FilterLayerOptions;
+  @Input() filterLayers: FilterLayerOptions[];
   /* If provided, adds coordinate to resultList at index */
   @Input() addCoordinateToResultsAt?: number = null;
   /* AddPolygon event */

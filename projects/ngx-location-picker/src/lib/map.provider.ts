@@ -1,4 +1,4 @@
-import {MapService} from '@acpaas-ui/ngx-components/map';
+import {MapService} from '@acpaas-ui/ngx-leaflet';
 import {Provider} from '@angular/core';
 
 export function mapServiceFactory() {

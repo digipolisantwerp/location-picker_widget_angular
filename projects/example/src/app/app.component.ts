@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { FilterLayerOptions, GeofeatureDetail, OperationalLayerOptions, SupportingLayerOptions } from 'ngx-location-viewer';
+import { FilterLayerOptions, GeofeatureDetail, OperationalLayerOptions, SupportingLayerOptions } from '@acpaas-ui-widgets/ngx-location-viewer';
 import { CascadingCoordinateRulesModel, CascadingCoordinateRulesType } from 'projects/ngx-location-picker/src/lib/types/cascading-rules.model';
 import { LeafletTileLayerModel } from 'projects/ngx-location-picker/src/lib/types/leaflet-tile-layer.model';
 
@@ -43,12 +43,13 @@ operationalLayerOptions: OperationalLayerOptions = {
     enableClustering: true,
 };
 
-filterLayerOptions: FilterLayerOptions = {
+filterLayers: FilterLayerOptions[] = [{
     url: 'http://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
+    name: 'Routenaam',
     layerId: 78,
     popupLabel: 'Routenaam',
     propertyToDisplay: 'Routenaam',
-};
+}];
 
 
   result: GeofeatureDetail[];

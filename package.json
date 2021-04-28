@@ -17,7 +17,9 @@
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },
   "peerDependencies": {
-    "@acpaas-ui/ngx-components": "^3.0.0",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^1.2.0",
+    "@acpaas-ui/ngx-flyout": "^4.6.1",
+    "@acpaas-ui/ngx-leaflet": "^4.6.1",
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
     "@angular/forms": "^6.0.0"
@@ -25,7 +27,9 @@
   "dependencies": {},
   "devDependencies": {
     "@a-ui/core": "~4.1.0",
-    "@acpaas-ui/ngx-components": "^3.0.0",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^1.2.0",
+    "@acpaas-ui/ngx-flyout": "^4.6.1",
+    "@acpaas-ui/ngx-leaflet": "^4.6.1",
     "@angular-devkit/build-angular": "~0.13.0",
     "@angular-devkit/build-ng-packagr": "~0.13.0",
     "@angular/animations": "~7.2.0",
