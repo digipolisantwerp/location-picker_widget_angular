@@ -57,14 +57,6 @@
       </div>
     </div>
   </div>
-  <!-- <aui-leaflet
-    *ngIf="showMap"
-    [leafletMap]="leafletMap"
-    [hasSidebar]="hasSidebar"
-    [class.is-picking]="pickLocationActive"
-    (mouseover)="isCursorOnLeaflet(true)"
-    (mouseout)="isCursorOnLeaflet(false)"
-  > -->
   <aui-location-viewer
     *ngIf="showMap"
     [leafletMap]="leafletMap"
@@ -81,7 +73,8 @@
     [defaultTileLayerLabel]="defaultTileLayerLabel"
     [class.is-picking]="pickLocationActive"
     (mouseover)="isCursorOnLeaflet(true)"
-    (mouseout)="isCursorOnLeaflet(false)">
+    (mouseout)="isCursorOnLeaflet(false)"
+    (filteredResult)="onResultFiltered($event)">
     <div controls bottom left>
       <button
         type="button"
@@ -107,6 +100,5 @@
     <div *ngIf="hasSidebar">
       <ng-content></ng-content>
     </div>
-  <!-- </aui-leaflet> -->
 </aui-location-viewer>
 </div>

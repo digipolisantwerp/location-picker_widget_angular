@@ -13,7 +13,7 @@ import {Subject} from 'rxjs';
 import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
 import {InitialLocationModel} from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
-import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions } from '@acpaas-ui-widgets/ngx-location-viewer';
+import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions, GeofeatureDetail, OperationalMarker } from '@acpaas-ui-widgets/ngx-location-viewer';
 
 @Component({
   selector: 'aui-location-picker',
@@ -141,6 +141,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Output() editFeature = new EventEmitter<any>();
   /* LocationSelect event: fired when selecting a location. */
   @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
+  /* Operational layer filtered: fired when using selection tools rectangle/polygon, using filter layer or clicking on marker of operational layer*/
+  @Output() filteredResult = new EventEmitter<GeofeatureDetail[] | OperationalMarker[] | any>();
 
   /* Leaflet instance */
   leafletMap: LocationViewerMap;
@@ -529,6 +531,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       this.pickedLocation = didSearch;
     }
+  }
+
+  /**
+   * When a result is filtered in location-viewer.
+   */
+  onResultFiltered($event: any) {
+    this.filteredResult.emit($event);
   }
 
   /**

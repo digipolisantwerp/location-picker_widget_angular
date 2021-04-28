@@ -52,7 +52,7 @@ filterLayers: FilterLayerOptions[] = [{
 }];
 
 
-  result: GeofeatureDetail[];
+  result: any;
   geoApiBaseUrl = 'https://geoapi-app1-o.antwerpen.be/v2/';
 
   showLayerManagement = true;
@@ -64,7 +64,7 @@ filterLayers: FilterLayerOptions[] = [{
     console.log('NgModel value:', this.selectedLocationModel);
   }
 
-  updateResult(result: GeofeatureDetail[]) {
+  updateResult(result: any) {
     this.result = result;
 }
 }
