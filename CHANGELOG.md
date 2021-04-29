@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- When param addCoordinateToResultsAt is provided: only add result when search is triggered by coordinate
+
 ## [4.8.0] - 2021-04-19
 
 ### Fixed
