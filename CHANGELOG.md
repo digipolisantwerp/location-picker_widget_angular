@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 -->
 
 ### Fixed
-- If 'kaainummer number' is entered search for location instead of address
+- Added locationKeywords param with default value ['kaainummer'], if 'kaainummer number' is entered search for location instead of address
 
 ## [4.8.0] - 2021-04-19
 
