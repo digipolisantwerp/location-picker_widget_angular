@@ -13,10 +13,31 @@
       [baseUrl]="baseUrl + '/api/v2'"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
+      [onlySearchAddressesInAntwerp]="inAntwerp"
+      [searchAddressesInCountries]="countryCodes"
     ></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
-
-    <pre>{{ selectedLocationModel | json }}</pre>
+    <div class="form">
+      <form (ngSubmit)="onSubmit()">
+        <div class="a-input">
+          <label class="a-input__label">Enkel Antwerpen</label>
+          <div class="a-switch">
+            <label class="a-switch__label">Nee</label>
+            <div class="a-switch__toggle">
+              <input type="checkbox" name="switch1" id="switch1" role="switch" aria-checked="false" [(ngModel)]="inAntwerp">
+              <label for="switch1"><span class="u-screen-reader-only">Toggle switch</span></label>
+            </div>
+            <label class="a-switch__label">Ja</label>
+          </div>
+        </div>
+        <div class="a-input is-required">
+          <label class="a-input__label" for="required-text-field">LandenCodes</label>
+          <input type="text" name="required-text-field" id="required-text-field" placeholder="Placeholder" [(ngModel)]="countryCodesPlaceHolder" required />
+        </div>
+        <button class="a-button" type="submit">Aanpassen</button>
+      </form>
+    </div>
+    <pre>{{ selectedLocationModel | json }}</pre>    
   </form>
 </div>
 

@@ -64,7 +64,9 @@ export class NgxLocationPickerService {
     } else if (this.locationPickerHelper.isAddress(delegateSearch.search)) {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.buildAddressQuery(
         delegateSearch.search,
-        delegateSearch.selectedLocation
+        delegateSearch.selectedLocation,
+        delegateSearch.addressesInAntwerp,
+        delegateSearch.countryCodes
       );
 
       return this.searchAddresses(addressQuery);

@@ -116,6 +116,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
   /* If provided, adds coordinate to resultList at index */
   @Input() addCoordinateToResultsAt?: number = null;
+  @Input() onlySearchAddressesInAntwerp: boolean = false;
+  @Input() searchAddressesInCountries: string[] = ["be","nl","lu"];
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -455,7 +457,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
         cascadingCoordinateLimit: this.cascadingCoordinateLimit,
         cascadingCoordinateRules: this.cascadingCoordinateRules,
-        selectedLocation: this.previousLocation
+        selectedLocation: this.previousLocation,
+        addressesInAntwerp: this.onlySearchAddressesInAntwerp,
+        countryCodes: this.searchAddressesInCountries
       };
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(

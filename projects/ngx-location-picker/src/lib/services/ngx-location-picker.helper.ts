@@ -87,9 +87,10 @@ export class NgxLocationPickerHelper {
       } else {
         const hasComma = value.indexOf(',');
 
-        if (hasComma > -1) {
-          return value.replace(value.substr(hasComma, value.length), '');
-        }
+        //TODO check why comma's where filtered out of result
+        // if (hasComma > -1) {
+        //   return value.replace(value.substr(hasComma, value.length), '');
+        // }
       }
     }
 
@@ -102,7 +103,9 @@ export class NgxLocationPickerHelper {
    * @return boolean
    */
   isAddress(query: string): boolean {
-    const addressParts: Array<string> | null = (query) ? query.split(' ') : null;
+
+    const queryParts: Array<string> | null = (query) ? query.split(','): null;
+    const addressParts: Array<string> | null = (queryParts && queryParts[0]) ? queryParts[0].split(' ') : null;
 
     if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
       for (const [index, value] of addressParts.entries()) {
@@ -170,64 +173,83 @@ export class NgxLocationPickerHelper {
   /**
    * Splits the location query in street name and house number and checks for streetnameid.
    *
-   * @return streetAndNumber
+   * @return addressQuery
    */
-  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel): AddressQueryModel {
-    const streetAndNumber: AddressQueryModel = {
+  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel, searchInAntwerp: boolean, countryCodes: string[]): AddressQueryModel {
+    const addressQuery: AddressQueryModel = {
       streetname: '',
       streetids: [],
-      housenumber: ''
+      housenumber: '',
+      onlyAntwerp: searchInAntwerp,
+      countries: !searchInAntwerp ? countryCodes : []
     };
 
-    const addressParts: Array<string> = (query && query.trim().length > 0) ? query.split(' ') : null;
+    const queryParts: Array<string> = (query && query.trim().length > 0) ? query.split(',') : null;
+    const addressParts: Array<string> = (queryParts && queryParts[0]) ? queryParts[0].split(' ') : null;
+    const placeParts: Array<string> = (queryParts && queryParts[1]) ? queryParts[1].split(' ') : null;
 
     if (addressParts) {
       addressParts.map((part, index) => {
         const matches = /[0-9]\w?$/.exec(part);
 
         if ((index > 0) && matches) {
-          if (!!streetAndNumber.housenumber || matches.index === 0) {
-            streetAndNumber.housenumber += part + '';
+          if (!!addressQuery.housenumber || matches.index === 0) {
+            addressQuery.housenumber += part + '';
             return;
           }
         }
 
-        if (streetAndNumber.streetname) {
-          streetAndNumber.streetname += ' ';
+        if (addressQuery.streetname) {
+          addressQuery.streetname += ' ';
         }
 
         if (/\d$/.test(part) && ((index + 1) === addressParts.length)) {
-          streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, '');
-          streetAndNumber.streetname += part.replace(/\d*$/, '');
-        }  else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
-          streetAndNumber.housenumber += part;
+          addressQuery.housenumber = part.replace(/^[0-9]\-[a-z]+/g, '');
+          addressQuery.streetname += part.replace(/\d*$/, '');
+        }  else if (/[0-9]\w?$/.exec(addressQuery.housenumber + part)) {
+          addressQuery.housenumber += part;
         } else {
-          streetAndNumber.streetname += part;
+          addressQuery.streetname += part;
         }
       });
 
-      streetAndNumber.streetname = streetAndNumber.streetname.trim().replace(/\s+\([a-z\s\,]+\)$/gi, '');
+      addressQuery.streetname = addressQuery.streetname.trim().replace(/\s+\([a-z\s\,]+\)$/gi, '');
 
-      if (/[a-z]\d*$/.test(streetAndNumber.streetname)) {
-        streetAndNumber.streetname = streetAndNumber.streetname.replace(/[0-9]*$/g, '');
+      if (/[a-z]\d*$/.test(addressQuery.streetname)) {
+        addressQuery.streetname = addressQuery.streetname.replace(/[0-9]*$/g, '');
       }
 
-      streetAndNumber.housenumber = query.replace(streetAndNumber.streetname, '').replace(/\s/g, '');
-      streetAndNumber.housenumber = streetAndNumber.housenumber.trim().replace(/^\([a-z\s\,]*\)/gi, '');
+      //TODO: check why this line was usefull??? 0 documentation, 0 documentation, great thanks
+      addressQuery.housenumber = addressParts.join(' ').replace(addressQuery.streetname, '').replace(/\s/g, '');
+      addressQuery.housenumber = addressQuery.housenumber.trim().replace(/^\([a-z\s\,]*\)/gi, '');
+    }
+
+    if (placeParts) {
+      placeParts.map((placePart: string) => {
+        //early implementation if placepart is number than that's the postalcode, TODO FIX to search for postalcodes of the netherlands can be a combination of numbers and letters
+        
+        //this checks for '43', '43A'
+        const matches = /[0-9]\w?$/.exec(placePart);
+        if (matches) {
+          addressQuery.postalcode = placePart;
+        } else {
+          addressQuery.place = placePart;
+        }
+      })
     }
 
     // if previous selected location is of type LocationModel and location has streetid
     //  ==> check if name corresponds with the streetname to use the streetnameid
     if (selectedLocation && this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
       if (selectedLocation.streetName.toUpperCase()
-      === streetAndNumber.streetname.toUpperCase()) {
-        streetAndNumber.streetname = '';
-        streetAndNumber.streetids.push(selectedLocation.streetNameId);
+      === addressQuery.streetname.toUpperCase()) {
+        addressQuery.streetname = '';
+        addressQuery.streetids.push(selectedLocation.streetNameId);
       }
     }
 
 
-    return streetAndNumber;
+    return addressQuery;
   }
 
   /**
