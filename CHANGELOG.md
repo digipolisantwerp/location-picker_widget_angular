@@ -13,9 +13,13 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+
+## [4.8.1] - 2021-05-10
+
 ### Fixed
 - Added locationKeywords param with default value ['kaainummer'], if 'kaainummer number' is entered search for location instead of address
 - When param addCoordinateToResultsAt is provided: only add result when search is triggered by coordinate
+
 
 ## [4.8.0] - 2021-04-19
 
@@ -155,7 +159,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...HEAD
+[4.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...v4.8.1
 [4.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.1...v4.8.0
 [4.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.0...v4.7.1
 [4.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.6.0...v4.7.0
