@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Added locationKeywords param with default value ['kaainummer'], if 'kaainummer number' is entered search for location instead of address
+- When param addCoordinateToResultsAt is provided: only add result when search is triggered by coordinate
 
 ## [4.8.0] - 2021-04-19
 

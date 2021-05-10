@@ -467,7 +467,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.foundLocations = response;
 
         //adds used coordinate to result list
-        if (this.addCoordinateToResultsAt) {
+        if (this.addCoordinateToResultsAt && this.pickedLocation) {
           this.foundLocations.splice(this.addCoordinateToResultsAt, 0, this.previousLocation);
         }
 
