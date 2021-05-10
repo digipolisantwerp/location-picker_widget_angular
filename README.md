@@ -232,6 +232,7 @@ selectedLocation: InitialLocationModel = {
     [cascadingCoordinateReturnSingle]="cascadingCoordinateReturnSingle"
     [cascadingCoordinateLimit]="cascadingCoordinateLimit"
     [cascadingCoordinateRules]="cascadingCoordinateRules"
+    [locationKeywords]="locationKeywords"
     (addPolygon)="onAddPolygon($event)"
     (addLine)="onAddLine($event)"
     (editFeature)="onEditFeature($event)"
@@ -333,6 +334,8 @@ class ExampleComponent {
     @Input() cascadingCoordinateRules: Array<CascadingCoordinateRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
     /* If provided, adds coordinate to resultList at index */
     @Input() addCoordinateToResultsAt?: number = null;
+    /* If search string contains one of these words, search for locations instead of address */
+    @Input() locationKeywords: string[] = ['kaainummer'];
     /* AddPolygon event */
     @Output() addPolygon = new EventEmitter<any>();
     /* AddLine event */
