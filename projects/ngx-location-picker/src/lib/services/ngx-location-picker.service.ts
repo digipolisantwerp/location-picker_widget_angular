@@ -61,7 +61,7 @@ export class NgxLocationPickerService {
       };
 
       return this.searchLocationsByCoordinates(requestQuery, delegateSearch.cascadingCoordinateRules);
-    } else if (this.locationPickerHelper.isAddress(delegateSearch.search)) {
+    } else if (this.locationPickerHelper.isAddress(delegateSearch.search, delegateSearch.locationKeywords)) {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.buildAddressQuery(
         delegateSearch.search,
         delegateSearch.selectedLocation

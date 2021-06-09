@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
 import {LambertModel, LocationModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
-import {CascadingCoordinateRulesModel, CascadingCoordinateRulesType} from '../types/cascading-rules.model';
 import proj4 from 'proj4';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
@@ -101,11 +100,19 @@ export class NgxLocationPickerHelper {
    *
    * @return boolean
    */
-  isAddress(query: string): boolean {
+  isAddress(query: string, locationKeywords: string[]): boolean {
     const addressParts: Array<string> | null = (query) ? query.split(' ') : null;
+
+    const lowerLocationKeyWords = locationKeywords.map(x => x.toLowerCase());
 
     if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
       for (const [index, value] of addressParts.entries()) {
+        // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
+        if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase()))
+        {
+          return false;
+        }
+
         const matches = /[0-9]\w?$/.exec(addressParts[index]);
 
         if (matches) {
