@@ -43,7 +43,10 @@ Add required leaflet styles in your angular.json file.
 ```
 "styles": [
     "node_modules/leaflet/dist/leaflet.css",
-    "node_modules/leaflet-draw/dist/leaflet.draw.css"
+    "node_modules/leaflet-draw/dist/leaflet.draw.css",
+    "node_modules/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css",
+    "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+    "node_modules/leaflet.markercluster/dist/MarkerCluster.css"
 ]
 ```
 
@@ -280,7 +283,7 @@ class ExampleComponent {
     /* The input field placeholder text. */
     @Input() placeholder = 'Zoek een locatie…';
     /* Label to use when no results were found. */
-    @Input() noResultsLabel = 'Er werden geen locaties gevonden.';
+    @Input() noResultsLabel = 'Er werd geen gekende locatie gevonden.';
     /* Label to use for "use selected coordinates option" */
     @Input() defaultOptionLabel = 'Gebruik gekozen coördinaat';
     /* Aria label for clear input button. */
@@ -320,19 +323,36 @@ class ExampleComponent {
      * The order of the values in the array determines the priority. Overrides sortBy.
      */
     @Input() prioritizeLayers = ['straatnaam'];
-    /* Sort locations by certain key, overrides prioritizeLayer. */
+    /* Sort locations by certain key. */
     @Input() sortBy = '';
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
     /* Set time to wait after user stops typing before triggering a search */
-    @Input() debounceTime = 50;
+    @Input() debounceTime = 200;
     /* whether or not to return a single cascading result */
     @Input() cascadingCoordinateReturnSingle = true;
     /* Limit total cascading result, useful when returnSingle is false */
     @Input() cascadingCoordinateLimit = 10;
     /* Cascading configuration for doing reverse lookups by coordinates */
-    @Input() cascadingCoordinateRules: Array<CascadingCoordinateRulesModel> = this.locationPickerHelper.getDefaultCascadingConfig();
-    /* If provided, adds coordinate to resultList at index */
+    @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
+    /* Input params to pass through to location viewer */
+    /* Geo API */
+    @Input() geoApiBaseUrl: string;
+    /* Shows layermangement inside the sidebar. Layermanagement is used to add or remove featurelayers. */
+    @Input() showLayerManagement = false;
+    /* Show selection tools */
+    @Input() showSelectionTools = false;
+    /* Show measure tools */
+    @Input() showMeasureTools = false;
+    /* show whatishere button */
+    @Input() showWhatIsHereButton = false;
+    /* Add supporting layers. If provided will be added as DynamicMapLayer to leaflet */
+    @Input() supportingLayerOptions: SupportingLayerOptions;
+    /* Add operationalLayer. If provided will be added as FeaturLayer(clustered) to leaflet */
+    @Input() operationalLayerOptions: OperationalLayerOptions;
+    /* Adds filter layer. If provided will be added as FeatureLayer to leaflet. Is used to filter operationallayer by geometry */
+    @Input() filterLayers: FilterLayerOptions[];
+    /* If provided, adds coordinate to resultList at index */ 
     @Input() addCoordinateToResultsAt?: number = null;
     /* If search string contains one of these words, search for locations instead of address */
     @Input() locationKeywords: string[] = ['kaainummer'];
@@ -344,7 +364,8 @@ class ExampleComponent {
     @Output() editFeature = new EventEmitter<any>();
     /* LocationSelect event: fired when selecting a location. */
     @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
-
+    /* Operational layer filtered: fired when using selection tools rectangle/polygon, using filter layer or clicking on marker of operational layer*/
+    @Output() filteredResult = new EventEmitter<GeofeatureDetail[] | OperationalMarker[] | any>();
 }
 ```
 

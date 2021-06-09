@@ -13,6 +13,10 @@
       [baseUrl]="baseUrl + '/api/v2'"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
+      [hasSidebar]="false"
+      [tileLayer]="satelliteMapLayer"
+      [cascadingCoordinateReturnSingle]="false"
+      [cascadingCoordinateRules]="cascadingRules"
     ></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 

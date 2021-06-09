@@ -10,6 +10,8 @@
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
-    "@acpaas-ui/ngx-components": "^2.1.1"
+    "@acpaas-ui-widgets/ngx-location-viewer": "^1.2.0",
+    "@acpaas-ui/ngx-flyout": "^4.6.1",
+    "@acpaas-ui/ngx-leaflet": "^4.6.1"
   }
 }

@@ -57,14 +57,24 @@
       </div>
     </div>
   </div>
-  <aui-leaflet
+  <aui-location-viewer
     *ngIf="showMap"
     [leafletMap]="leafletMap"
-    [hasSidebar]="hasSidebar"
+    [(hasSidebar)]="hasSidebar"
+    [geoApiBaseUrl]="geoApiBaseUrl"
+    [showLayerManagement]="showLayerManagement"
+    [showSelectionTools]="showSelectionTools"
+    [showMeasureTools]="showMeasureTools"
+    [showWhatIsHereButton]="showWhatIsHereButton"
+    [supportingLayerOptions]="supportingLayerOptions"
+    [operationalLayerOptions]="operationalLayerOptions"
+    [filterLayers]="filterLayers"
+    [tileLayer]="tileLayer"
+    [defaultTileLayerLabel]="defaultTileLayerLabel"
     [class.is-picking]="pickLocationActive"
     (mouseover)="isCursorOnLeaflet(true)"
     (mouseout)="isCursorOnLeaflet(false)"
-  >
+    (filteredResult)="onResultFiltered($event)">
     <div controls bottom left>
       <button
         type="button"
@@ -74,42 +84,6 @@
       >
         <span class="fa fa-map-marker" [attr.aria-label]="locationPickAriaLabel"></span>
       </button>
-
-      <div class="m-button-group m-button-group--vertical">
-        <button
-          type="button"
-          class="a-button a-button--small has-icon a-button--block button-zoom-in"
-          (click)="zoomIn()"
-        >
-          <span class="fa fa-plus" [attr.aria-label]="zoomInAriaLabel"></span>
-        </button>
-        <button
-          type="button"
-          class="a-button a-button--small has-icon a-button--block button-zoom-out"
-          (click)="zoomOut()"
-        >
-          <span class="fa fa-minus" [attr.aria-label]="zoomOutAriaLabel"></span>
-        </button>
-      </div>
-
-      <div *ngIf="tileLayer" class="m-button-group map-layer-toggle u-margin-top-xs">
-        <button
-          type="button"
-          class="a-button a-button--small"
-          (click)="toggleTileLayer()"
-          [disabled]="isDefaultTileLayer"
-        >
-          {{ defaultTileLayerLabel }}
-        </button>
-        <button
-          type="button"
-          class="a-button a-button--small"
-          (click)="toggleTileLayer(true)"
-          [disabled]="isCustomTileLayer"
-        >
-          {{ tileLayer.buttonLabel }}
-        </button>
-      </div>
     </div>
     <div controls bottom right>
       <button
@@ -126,5 +100,5 @@
     <div *ngIf="hasSidebar">
       <ng-content></ng-content>
     </div>
-  </aui-leaflet>
+</aui-location-viewer>
 </div>
