@@ -278,7 +278,7 @@ class ExampleComponent {
     * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
     * see: FeatureLayerIconModel
     */
-     @Input() featureLayers: FeatureLayerModel[] = [];
+    @Input() featureLayers: FeatureLayerModel[] = [];
     /* The input field placeholder text. */
     @Input() placeholder = 'Zoek een locatie…';
     /* Label to use when no results were found. */
