@@ -419,7 +419,7 @@ Jasper Van Proeyen (<jasper.vanproeyen@digipolis.be>)
 
 ## Publishing
 
-> Only the ACPaaS UI team publishes new packages. [Contact us](https://acpaas-ui.digipolis.be/contact) if you need a new release published.
+> Only the Antwerp UI team publishes new packages. [Contact us](https://antwerp-ui.digipolis.be/contact) if you need a new release published.
 
 ## Running unit tests
 

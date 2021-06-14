@@ -15,10 +15,11 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Implemented location viewer widget (was ngx-leaflet):
-    - Use of acpaas-ui v4 components (ngx-leaflet & ngx-flyout)
-    - Added locationviewer dependencies (geoman, esri, turf)
-    - Removed code that already exists in ngx-location-viewer (zoomin, zoomout & tilelayers)
-    - Implemented all locationviewer params
+- Use of antwerp-ui v4 components (ngx-leaflet & ngx-flyout)
+- Added location viewer dependencies (geoman, esri, turf)
+- Removed code that already exists in ngx-location-viewer (zoom in, zoom out & tile layers)
+- Implemented all location viewer params
+
 
 ## [4.8.1] - 2021-05-10
 
