@@ -1,3 +1,3 @@
 export interface AddressIdQueryModel {
-    id: number;
+  id: number;
 }

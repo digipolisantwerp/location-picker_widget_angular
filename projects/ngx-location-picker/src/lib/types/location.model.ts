@@ -1,27 +1,27 @@
-import {LatLngModel} from './address.model';
+import { LatLngModel } from './address.model';
 
 export interface LocationModel {
-    id?: string;
-    name?: string;
-    layer?: string;
-    streetNameId?: number;
-    streetName?: string;
-    postCodes?: Array<number>;
-    postCode?: number;
-    antwerpDistrict?: string;
-    municipality?: string;
-    label?: string;
-    position?: {
-        lambert72?: LambertModel;
-        wgs84?: LatLngModel;
-        geometryMethod?: string;
-        geometrySpecification?: string;
-        geometryShape?: string;
-        geometry?: any;
-    };
+  id?: string;
+  name?: string;
+  layer?: string;
+  streetNameId?: number;
+  streetName?: string;
+  postCodes?: Array<number>;
+  postCode?: number;
+  antwerpDistrict?: string;
+  municipality?: string;
+  label?: string;
+  position?: {
+    lambert72?: LambertModel;
+    wgs84?: LatLngModel;
+    geometryMethod?: string;
+    geometrySpecification?: string;
+    geometryShape?: string;
+    geometry?: any;
+  };
 }
 
 export interface LambertModel {
-    x?: number;
-    y?: number;
+  x?: number;
+  y?: number;
 }

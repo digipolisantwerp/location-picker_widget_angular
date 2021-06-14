@@ -1,17 +1,17 @@
-import {Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
-import {FeatureLayerModel} from '../types/feature-layer.model';
-import {LambertModel, LocationModel} from '../types/location.model';
-import {AddressModel} from '../types/address.model';
-import {CoordinateModel} from '../types/coordinate.model';
-import {NotificationModel} from '../types/notification.model';
-import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
-import {LeafletTileLayerModel, LeafletTileLayerType} from '../types/leaflet-tile-layer.model';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-import {CascadingCoordinateRulesModel} from '../types/cascading-rules.model';
-import {InitialLocationModel} from '../types/initial-location.model';
+import { Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgxLocationPickerService } from '../services/ngx-location-picker.service';
+import { FeatureLayerModel } from '../types/feature-layer.model';
+import { LambertModel, LocationModel } from '../types/location.model';
+import { AddressModel } from '../types/address.model';
+import { CoordinateModel } from '../types/coordinate.model';
+import { NotificationModel } from '../types/notification.model';
+import { NgxLocationPickerHelper } from '../services/ngx-location-picker.helper';
+import { LeafletTileLayerModel, LeafletTileLayerType } from '../types/leaflet-tile-layer.model';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
+import { InitialLocationModel } from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
 import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions, GeofeatureDetail, OperationalMarker } from '@acpaas-ui-widgets/ngx-location-viewer';
 
@@ -37,7 +37,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    *  The zoom level when a location is selected.
    *  If null the zoomlevel won't change after location selection.
    */
-  @Input() onSelectZoom? = 16;
+  @Input() onSelectZoom?= 16;
   /* The zoom level will change after location selected (to fit selected geometry). */
   @Input() changeZoomLevelOnLocationSelect = false;
   /* The initial map center on load. */
@@ -392,16 +392,16 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         }
 
         this.setNotification({
-          status: 'm-alert--danger',
+          status: 'danger',
           text: message,
-          icon: 'fa-exclamation-triangle'
+          icon: 'ai-alert-triangle'
         });
       });
     } else {
       this.setNotification({
-        status: 'm-alert--danger',
+        status: 'danger',
         text: this.locateMeNotSupportedNotification,
-        icon: 'fa-exclamation-triangle'
+        icon: 'ai-alert-triangle'
       });
     }
   }
@@ -437,7 +437,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
         let coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
-        const tempLocation = {position: {wgs84: {lat: coords.x, lng: coords.y}}, label: `${coords.x},${coords.y}`, actualLocation: { lat: coords.x, lng: coords.y}};
+        const tempLocation = { position: { wgs84: { lat: coords.x, lng: coords.y } }, label: `${coords.x},${coords.y}`, actualLocation: { lat: coords.x, lng: coords.y } };
         if (!this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
           coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
@@ -497,9 +497,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
           '#000000',
-          'fa-circle',
+          'ai-pin-3',
           '10px',
-          {top: '-3px', left: '2px'}
+          { top: '-3px', left: '2px' }
         ));
         this.setView(coords);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
@@ -515,7 +515,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
       } else if ($event.location && $event.location.position && ($event.location.position.geometry || $event.location.position.wgs84)) {
-        if ( $event.location.position.geometry) {
+        if ($event.location.position.geometry) {
           this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
         } else {
           const coords: Array<number> = [$event.location.position.wgs84.lat, $event.location.position.wgs84.lng];
@@ -526,9 +526,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.removeGeometry();
         this.removeMarker();
         this.setNotification({
-          status: 'm-alert--danger',
+          status: 'danger',
           text: this.coordinateErrorNotification,
-          icon: 'fa-exclamation-triangle'
+          icon: 'ai-alert-triangle'
         });
       }
 
@@ -571,7 +571,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.setNotification({
           status: 'default',
           text: this.zoomInfoNotification,
-          icon: 'fa-question-circle'
+          icon: 'ai-alert-circle'
         });
       }
     } else {
@@ -622,6 +622,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   isCursorOnLeaflet(cursorOnLeaflet: boolean) {
     this.cursorOnLeaflet = cursorOnLeaflet;
+  }
+
+  /**
+   * Close the notification manually
+   */
+  closeNotification() {
+    this.leafletNotification = null;
   }
 
   /**
@@ -768,15 +775,15 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * Defines the custom marker markup.
    */
   private createMarker(
-    color: string = '#0064b4',
-    icon: string = 'fa-map-marker',
-    size: string = '40px',
+    color: string = '#0057b7',
+    icon: string = 'ai-pin',
+    size: string = '2.5rem',
     position: { top: string, left: string } = {
       top: '-36px',
       left: '-5px'
     }) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<span class="fa ${icon}" aria-hidden="true"></span>`;
+    const markerIcon = `<aui-icon name="${icon}"></aui-icon>`;
 
     return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
   }
@@ -832,9 +839,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       } else {
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
           '#000000',
-          'fa-circle',
+          'ai-pin-3',
           '10px',
-          {top: '-3px', left: '2px'}
+          { top: '-3px', left: '2px' }
         ));
         // only change map zoomlevel if the selection is not the default selection after location was picked
         if (this.changeZoomLevelOnLocationSelect && !this.didSearch) {
@@ -885,9 +892,5 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   private setNotification(notification: NotificationModel) {
     this.leafletNotification = notification;
-
-    setTimeout(() => {
-      this.leafletNotification = null;
-    }, 3000);
   }
 }
