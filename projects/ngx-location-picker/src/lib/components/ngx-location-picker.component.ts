@@ -498,7 +498,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
           '#000000',
           'ai-pin-3',
-          '10px',
+          '20px',
           { top: '-3px', left: '2px' }
         ));
         this.setView(coords);
@@ -779,13 +779,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     icon: string = 'ai-pin',
     size: string = '2.5rem',
     position: { top: string, left: string } = {
-      top: '-36px',
-      left: '-5px'
+      top: '-22px',
+      left: '-8px'
     }) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<aui-icon name="${icon}"></aui-icon>`;
+    const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" /></svg>`;
 
-    return `<span style="${markerStyle}" class="ngx-location-picker-marker">${markerIcon}</span>`;
+    return `<span style="${markerStyle}" class="ai ngx-location-picker-marker">${markerIcon}</span>`;
   }
 
   /**
@@ -840,7 +840,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
           '#000000',
           'ai-pin-3',
-          '10px',
+          '20px',
           { top: '-3px', left: '2px' }
         ));
         // only change map zoomlevel if the selection is not the default selection after location was picked
