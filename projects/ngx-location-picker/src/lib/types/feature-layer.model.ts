@@ -6,7 +6,7 @@ export interface FeatureLayerModel {
 }
 
 interface FeatureLayerIconModel {
-  /* font-awesome icon class eg: fa-map-marker */
+  /* Streamline icon class eg: ai-pin */
   iconClass: string;
   /* icon color, default: #0064B */
   color?: string;

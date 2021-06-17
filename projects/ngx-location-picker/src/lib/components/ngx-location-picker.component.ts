@@ -55,7 +55,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    * url: the url to the mapServer containing the features to be shown on the map.
    * icon: the marker to use to show featureLayer locations.
    *
-   * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
+   * An icon should include: Streamline icon class, the icon color (default: #0064B) and the icon size (default: 40px)
    * see: FeatureLayerIconModel
    */
   @Input() featureLayers: FeatureLayerModel[] = [];
