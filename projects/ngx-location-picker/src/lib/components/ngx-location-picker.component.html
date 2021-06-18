@@ -15,12 +15,13 @@
       <div class="inline-addon" *ngIf="showClearInputButton">
         <span *ngIf="searching" class="a-spinner a-spinner--sm u-margin-right-xs"></span>
         <button
+          *ngIf="!inputHasValue"
           class="a-button-transparent a-button--small has-icon"
           type="button"
           (click)="emptyField()"
-          [disabled]="inputHasValue"
+          [attr.aria-label]="clearInputAriaLabel"
         >
-          <span class="fa fa-times" [attr.aria-label]="clearInputAriaLabel"></span>
+          <aui-icon name="ai-close"></aui-icon>
         </button>
       </div>
     </div>
@@ -51,9 +52,16 @@
         </div>
       </div>
     </div>
-    <div aria-live="assertive">
-      <div *ngIf="leafletNotification?.text" class="m-location-picker__notification-panel m-alert {{ leafletNotification.status }}">
-        <p><span class="fa {{ leafletNotification.icon }}"></span> {{ leafletNotification.text }}</p>
+    <div *ngIf="leafletNotification?.text">
+      <div role="alertdialog" aria-live="assertive" class="m-location-picker__notification-panel m-alert m-alert--{{ leafletNotification.status }}">
+        <p><aui-icon [name]="leafletNotification.icon"></aui-icon> {{ leafletNotification.text }}</p>
+        <button
+          class="a-button-transparent a-button--{{ leafletNotification.status }} has-icon m-alert__close"
+          aria-label="Close"
+          (click)="closeNotification()"
+        >
+          <aui-icon name="ai-close"></aui-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -81,8 +89,9 @@
         class="a-button d-button a-button--small has-icon a-button--block u-margin-bottom-xs button-location-picking"
         (click)="pickLocationOnMap()"
         [class.is-active]="pickLocationActive"
+        [attr.aria-label]="locationPickAriaLabel"
       >
-        <span class="fa fa-map-marker" [attr.aria-label]="locationPickAriaLabel"></span>
+        <aui-icon name="ai-pin"></aui-icon>
       </button>
     </div>
     <div controls bottom right>
@@ -93,7 +102,7 @@
         [disabled]="isLocating"
         (click)="getDeviceLocation()"
       >
-        <span *ngIf="!isLocating" class="fa fa-crosshairs"></span>
+        <aui-icon *ngIf="!isLocating" name="ai-location-target-1"></aui-icon>
         <span *ngIf="isLocating" class="a-spinner a-spinner--sm"></span>
       </button>
     </div>

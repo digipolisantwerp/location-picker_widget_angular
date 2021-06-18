@@ -1,11 +1,11 @@
-import {async, TestBed} from '@angular/core/testing';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {NgxLocationPickerComponent} from './ngx-location-picker.component';
-import {LeafletModule} from '@acpaas-ui/ngx-leaflet';
-import {HighlightSearchDirective} from '../directives/highlight-search.directive';
-import {MAP_SERVICE_PROVIDER} from '../map.provider';
+import { async, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgxLocationPickerComponent } from './ngx-location-picker.component';
+import { LeafletModule } from '@acpaas-ui/ngx-leaflet';
+import { HighlightSearchDirective } from '../directives/highlight-search.directive';
+import { MAP_SERVICE_PROVIDER } from '../map.provider';
 import { LocationViewerModule } from '@acpaas-ui-widgets/ngx-location-viewer';
 
 describe('NgxLocationPickerComponent', () => {

@@ -1,11 +1,17 @@
 import { TestBed, async } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+import { LocationPickerModule } from '../../../../dist/ngx-location-picker';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
+      ],
+      imports: [
+        FormsModule,
+        LocationPickerModule
       ]
     }).compileComponents();
   }));

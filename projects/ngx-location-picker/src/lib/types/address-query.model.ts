@@ -1,5 +1,5 @@
 export interface AddressQueryModel {
-    streetname: string;
-    streetids: number[];
-    housenumber: string;
+  streetname: string;
+  streetids: number[];
+  housenumber: string;
 }

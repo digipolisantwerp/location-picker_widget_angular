@@ -147,6 +147,6 @@ export class NgxLocationPickerService {
     const parameters = this.locationPickerHelper.toHttpParams(query);
 
     return this.httpClient.post<CoordinateModel[]>(`${this.locationPickerApi}/coordinates`,
-     cascadingCoordinateRules, { params: parameters });
+      cascadingCoordinateRules, { params: parameters });
   }
 }

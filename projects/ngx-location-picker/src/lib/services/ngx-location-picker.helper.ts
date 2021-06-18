@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpParams} from '@angular/common/http';
-import {LambertModel, LocationModel} from '../types/location.model';
-import {AddressQueryModel} from '../types/address-query.model';
+import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
+import { LambertModel, LocationModel } from '../types/location.model';
+import { AddressQueryModel } from '../types/address-query.model';
 import proj4 from 'proj4';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
@@ -108,8 +108,7 @@ export class NgxLocationPickerHelper {
     if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
       for (const [index, value] of addressParts.entries()) {
         // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
-        if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase()))
-        {
+        if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase())) {
           return false;
         }
 
@@ -146,9 +145,9 @@ export class NgxLocationPickerHelper {
    *
    *
    */
- isLocationModel(object: any): object is LocationModel {
-   return 'streetName' in object;
- }
+  isLocationModel(object: any): object is LocationModel {
+    return 'streetName' in object;
+  }
 
   /**
    * Determines if the given query input resembles alternative coordinate pairs ex: 51,205729 4,388629
@@ -206,7 +205,7 @@ export class NgxLocationPickerHelper {
         if (/\d$/.test(part) && ((index + 1) === addressParts.length)) {
           streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, '');
           streetAndNumber.streetname += part.replace(/\d*$/, '');
-        }  else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
+        } else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
           streetAndNumber.housenumber += part;
         } else {
           streetAndNumber.streetname += part;
@@ -227,7 +226,7 @@ export class NgxLocationPickerHelper {
     //  ==> check if name corresponds with the streetname to use the streetnameid
     if (selectedLocation && this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
       if (selectedLocation.streetName.toUpperCase()
-      === streetAndNumber.streetname.toUpperCase()) {
+        === streetAndNumber.streetname.toUpperCase()) {
         streetAndNumber.streetname = '';
         streetAndNumber.streetids.push(selectedLocation.streetNameId);
       }
@@ -277,7 +276,7 @@ export class NgxLocationPickerHelper {
   convertLambertToWgs84Coordinates(lambertCoordinate: LambertModel): LambertModel {
     // tslint:disable-next-line: max-line-length
     const lambertProj = '+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs';
-    const result =  proj4(lambertProj, 'WGS84', [lambertCoordinate.x, lambertCoordinate.y]);
+    const result = proj4(lambertProj, 'WGS84', [lambertCoordinate.x, lambertCoordinate.y]);
     const coordinates: LambertModel = {
       x: result[0] >= this.minX && result[0] <= this.maxX ? result[0] : result[1] >= this.minX && result[1] <= this.maxX ? result[1] : 0,
       y: result[0] >= this.minY && result[0] <= this.maxY ? result[0] : result[1] >= this.minY && result[1] <= this.maxY ? result[1] : 0

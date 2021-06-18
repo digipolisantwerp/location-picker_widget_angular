@@ -8,10 +8,10 @@
     "url": "https://github.com/digipolisantwerp/location-picker_widget_angular"
   },
   "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0",
-    "@acpaas-ui-widgets/ngx-location-viewer": "^1.2.0",
-    "@acpaas-ui/ngx-flyout": "^4.6.1",
-    "@acpaas-ui/ngx-leaflet": "^4.6.1"
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^2.0.0",
+    "@acpaas-ui/ngx-icon": "^5.0.0",
+    "@acpaas-ui/ngx-leaflet": "^5.0.2"
   }
 }

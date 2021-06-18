@@ -35,7 +35,7 @@ Finally include the required styles:
 Add Antwerp core branding stylesheet in your index.html file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.1.1/main.min.css">
+<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/5.0.0/main.min.css">
 ```
 
 Add required leaflet styles in your angular.json file.
@@ -276,7 +276,7 @@ class ExampleComponent {
     * url: the url to the mapServer containing the features to be shown on the map.
     * icon: the marker to use to show featureLayer locations.
     *
-    * An icon should include: font-awesome icon class, the icon color (default: #0064B) and the icon size (default: 40px)
+    * An icon should include: Streamline icon class, the icon color (default: #0064B) and the icon size (default: 40px)
     * see: FeatureLayerIconModel
     */
     @Input() featureLayers: FeatureLayerModel[] = [];
@@ -419,7 +419,7 @@ Jasper Van Proeyen (<jasper.vanproeyen@digipolis.be>)
 
 ## Publishing
 
-> Only the ACPaaS UI team publishes new packages. [Contact us](https://acpaas-ui.digipolis.be/contact) if you need a new release published.
+> Only the Antwerp UI team publishes new packages. [Contact us](https://antwerp-ui.digipolis.be/contact) if you need a new release published.
 
 ## Running unit tests
 

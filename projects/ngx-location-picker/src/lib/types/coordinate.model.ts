@@ -1,5 +1,5 @@
-import {LocationModel} from './location.model';
-import {AddressModel, LatLngModel} from './address.model';
+import { LocationModel } from './location.model';
+import { AddressModel, LatLngModel } from './address.model';
 
 export interface CoordinateModel {
   label?: string;
