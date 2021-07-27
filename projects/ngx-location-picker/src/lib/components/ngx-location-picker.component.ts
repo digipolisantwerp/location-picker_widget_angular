@@ -499,7 +499,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           '#000000',
           'ai-pin-3',
           '20px',
-          { top: '-3px', left: '2px' }
+          { top: '-4px', left: '-3px' }
         ));
         this.setView(coords);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
@@ -779,8 +779,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     icon: string = 'ai-pin',
     size: string = '2.5rem',
     position: { top: string, left: string } = {
-      top: '-22px',
-      left: '-8px'
+      top: '-30px',
+      left: '-12px'
     }) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
     const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" /></svg>`;
@@ -841,7 +841,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           '#000000',
           'ai-pin-3',
           '20px',
-          { top: '-3px', left: '2px' }
+          { top: '-4px', left: '-3px' }
         ));
         // only change map zoomlevel if the selection is not the default selection after location was picked
         if (this.changeZoomLevelOnLocationSelect && !this.didSearch) {
