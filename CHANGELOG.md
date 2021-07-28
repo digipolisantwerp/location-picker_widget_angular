@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Picker position to match cursor
+
+
 ## [5.0.0] - 2021-06-18
 
 ### Changed
