@@ -13,12 +13,15 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [4.9.0] - 2021-07-29
+
 ### Changed
 - Implemented location viewer widget (was ngx-leaflet)
-    - Use of acpaas-ui v4 components (ngx-leaflet & ngx-flyout)
-    - Added locationviewer dependencies (geoman, esri, turf)
-    - Removed code that already exists in ngx-location-viewer (zoomin, zoomout & tilelayers)
-    - Implemented all locationviewer params
+- Use of acpaas-ui v4 components (ngx-leaflet & ngx-flyout)
+- Added locationviewer dependencies (geoman, esri, turf)
+- Removed code that already exists in ngx-location-viewer (zoomin, zoomout & tilelayers)
+- Implemented all locationviewer params
+
 
 ## [4.8.1] - 2021-05-10
 
@@ -165,7 +168,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.9.0...HEAD
+[4.9.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...v4.9.0
 [4.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...v4.8.1
 [4.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.1...v4.8.0
 [4.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.7.0...v4.7.1
