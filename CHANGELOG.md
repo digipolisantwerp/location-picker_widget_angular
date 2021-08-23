@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Changed
+- Updated version locationviewer widget to 1.4.0 (supportinglayers visible option)
+
 ## [4.9.0] - 2021-07-29
 
 ### Changed
