@@ -1,5 +1,5 @@
 {
-  "name": "@acpaas-ui-widgets/ngx-location-picker",
+  "name": "ngx-location-picker-test",
   "description": "Location Picker Smart Widget UI package (Angular)",
   "version": "4.8.0",
   "scripts": {

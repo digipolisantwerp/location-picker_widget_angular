@@ -14,6 +14,6 @@ export interface DelegateSearchModel {
     cascadingCoordinateLimit: number;
     cascadingCoordinateRules: CascadingCoordinateRulesModel[];
     selectedLocation: LocationModel | AddressModel | CoordinateModel;
-    addressesInAntwerp: boolean;
+    onlyAntwerp: boolean;
     countryCodes: string[];
 }

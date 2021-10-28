@@ -65,7 +65,7 @@ export class NgxLocationPickerService {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.buildAddressQuery(
         delegateSearch.search,
         delegateSearch.selectedLocation,
-        delegateSearch.addressesInAntwerp,
+        delegateSearch.onlyAntwerp,
         delegateSearch.countryCodes
       );
 
@@ -76,7 +76,9 @@ export class NgxLocationPickerService {
         limit: delegateSearch.limit,
         search: delegateSearch.search,
         prioritizelayer: delegateSearch.prioritizelayer,
-        sort: delegateSearch.sort
+        sort: delegateSearch.sort,
+        countries: delegateSearch.countryCodes,
+        onlyAntwerp: delegateSearch.onlyAntwerp
       };
 
       return this.searchLocations(locationQuery);
