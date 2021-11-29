@@ -4,7 +4,7 @@ import {baseMapAntwerp, baseMapWorldGray, LeafletMap, MapService} from '@acpaas-
 import {NgxLocationPickerService} from '../services/ngx-location-picker.service';
 import {FeatureLayerModel} from '../types/feature-layer.model';
 import {LambertModel, LocationModel} from '../types/location.model';
-import {AddressModel} from '../types/address.model';
+import {AddressModel, LatLngModel} from '../types/address.model';
 import {CoordinateModel} from '../types/coordinate.model';
 import {NotificationModel} from '../types/notification.model';
 import {NgxLocationPickerHelper} from '../services/ngx-location-picker.helper';
@@ -118,6 +118,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() addCoordinateToResultsAt?: number = null;
   @Input() onlyAntwerp: boolean = false;
   @Input() searchAddressesInCountries: string[] = ["be","nl","lu"];
+  /* If provided, start searching for addresses and locations from this point (in combination with bufferSearch, radius of search area) */
+  @Input() startCoordinate: LatLngModel = null;
+  /* If provided, in kilometers the radius of the search area starting from startCoordinate */
+  @Input() bufferSearch: number = null;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -459,7 +463,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         cascadingCoordinateRules: this.cascadingCoordinateRules,
         selectedLocation: this.previousLocation,
         onlyAntwerp: this.onlyAntwerp,
-        countryCodes: this.searchAddressesInCountries
+        countryCodes: this.searchAddressesInCountries,
+        startCoordinate: this.startCoordinate,
+        buffer: this.bufferSearch
       };
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(

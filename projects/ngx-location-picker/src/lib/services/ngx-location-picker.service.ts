@@ -66,7 +66,9 @@ export class NgxLocationPickerService {
         delegateSearch.search,
         delegateSearch.selectedLocation,
         delegateSearch.onlyAntwerp,
-        delegateSearch.countryCodes
+        delegateSearch.countryCodes,
+        delegateSearch.startCoordinate,
+        delegateSearch.buffer
       );
 
       return this.searchAddresses(addressQuery);
@@ -78,7 +80,10 @@ export class NgxLocationPickerService {
         prioritizelayer: delegateSearch.prioritizelayer,
         sort: delegateSearch.sort,
         countries: delegateSearch.countryCodes,
-        onlyAntwerp: delegateSearch.onlyAntwerp
+        onlyAntwerp: delegateSearch.onlyAntwerp,
+        xcoord: delegateSearch.startCoordinate ? delegateSearch.startCoordinate.lat : null,
+        ycoord: delegateSearch.startCoordinate ? delegateSearch.startCoordinate.lng : null,
+        buffer: delegateSearch.buffer
       };
 
       return this.searchLocations(locationQuery);

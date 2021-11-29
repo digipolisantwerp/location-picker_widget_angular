@@ -4,7 +4,7 @@ import {LambertModel, LocationModel} from '../types/location.model';
 import {AddressQueryModel} from '../types/address-query.model';
 import {CascadingCoordinateRulesModel, CascadingCoordinateRulesType} from '../types/cascading-rules.model';
 import proj4 from 'proj4';
-import { AddressModel } from '../types/address.model';
+import { AddressModel, LatLngModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
 
 @Injectable({
@@ -175,13 +175,16 @@ export class NgxLocationPickerHelper {
    *
    * @return addressQuery
    */
-  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel, searchInAntwerp: boolean, countryCodes: string[]): AddressQueryModel {
+  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel, searchInAntwerp: boolean, countryCodes: string[], startCoordinate?: LatLngModel, buffer?: number): AddressQueryModel {
     const addressQuery: AddressQueryModel = {
       streetname: '',
       streetids: [],
       housenumber: '',
       onlyAntwerp: searchInAntwerp,
-      countries: !searchInAntwerp ? countryCodes : []
+      countries: !searchInAntwerp ? countryCodes : [],
+      xcoord: startCoordinate ? startCoordinate.lat : null,
+      ycoord: startCoordinate ? startCoordinate.lng : null,
+      buffer: buffer
     };
 
     const queryParts: Array<string> = (query && query.trim().length > 0) ? query.split(',') : null;
