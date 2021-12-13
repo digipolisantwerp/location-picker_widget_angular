@@ -495,22 +495,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.showMap) {
       if ($event.address && $event.address.addressPosition && $event.address.addressPosition.wgs84) {
         const coords: Array<number> = [$event.address.addressPosition.wgs84.lat, $event.address.addressPosition.wgs84.lng];
-        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
-          '#000000',
-          'ai-pin-3',
-          '20px',
-          { top: '-4px', left: '-3px' }
-        ));
-        this.setView(coords);
+        this.addResultMarker(coords);
       } else if ($event.addressPosition && $event.addressPosition.wgs84) {
         const coords: Array<number> = [$event.addressPosition.wgs84.lat, $event.addressPosition.wgs84.lng];
-        this.addMapMarker(coords);
-        this.setView(coords);
+        this.addResultMarker(coords);
       } else if ($event.position) {
         if ($event.position.wgs84) {
           const coords: Array<number> = [$event.position.wgs84.lat, $event.position.wgs84.lng];
-          this.addMapMarker(coords);
-          this.setView(coords);
+          this.addResultMarker(coords);
         } else if ($event.position.geometry) {
           this.addMapGeoJson($event.label, $event.position.geometryShape, $event.position.geometry);
         }
@@ -519,8 +511,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
           this.addMapGeoJson($event.label, $event.location.position.geometryShape, $event.location.position.geometry);
         } else {
           const coords: Array<number> = [$event.location.position.wgs84.lat, $event.location.position.wgs84.lng];
-          this.addMapMarker(coords);
-          this.setView(coords);
+          this.addResultMarker(coords);
         }
       } else {
         this.removeGeometry();
@@ -769,6 +760,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (location) {
       this.writeValue(location);
     }
+  }
+
+  /* Adds a marker on a given coordinate and zooms in on this location. */
+  private addResultMarker(coords: number[]): void {
+    this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
+      '#000000',
+      'ai-pin-3',
+      '20px',
+      { top: '-4px', left: '-3px' }
+    ));
+    this.setView(coords);
   }
 
   /**
