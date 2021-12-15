@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Show result marker (icon) when point is returned for location or address
+
 ## [5.0.1] - 2021-07-29
 
 ### Fixed
