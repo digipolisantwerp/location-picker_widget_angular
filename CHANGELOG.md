@@ -13,8 +13,11 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.0.2] - 2022-01-10
+
 ### Fixed
 - Show result marker (icon) when point is returned for location or address
+
 
 ## [5.0.1] - 2021-07-29
 
@@ -183,7 +186,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...HEAD
+[5.0.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...v5.0.0
 [4.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...v4.8.1
