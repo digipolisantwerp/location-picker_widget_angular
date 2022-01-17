@@ -13,8 +13,11 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.0.3] - 2022-01-17
+
 ### Fixed
 - Clears geometry when result marker (icon) is added for location or address
+
 
 ## [5.0.2] - 2022-01-10
 
@@ -189,7 +192,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...HEAD
+[5.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...v5.0.3
 [5.0.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...v5.0.0
