@@ -764,6 +764,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   /* Adds a marker on a given coordinate and zooms in on this location. */
   private addResultMarker(coords: number[]): void {
+    this.removeGeometry();
+    
     this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
       '#000000',
       'ai-pin-3',

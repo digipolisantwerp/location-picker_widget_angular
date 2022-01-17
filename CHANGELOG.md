@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Clears geometry when result marker (icon) is added for location or address
+
 ## [5.0.2] - 2022-01-10
 
 ### Fixed
