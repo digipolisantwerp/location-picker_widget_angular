@@ -663,6 +663,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       );
     } else {
       this.addMapMarker([initialLocation.position.lat, initialLocation.position.lng]);
+      this.setView([initialLocation.position.lat, initialLocation.position.lng]);
     }
   }
 

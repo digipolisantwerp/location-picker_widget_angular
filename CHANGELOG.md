@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed 
 - Issue when providing a selectedLocation, emitted an empty location on initialization
+- Zooms and centers map on selectedLocation
 
 ## [5.0.3] - 2022-01-17
 
