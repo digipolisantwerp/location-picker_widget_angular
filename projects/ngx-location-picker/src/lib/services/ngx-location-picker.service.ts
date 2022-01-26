@@ -66,8 +66,19 @@ export class NgxLocationPickerService {
         delegateSearch.search,
         delegateSearch.selectedLocation
       );
-
-      return this.searchAddresses(addressQuery);
+      if (delegateSearch.searchStreetNameForAddress) {
+        const locationQuery: LocationQueryModel = {
+          layers: delegateSearch.layers,
+          limit: delegateSearch.limit,
+          search: addressQuery.streetname,
+          prioritizelayer: delegateSearch.prioritizelayer,
+          sort: delegateSearch.sort
+        };
+  
+        return this.searchLocations(locationQuery);    
+      } else {
+        return this.searchAddresses(addressQuery);
+      }
     } else {
       const locationQuery: LocationQueryModel = {
         layers: delegateSearch.layers,
