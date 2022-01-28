@@ -13,12 +13,16 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+
+## [5.1.0] - 2022-01-28
+
 ### Added
 - Functionality to search for locations when providing address (uses the streetname)
 
 ### Fixed 
 - Issue when providing a selectedLocation, emitted an empty location on initialization
 - Zooms and centers map on selectedLocation
+
 
 ## [5.0.3] - 2022-01-17
 
@@ -199,7 +203,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...HEAD
+[5.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...v5.1.0
 [5.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...v5.0.3
 [5.0.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.0...v5.0.1
