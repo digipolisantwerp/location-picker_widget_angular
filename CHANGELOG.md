@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Added
+- Functionality to search for locations when providing address (uses the streetname)
+
 ### Fixed 
 - Issue when providing a selectedLocation, emitted an empty location on initialization
 - Zooms and centers map on selectedLocation

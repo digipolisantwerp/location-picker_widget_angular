@@ -15,4 +15,5 @@ export interface DelegateSearchModel {
   cascadingCoordinateRules: CascadingCoordinateRulesModel[];
   selectedLocation: LocationModel | AddressModel | CoordinateModel;
   locationKeywords: string[];
+  searchStreetNameForAddress: boolean;
 }
