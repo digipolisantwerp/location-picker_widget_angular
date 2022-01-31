@@ -200,7 +200,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   set selectedLocation(location) {
     if (this.mapLoaded && location && location.position && location.position.lat && location.position.lng) {
-      this.writeValue({}, true);
+      this.resetLocationSearchFields();
       this.setInitialLocation(location);
 
       delete location.options;
@@ -279,12 +279,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   writeValue(location: any, reset: boolean = false): void {
     if (reset) {
-      this.didSearch = false;
-      this.searching = false;
-      this.pickedLocation = false;
+      this.resetLocationSearchFields();
       this.selectedLocation = {};
-      this.previousLocation = null;
-      this.resetFoundLocations();
       this.locationSelect.emit(location);
     }
 
@@ -858,6 +854,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   private resetFoundLocations() {
     this.foundLocations = [];
+  }
+
+  /**
+   * Resets properties related to location search
+   */
+  private resetLocationSearchFields() {
+    this.didSearch = false;
+    this.searching = false;
+    this.pickedLocation = false;
+    this.previousLocation = null;
+    this.resetFoundLocations();
   }
 
   /**

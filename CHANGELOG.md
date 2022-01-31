@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Issue when providing a selectedLocation, emitted an empty location on initialization
+
 ## [4.9.0] - 2021-07-29
 
 ### Changed
