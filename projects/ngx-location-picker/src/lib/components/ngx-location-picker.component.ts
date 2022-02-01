@@ -118,6 +118,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() addCoordinateToResultsAt?: number = null;
   /* If search string contains one of these words, search for locations instead of address */
   @Input() locationKeywords: string[] = ['kaainummer'];
+  /* When entering address search for streetname instead, will search for locations with provided streetname */
+  @Input() searchStreetNameForAddress: boolean = false;
   /* Input params to pass through to location viewer */
   /* Geo API */
   @Input() geoApiBaseUrl: string;
@@ -200,7 +202,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
   set selectedLocation(location) {
     if (this.mapLoaded && location && location.position && location.position.lat && location.position.lng) {
-      this.writeValue({}, true);
+      this.resetLocationSearchFields();
       this.setInitialLocation(location);
 
       delete location.options;
@@ -279,12 +281,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   writeValue(location: any, reset: boolean = false): void {
     if (reset) {
-      this.didSearch = false;
-      this.searching = false;
-      this.pickedLocation = false;
+      this.resetLocationSearchFields();
       this.selectedLocation = {};
-      this.previousLocation = null;
-      this.resetFoundLocations();
       this.locationSelect.emit(location);
     }
 
@@ -459,7 +457,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         cascadingCoordinateLimit: this.cascadingCoordinateLimit,
         cascadingCoordinateRules: this.cascadingCoordinateRules,
         selectedLocation: this.previousLocation,
-        locationKeywords: this.locationKeywords
+        locationKeywords: this.locationKeywords,
+        searchStreetNameForAddress: this.searchStreetNameForAddress
       };
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
@@ -669,6 +668,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       );
     } else {
       this.addMapMarker([initialLocation.position.lat, initialLocation.position.lng]);
+      this.setView([initialLocation.position.lat, initialLocation.position.lng]);
     }
   }
 
@@ -858,6 +858,17 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   private resetFoundLocations() {
     this.foundLocations = [];
+  }
+
+  /**
+   * Resets properties related to location search
+   */
+  private resetLocationSearchFields() {
+    this.didSearch = false;
+    this.searching = false;
+    this.pickedLocation = false;
+    this.previousLocation = null;
+    this.resetFoundLocations();
   }
 
   /**
