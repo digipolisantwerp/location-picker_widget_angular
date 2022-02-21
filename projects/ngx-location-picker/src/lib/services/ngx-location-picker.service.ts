@@ -68,7 +68,7 @@ export class NgxLocationPickerService {
       );
       if (delegateSearch.searchStreetNameForAddress) {
         const locationQuery: LocationQueryModel = {
-          layers: delegateSearch.layers,
+          layers: ['straatnaam'],
           limit: delegateSearch.limit,
           search: addressQuery.streetname,
           prioritizelayer: delegateSearch.prioritizelayer,

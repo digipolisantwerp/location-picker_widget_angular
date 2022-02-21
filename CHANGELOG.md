@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Added
+- Added 'none' option to locationlayers param to disable location search
 
 ## [5.1.0] - 2022-01-28
 
