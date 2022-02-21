@@ -316,7 +316,7 @@ class ExampleComponent {
     @Input() minInputLength = 2;
     /* The amount of results to return */
     @Input() locationsLimit = 5;
-    /* The layers to search locations for */
+    /* The layers to search locations for, 'all' to search in all the layers, 'none' to disable location search */
     @Input() locationLayers = ['straatnaam'];
     /**
      * Prioritize specific layers, boosts results from given layers to the top of the found locations.
