@@ -13,8 +13,11 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [4.11.0] - 2022-02-22
+
 ### Added
 - Added 'none' option to locationlayers param to disable location search
+
 
 ## [4.10.0] - 2022-02-01
 
@@ -180,7 +183,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.10.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.11.0...HEAD
+[4.11.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.10.0...v4.11.0
 [4.10.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.9.0...v4.10.0
 [4.9.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.1...v4.9.0
 [4.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v4.8.0...v4.8.1
