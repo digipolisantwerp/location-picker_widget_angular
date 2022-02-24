@@ -137,6 +137,14 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() locationKeywords: string[] = ['kaainummer'];
   /* When entering address search for streetname instead, will search for locations with provided streetname */
   @Input() searchStreetNameForAddress: boolean = false;
+  /* If provided, When searching for current position*/
+  @Input() positionOptions: PositionOptions = {
+    enableHighAccuracy: true,
+    timeout: Infinity,
+    maximumAge: 0,
+  };
+  /* If true, will use watchposition to track current position */
+  @Input() trackPosition: boolean = false;
   /* AddPolygon event */
   @Output() addPolygon = new EventEmitter<any>();
   /* AddLine event */
@@ -172,9 +180,11 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   /* Current leaflet state */
   private mapLoaded = false;
   /* Keep a reference to our geolocation object */
-  private geoLocate;
+  private geoLocate: Geolocation;
   /* Keep a reference of our geolocation watch id */
-  private geoLocateId;
+  private geoLocateId?: number;
+  /* Latest cachedPosition */
+  private cachedPosition;
   /* Current active location marker on the map */
   private selectedLocationMarker;
   /* Active marker for calculated location */
@@ -259,6 +269,9 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     /* Only initialise leaflet map when it's required. */
     if (this.showMap) {
       this.initLocationPicker();
+      if (this.trackPosition) {
+        this.startWatchPosition();
+      }
     }
   }
 
@@ -274,6 +287,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.locationServiceSubscription) {
       this.locationServiceSubscription.unsubscribe();
     }
+
+    this.clearWatch();
   }
 
   /**
@@ -359,48 +374,36 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   getDeviceLocation() {
     this.isLocating = true;
 
-    if (navigator && navigator.geolocation) {
-      this.geoLocate = navigator.geolocation;
-
-      this.geoLocateId = this.geoLocate.watchPosition((position) => {
+    if (this.geoLocateId != null && this.cachedPosition) {
+      if (this.cachedPosition.coords) {
+        this.setLocationDynamically(
+          this.cachedPosition.coords.latitude,
+          this.cachedPosition.coords.longitude,
+          true
+        );
         this.isLocating = false;
-        this.pickedLocation = true;
-
-        if (position && position.coords) {
-          this.setLocationDynamically(position.coords.latitude, position.coords.longitude, true);
-        }
-
-        this.cancelGeolocation();
-      }, (error) => {
-        this.isLocating = false;
-        let message = '';
-        switch (error.code) {
-          case 1:
-            message = this.locateMeNotAllowedNotification;
-            break;
-          case 2:
-            message = this.locateMeUnavailableNotification;
-            break;
-          case 3:
-            message = this.locateMeTimeoutNotification;
-            break;
-          default:
-            message = this.locateMeUnknownNotification;
-            break;
-        }
-
-        this.setNotification({
-          status: 'danger',
-          text: message,
-          icon: 'ai-alert-triangle'
-        });
-      });
+      }
     } else {
-      this.setNotification({
-        status: 'danger',
-        text: this.locateMeNotSupportedNotification,
-        icon: 'ai-alert-triangle'
-      });
+      if (navigator && navigator.geolocation) {
+        this.startWatchPosition();
+        setTimeout(() => {
+          this.clearWatch();
+          if (this.cachedPosition.coords) {
+            this.setLocationDynamically(
+              this.cachedPosition.coords.latitude,
+              this.cachedPosition.coords.longitude,
+              true
+            );
+            this.isLocating = false;
+          }
+        }, 3000);
+      } else {
+        this.setNotification({
+          status: "danger",
+          text: this.locateMeNotSupportedNotification,
+          icon: "ai-alert-triangle",
+        });
+      }
     }
   }
 
@@ -622,6 +625,61 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
    */
   closeNotification() {
     this.leafletNotification = null;
+  }
+
+  /**
+   * Registers geolocation watchpositon event
+   */
+  private startWatchPosition(): void {
+    if (navigator && navigator.geolocation) {
+      // start watching position for high accuracy
+      this.geoLocateId = navigator.geolocation.watchPosition(
+        (position) => {
+          this.cachedPosition = position;
+        },
+        (error) => {
+          this.isLocating = false;
+          let message = "";
+          switch (error.code) {
+            case 1:
+              message = this.locateMeNotAllowedNotification;
+              break;
+            case 2:
+              message = this.locateMeUnavailableNotification;
+              break;
+            case 3:
+              message = this.locateMeTimeoutNotification;
+              break;
+            default:
+              message = this.locateMeUnknownNotification;
+              break;
+          }
+
+          this.setNotification({
+            status: "danger",
+            text: message,
+            icon: "ai-alert-triangle",
+          });
+        },
+        this.positionOptions
+      );
+    } else {
+      this.setNotification({
+        status: "danger",
+        text: this.locateMeNotSupportedNotification,
+        icon: "ai-alert-triangle",
+      });
+    }
+  }
+
+  /**
+   * Clear watch user position
+   */
+  private clearWatch(): void {
+    if (this.geoLocateId && navigator && navigator.geolocation) {
+      navigator.geolocation.clearWatch(this.geoLocateId);
+      this.geoLocateId = null;
+    }
   }
 
   /**

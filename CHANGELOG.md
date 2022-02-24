@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added 'none' option to locationlayers param to disable location search
+- Added 'trackPosition' parameter if enabled GPS will track user location for accurate results
+- Added 'positionOptions' parameter which will be used to get the device location (GeoLocation API)
 
 ## [5.1.0] - 2022-01-28
 
