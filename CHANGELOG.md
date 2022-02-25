@@ -13,10 +13,13 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.2.0] - 2022-02-25
+
 ### Added
 - Added 'none' option to locationlayers param to disable location search
 - Added 'trackPosition' parameter if enabled GPS will track user location for accurate results (ngOnChanges will listen for updates to disable/enable tracking after input change)
 - Added 'positionOptions' parameter which will be used to get the device location (GeoLocation API)
+
 
 ## [5.1.0] - 2022-01-28
 
@@ -203,11 +206,14 @@ All notable changes to this project will be documented in this file.
 
 - Show layer name in list entry
 
+
 ## [1.0.0] - 2018-05-18
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...HEAD
+
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.0...HEAD
+[5.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...v5.1.0
 [5.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...v5.0.3
 [5.0.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.1...v5.0.2
