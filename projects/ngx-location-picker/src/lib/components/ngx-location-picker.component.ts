@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgxLocationPickerService } from '../services/ngx-location-picker.service';
 import { FeatureLayerModel } from '../types/feature-layer.model';
@@ -27,7 +27,7 @@ import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, Op
     }
   ]
 })
-export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlValueAccessor {
+export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
 
   /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
   @Input() baseUrl;
@@ -139,7 +139,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() searchStreetNameForAddress: boolean = false;
   /* If provided, When searching for current position*/
   @Input() positionOptions: PositionOptions = {
-    enableHighAccuracy: true,
+    enableHighAccuracy: false,
     timeout: Infinity,
     maximumAge: 0,
   };
@@ -269,9 +269,22 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     /* Only initialise leaflet map when it's required. */
     if (this.showMap) {
       this.initLocationPicker();
-      if (this.trackPosition) {
-        this.startWatchPosition();
-      }
+    }
+  }
+
+  /**
+   * On component input changes
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const propName in changes) {
+      const change = changes[propName];
+      if (propName === 'trackPosition') {
+        if (change.currentValue as boolean === true) {
+          this.startWatchPosition();
+        } else {
+          this.clearWatch();
+        }
+      } 
     }
   }
 
@@ -375,27 +388,13 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     this.isLocating = true;
 
     if (this.geoLocateId != null && this.cachedPosition) {
-      if (this.cachedPosition.coords) {
-        this.setLocationDynamically(
-          this.cachedPosition.coords.latitude,
-          this.cachedPosition.coords.longitude,
-          true
-        );
-        this.isLocating = false;
-      }
+      this.searchWithCachedPosition();
     } else {
       if (navigator && navigator.geolocation) {
         this.startWatchPosition();
         setTimeout(() => {
           this.clearWatch();
-          if (this.cachedPosition.coords) {
-            this.setLocationDynamically(
-              this.cachedPosition.coords.latitude,
-              this.cachedPosition.coords.longitude,
-              true
-            );
-            this.isLocating = false;
-          }
+          this.searchWithCachedPosition();
         }, 3000);
       } else {
         this.setNotification({
@@ -712,6 +711,20 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
 
       this.registerFeatureLayers();
     });
+  }
+
+  /**
+   * Triggers a search with latest position of device
+   */
+  private searchWithCachedPosition() {
+    if (this.cachedPosition.coords) {
+      this.setLocationDynamically(
+        this.cachedPosition.coords.latitude,
+        this.cachedPosition.coords.longitude,
+        true
+      );
+      this.isLocating = false;
+    }
   }
 
   /**
