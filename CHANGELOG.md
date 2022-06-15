@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Disables operational layer event when picking location 
+- Show picking marker when hovering over polygon and picking action is active
+
 ## [5.2.0] - 2022-02-25
 
 ### Added
