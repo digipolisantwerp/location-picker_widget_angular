@@ -13,9 +13,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.2.1] - 2022-06-20
+
 ### Fixed
 - Disables operational layer event when picking location 
 - Show picking marker when hovering over polygon and picking action is active
+
 
 ## [5.2.0] - 2022-02-25
 
@@ -216,7 +219,8 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.1...HEAD
+[5.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...v5.1.0
 [5.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.2...v5.0.3
