@@ -1,5 +1,9 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions, GeofeatureDetail, OperationalMarker, NgxLocationViewerComponent } from '@acpaas-ui-widgets/ngx-location-viewer';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 import { NgxLocationPickerService } from '../services/ngx-location-picker.service';
 import { FeatureLayerModel } from '../types/feature-layer.model';
 import { LambertModel, LocationModel } from '../types/location.model';
@@ -7,13 +11,10 @@ import { AddressModel } from '../types/address.model';
 import { CoordinateModel } from '../types/coordinate.model';
 import { NotificationModel } from '../types/notification.model';
 import { NgxLocationPickerHelper } from '../services/ngx-location-picker.helper';
-import { LeafletTileLayerModel, LeafletTileLayerType } from '../types/leaflet-tile-layer.model';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { LeafletTileLayerModel } from '../types/leaflet-tile-layer.model';
 import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
 import { InitialLocationModel } from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
-import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions, GeofeatureDetail, OperationalMarker } from '@acpaas-ui-widgets/ngx-location-viewer';
 
 @Component({
   selector: 'aui-location-picker',
@@ -155,6 +156,8 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   @Output() locationSelect = new EventEmitter<LocationModel | AddressModel | CoordinateModel>();
   /* Operational layer filtered: fired when using selection tools rectangle/polygon, using filter layer or clicking on marker of operational layer*/
   @Output() filteredResult = new EventEmitter<GeofeatureDetail[] | OperationalMarker[] | any>();
+
+  @ViewChild(NgxLocationViewerComponent, {static: false}) locationViewer: NgxLocationViewerComponent;
 
   /* Leaflet instance */
   leafletMap: LocationViewerMap;
@@ -373,9 +376,12 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
    */
   pickLocationOnMap() {
     if (this.pickLocationActive) {
-      this.leafletMap.map.removeEventListener('click');
+      this.cancelPickingEvents();
     } else {
       this.leafletMap.map.addEventListener('click', (event) => this.registerMapClick(event));
+      if (this.leafletMap.operationalLayer) {
+        this.leafletMap.operationalLayer.removeEventListener('click');
+      }
     }
 
     this.pickLocationActive = !this.pickLocationActive;
@@ -580,7 +586,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
 
     /* Cancel location search by click when escape key is pressed. */
     if (event.key === 'Escape') {
-      this.leafletMap.map.removeEventListener('click');
+      this.cancelPickingEvents();
       this.pickLocationActive = false;
       this.pickedLocation = false;
     }
@@ -749,7 +755,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
    */
   private registerMapClick($event) {
     this.removeGeometry();
-    this.leafletMap.map.removeEventListener('click');
+    this.cancelPickingEvents();
     this.pickLocationActive = false;
     this.pickedLocation = true;
 
@@ -974,6 +980,14 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
     if (this.geoLocate && this.geoLocateId) {
       this.geoLocate.clearWatch(this.geoLocateId);
     }
+  }
+
+  /**
+   * Removes and adds the expected events after cancelling picking
+   */
+  private cancelPickingEvents() {
+    this.leafletMap.map.removeEventListener('click');
+    this.locationViewer.registerOperationalLayerClickEvent();
   }
 
   /**
