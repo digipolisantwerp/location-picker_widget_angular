@@ -824,8 +824,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
       this.removeGeometry();
     }
 
-    if (marker === null)
-    {
+    if (marker === null) {
       marker = this.createMarker();
     }
 
