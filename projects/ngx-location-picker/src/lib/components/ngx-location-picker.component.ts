@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LocationViewerMapService, LocationViewerMap, SupportingLayerOptions, OperationalLayerOptions, FilterLayerOptions, GeofeatureDetail, OperationalMarker, NgxLocationViewerComponent } from '@acpaas-ui-widgets/ngx-location-viewer';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -158,6 +158,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   @Output() filteredResult = new EventEmitter<GeofeatureDetail[] | OperationalMarker[] | any>();
 
   @ViewChild(NgxLocationViewerComponent, {static: false}) locationViewer: NgxLocationViewerComponent;
+  @ViewChild("leafletSearch", {static: false}) leafletSearchField: ElementRef;
 
   /* Leaflet instance */
   leafletMap: LocationViewerMap;
@@ -318,6 +319,12 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
     }
 
     if ((location && location.label) || (location && location.position && location.position.wgs84)) {
+      // adds space to label if layer is streetname so user can search for address just by adding housenumber
+      if (location && location.layer && location.layer === 'straatnaam') {
+        location.label = `${location.label} `;
+        this.leafletSearchField.nativeElement.focus();
+      }
+
       this.selectedLocation = location;
       // update previousLocation on new search selectedLocation changes to search query and needs to know previous result for address search
       this.previousLocation = location;
