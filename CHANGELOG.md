@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Fixed
+- Show pin marker after selectedlocation is location with geometry (shapecenter)
+
 ## [5.2.1] - 2022-06-20
 
 ### Fixed
