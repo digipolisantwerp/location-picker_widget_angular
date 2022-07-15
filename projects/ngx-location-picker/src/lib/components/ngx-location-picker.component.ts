@@ -815,7 +815,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
    * @param keepGeometry whether or not to remove existing geometry
    * @param keepMarker whether or not to remove existing marker
    */
-  private addMapMarker(coords, location = null, keepGeometry: boolean = false, keepMarker: boolean = false) {
+  private addMapMarker(coords, location = null, keepGeometry: boolean = false, keepMarker: boolean = false, marker: string = null) {
     if (!keepMarker) {
       this.removeMarker();
     }
@@ -824,7 +824,11 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
       this.removeGeometry();
     }
 
-    this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker());
+    if (marker === null) {
+      marker = this.createMarker();
+    }
+
+    this.selectedLocationMarker = this.leafletMap.addHtmlMarker(coords, marker);
 
     this.selectedLocationMarker.dragging.enable();
 
@@ -846,12 +850,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   private addResultMarker(coords: number[]): void {
     this.removeGeometry();
     
-    this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createMarker(
-      '#000000',
-      'ai-pin-3',
-      '20px',
-      { top: '-4px', left: '-3px' }
-    ));
+    this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createPinMarker());
     this.setView(coords);
   }
 
@@ -870,6 +869,15 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
     const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" /></svg>`;
 
     return `<span style="${markerStyle}" class="ai ngx-location-picker-marker">${markerIcon}</span>`;
+  }
+
+  private createPinMarker(): string {
+    return this.createMarker(
+      '#000000',
+      'ai-pin-3',
+      '20px',
+      { top: '-4px', left: '-3px' }
+    );
   }
 
   /**
@@ -915,18 +923,13 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
 
     if (this.selectedLocation && shapeCenter) {
       if (!this.pickedLocation) {
-        this.addMapMarker(shapeCenter, null, true, false);
+        this.addMapMarker(shapeCenter, null, true, false, this.createPinMarker());
         this.setView(shapeCenter);
         if (this.changeZoomLevelOnLocationSelect) {
           this.leafletMap.map.fitBounds(bounds);
         }
       } else {
-        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createMarker(
-          '#000000',
-          'ai-pin-3',
-          '20px',
-          { top: '-4px', left: '-3px' }
-        ));
+        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(shapeCenter, this.createPinMarker());
         // only change map zoomlevel if the selection is not the default selection after location was picked
         if (this.changeZoomLevelOnLocationSelect && !this.didSearch) {
           this.leafletMap.map.fitBounds(bounds);
