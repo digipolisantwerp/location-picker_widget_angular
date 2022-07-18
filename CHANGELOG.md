@@ -13,12 +13,15 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [5.3.0] - 2022-07-18
+
 ### Added
 - Adds space to streetname label, so user can search for address just by adding housenumber
 - Sets focus to searchfield after streetname location selection
 
 ### Fixed
 - Show pin marker after selectedlocation is location with geometry (shapecenter)
+
 
 ## [5.2.1] - 2022-06-20
 
@@ -226,7 +229,8 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.3.0...HEAD
+[5.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.1...v5.3.0
 [5.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.0.3...v5.1.0
