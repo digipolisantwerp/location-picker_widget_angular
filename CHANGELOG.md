@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+### Added
+- Adds space to streetname label, so user can search for address just by adding housenumber
+- Sets focus to searchfield after streetname location selection
+
 ### Fixed
 - Show pin marker after selectedlocation is location with geometry (shapecenter)
 
