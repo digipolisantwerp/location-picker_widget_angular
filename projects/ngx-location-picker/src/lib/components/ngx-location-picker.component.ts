@@ -210,6 +210,8 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private cursorOnLeaflet = false;
   /* Circle drawn when trackingposition to show accuracy of coordinate */
   private proximityCircle;
+  /* Timeout to reset clearwatch*/
+  private clearWatchTimeoutId;
 
   /* Used for ControlValueAccessor */
   propagateChange = (_: any) => {
@@ -394,20 +396,22 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       // start watching position for high accuracy
       this.geoLocateId = navigator.geolocation.watchPosition(
         (position) => {
+          console.log("test");
           this.cachedPosition = position;
           // depending on conditions we check if need to keep searching
           const keepSearching = this.cachedPosition.coords.accuracy > this.positionOptions.preferredAccuracy;
           if (this.trackPosition && keepSearching) {
-            setTimeout(
-              () => {
-                this.removeProximityCircle();
-                this.searchWithCachedPosition();
-                this.clearWatch();
-              }, this.positionOptions.trackingTimeout
-            );
+            if (this.clearWatchTimeoutId == null)
+            {
+              this.clearWatchTimeoutId = setTimeout(
+                () => {
+                  this.searchWithCachedPosition();
+                  this.clearWatch();
+                }, this.positionOptions.trackingTimeout
+              );
+            }
             this.showProximityCircle([position.coords.latitude, position.coords.longitude], position.coords.accuracy);
           } else {
-            this.removeProximityCircle();
             this.searchWithCachedPosition();
             this.clearWatch();
           }
@@ -675,6 +679,12 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       navigator.geolocation.clearWatch(this.geoLocateId);
       this.geoLocateId = null;
     }
+    this.removeProximityCircle();
+
+    if (this.clearWatchTimeoutId != null)
+    {
+      clearTimeout(this.clearWatchTimeoutId);
+    }
   }
 
   /**
@@ -860,6 +870,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private removeProximityCircle(): void {
     if (this.proximityCircle) {
       this.proximityCircle.remove();
+      this.proximityCircle = null;
     }
   }
 
