@@ -2,11 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Changed
-- Changed the functionality behind trackposition: will now show proximity circle and will stop after certain accuracy is reached or time has passed (positionoptions extended)
-
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
@@ -15,6 +10,15 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+
+## [Unreleased]
+
+
+## [5.4.0] - 2022-09-05
+
+### Changed
+- Changed the functionality behind track position: will now show proximity circle and will stop after certain accuracy is reached or time has passed (position options extended)
+
 
 ## [5.3.0] - 2022-07-18
 
@@ -232,7 +236,8 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.3.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.4.0...HEAD
+[5.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.1...v5.3.0
 [5.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.1.0...v5.2.0
