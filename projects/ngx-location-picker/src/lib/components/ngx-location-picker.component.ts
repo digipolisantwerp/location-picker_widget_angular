@@ -15,6 +15,7 @@ import { LeafletTileLayerModel } from '../types/leaflet-tile-layer.model';
 import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
 import { InitialLocationModel } from '../types/initial-location.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
+import { TrackingOptions } from '../types/tracking-options.model';
 
 @Component({
   selector: 'aui-location-picker',
@@ -28,7 +29,7 @@ import { DelegateSearchModel } from '../types/delegate-search.model';
     }
   ]
 })
-export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
   /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
   @Input() baseUrl;
@@ -139,10 +140,12 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   /* When entering address search for streetname instead, will search for locations with provided streetname */
   @Input() searchStreetNameForAddress: boolean = false;
   /* If provided, When searching for current position*/
-  @Input() positionOptions: PositionOptions = {
+  @Input() positionOptions: TrackingOptions = {
     enableHighAccuracy: false,
     timeout: Infinity,
     maximumAge: 0,
+    preferredAccuracy: 50,
+    trackingTimeout: 5000
   };
   /* If true, will use watchposition to track current position */
   @Input() trackPosition: boolean = false;
@@ -205,6 +208,10 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   private previousLocation: LocationModel | AddressModel | CoordinateModel;
   /* Cursor state if hovering over leaflet or not */
   private cursorOnLeaflet = false;
+  /* Circle drawn when trackingposition to show accuracy of coordinate */
+  private proximityCircle;
+  /* Timeout to reset clearwatch*/
+  private clearWatchTimeoutId;
 
   /* Used for ControlValueAccessor */
   propagateChange = (_: any) => {
@@ -273,22 +280,6 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
     /* Only initialise leaflet map when it's required. */
     if (this.showMap) {
       this.initLocationPicker();
-    }
-  }
-
-  /**
-   * On component input changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    for (const propName in changes) {
-      const change = changes[propName];
-      if (propName === 'trackPosition') {
-        if (change.currentValue as boolean === true) {
-          this.startWatchPosition();
-        } else {
-          this.clearWatch();
-        }
-      } 
     }
   }
 
@@ -400,22 +391,62 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   getDeviceLocation() {
     this.isLocating = true;
 
-    if (this.geoLocateId != null && this.cachedPosition) {
-      this.searchWithCachedPosition();
+    // if we use trackposition we will search until we have an accurate coordinate
+    if (navigator && navigator.geolocation) {
+      // start watching position for high accuracy
+      this.geoLocateId = navigator.geolocation.watchPosition(
+        (position) => {
+          this.cachedPosition = position;
+          // depending on conditions we check if need to keep searching
+          const keepSearching = this.cachedPosition.coords.accuracy > this.positionOptions.preferredAccuracy;
+          if (this.trackPosition && keepSearching) {
+            if (this.clearWatchTimeoutId == null)
+            {
+              this.clearWatchTimeoutId = setTimeout(
+                () => {
+                  this.searchWithCachedPosition();
+                  this.clearWatch();
+                }, this.positionOptions.trackingTimeout
+              );
+            }
+            this.showProximityCircle([position.coords.latitude, position.coords.longitude], position.coords.accuracy);
+          } else {
+            this.searchWithCachedPosition();
+            this.clearWatch();
+          }
+        },
+        (error) => {
+          this.isLocating = false;
+          let message = "";
+          switch (error.code) {
+            case 1:
+              message = this.locateMeNotAllowedNotification;
+              break;
+            case 2:
+              message = this.locateMeUnavailableNotification;
+              break;
+            case 3:
+              message = this.locateMeTimeoutNotification;
+              break;
+            default:
+              message = this.locateMeUnknownNotification;
+              break;
+          }
+
+          this.setNotification({
+            status: "danger",
+            text: message,
+            icon: "ai-alert-triangle",
+          });
+        },
+        this.positionOptions
+      );
     } else {
-      if (navigator && navigator.geolocation) {
-        this.startWatchPosition();
-        setTimeout(() => {
-          this.clearWatch();
-          this.searchWithCachedPosition();
-        }, 3000);
-      } else {
-        this.setNotification({
-          status: "danger",
-          text: this.locateMeNotSupportedNotification,
-          icon: "ai-alert-triangle",
-        });
-      }
+      this.setNotification({
+        status: "danger",
+        text: this.locateMeNotSupportedNotification,
+        icon: "ai-alert-triangle",
+      });
     }
   }
 
@@ -640,57 +671,18 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
   }
 
   /**
-   * Registers geolocation watchpositon event
-   */
-  private startWatchPosition(): void {
-    if (navigator && navigator.geolocation) {
-      // start watching position for high accuracy
-      this.geoLocateId = navigator.geolocation.watchPosition(
-        (position) => {
-          this.cachedPosition = position;
-        },
-        (error) => {
-          this.isLocating = false;
-          let message = "";
-          switch (error.code) {
-            case 1:
-              message = this.locateMeNotAllowedNotification;
-              break;
-            case 2:
-              message = this.locateMeUnavailableNotification;
-              break;
-            case 3:
-              message = this.locateMeTimeoutNotification;
-              break;
-            default:
-              message = this.locateMeUnknownNotification;
-              break;
-          }
-
-          this.setNotification({
-            status: "danger",
-            text: message,
-            icon: "ai-alert-triangle",
-          });
-        },
-        this.positionOptions
-      );
-    } else {
-      this.setNotification({
-        status: "danger",
-        text: this.locateMeNotSupportedNotification,
-        icon: "ai-alert-triangle",
-      });
-    }
-  }
-
-  /**
    * Clear watch user position
    */
   private clearWatch(): void {
     if (this.geoLocateId && navigator && navigator.geolocation) {
       navigator.geolocation.clearWatch(this.geoLocateId);
       this.geoLocateId = null;
+    }
+    this.removeProximityCircle();
+
+    if (this.clearWatchTimeoutId != null)
+    {
+      clearTimeout(this.clearWatchTimeoutId);
     }
   }
 
@@ -730,7 +722,7 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
    * Triggers a search with latest position of device
    */
   private searchWithCachedPosition() {
-    if (this.cachedPosition.coords) {
+    if (this.cachedPosition && this.cachedPosition.coords) {
       this.setLocationDynamically(
         this.cachedPosition.coords.latitude,
         this.cachedPosition.coords.longitude,
@@ -859,6 +851,26 @@ export class NgxLocationPickerComponent implements OnInit, OnChanges, OnDestroy,
     
     this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(coords, this.createPinMarker());
     this.setView(coords);
+  }
+
+  /**
+   * Adds proximity circle to show the accuracy of received coordinates
+   */
+  private showProximityCircle(coords: number[], accuracy: number): void {
+    this.removeProximityCircle();
+    this.proximityCircle = this.locationViewerService.L.circle(coords, accuracy, { opacity: 0 });
+    this.proximityCircle.addTo(this.leafletMap.map);
+    this.leafletMap.setView(coords, 15);
+  }
+
+  /**
+   * Removes the proximity circle from the map
+   */
+  private removeProximityCircle(): void {
+    if (this.proximityCircle) {
+      this.proximityCircle.remove();
+      this.proximityCircle = null;
+    }
   }
 
   /**

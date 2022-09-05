@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Changed the functionality behind trackposition: will now show proximity circle and will stop after certain accuracy is reached or time has passed (positionoptions extended)
+
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
