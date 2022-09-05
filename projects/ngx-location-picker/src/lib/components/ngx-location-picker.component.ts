@@ -396,7 +396,6 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
       // start watching position for high accuracy
       this.geoLocateId = navigator.geolocation.watchPosition(
         (position) => {
-          console.log("test");
           this.cachedPosition = position;
           // depending on conditions we check if need to keep searching
           const keepSearching = this.cachedPosition.coords.accuracy > this.positionOptions.preferredAccuracy;
