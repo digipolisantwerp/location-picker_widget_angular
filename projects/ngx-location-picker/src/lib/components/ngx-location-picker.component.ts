@@ -861,7 +861,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   private showProximityCircle(coords: number[], accuracy: number): void {
     this.removeProximityCircle();
     this.proximityCircle = this.locationViewerService.L.circle(coords, accuracy, { opacity: 0 });
-    this. proximityCenter = this.locationViewerService.L.circle(coords, 15, { fillOpacity: 1, color: '#FFFFFF', fillColor: '#0057b7', className: 'proximity-center' });
+    this.proximityCenter = this.locationViewerService.L.circle(coords, 15, { fillOpacity: 1, color: '#FFFFFF', fillColor: '#0057b7', className: 'proximity-center' });
     this.proximityCircle.addTo(this.leafletMap.map);
     this.proximityCenter.addTo(this.leafletMap.map);
     this.leafletMap.setView(coords, 15);
