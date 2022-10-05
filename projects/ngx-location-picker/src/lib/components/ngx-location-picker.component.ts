@@ -683,6 +683,7 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
     if (this.clearWatchTimeoutId != null)
     {
       clearTimeout(this.clearWatchTimeoutId);
+      this.clearWatchTimeoutId = null;
     }
   }
 
