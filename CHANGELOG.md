@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Added additional circle to improve visibilty of proximity circle
+
 ### Fixed
 - Fixed bug that loadingspinner is stuck after second click if 'trackingPosition' is enabled
 - Fixed import path TrackingOptions model
