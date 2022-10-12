@@ -16,3 +16,7 @@ export interface CoordinateModel {
    */
   actualLocation?: LatLngModel;
 }
+
+export interface CoordinateSearchResponse {
+  results: Array<CoordinateModel>;
+}
