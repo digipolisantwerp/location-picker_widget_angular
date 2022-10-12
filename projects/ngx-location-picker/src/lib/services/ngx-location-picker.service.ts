@@ -64,7 +64,9 @@ export class NgxLocationPickerService {
     } else if (this.locationPickerHelper.isAddress(delegateSearch.search, delegateSearch.locationKeywords)) {
       const addressQuery: AddressQueryModel = this.locationPickerHelper.buildAddressQuery(
         delegateSearch.search,
-        delegateSearch.selectedLocation
+        delegateSearch.selectedLocation,
+        delegateSearch.onlyAntwerp,
+        delegateSearch.countryCodes
       );
       if (delegateSearch.searchStreetNameForAddress) {
         const locationQuery: LocationQueryModel = {
@@ -72,7 +74,9 @@ export class NgxLocationPickerService {
           pagesize: delegateSearch.limit,
           search: addressQuery.streetname,
           prioritizelayer: delegateSearch.prioritizelayer,
-          sort: delegateSearch.sort
+          sort: delegateSearch.sort,
+          onlyAntwerp: delegateSearch.onlyAntwerp,
+          countries: delegateSearch.countryCodes
         };
   
         return this.searchLocations(locationQuery);    
@@ -85,7 +89,9 @@ export class NgxLocationPickerService {
         pagesize: delegateSearch.limit,
         search: delegateSearch.search,
         prioritizelayer: delegateSearch.prioritizelayer,
-        sort: delegateSearch.sort
+        sort: delegateSearch.sort,
+        onlyAntwerp: delegateSearch.onlyAntwerp,
+        countries: delegateSearch.countryCodes
       };
 
       return this.searchLocations(locationQuery);

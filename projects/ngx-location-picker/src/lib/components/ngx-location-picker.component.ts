@@ -106,6 +106,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
   @Input() prioritizeLayers = ['straatnaam'];
   /* Sort locations by certain key. */
   @Input() sortBy = '';
+  /* Search locations and addresses inside Antwerp otherwise will search in provided countries ==> countryCodes */
+  @Input() onlyAntwerp = true;
+  /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
+  @Input() countryCodes = ['be','nl','lu'];
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
@@ -509,8 +513,10 @@ export class NgxLocationPickerComponent implements OnInit, OnDestroy, ControlVal
         cascadingCoordinateRules: this.cascadingCoordinateRules,
         selectedLocation: this.previousLocation,
         locationKeywords: this.locationKeywords,
-        searchStreetNameForAddress: this.searchStreetNameForAddress
-      };
+        searchStreetNameForAddress: this.searchStreetNameForAddress,
+        onlyAntwerp: this.onlyAntwerp,
+        countryCodes: this.countryCodes
+      }
 
       this.locationServiceSubscription = this.locationPickerService.delegateSearch(
         delegateSearch

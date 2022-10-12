@@ -16,4 +16,6 @@ export interface DelegateSearchModel {
   selectedLocation: LocationModel | AddressModel | CoordinateModel;
   locationKeywords: string[];
   searchStreetNameForAddress: boolean;
+  onlyAntwerp: boolean;
+  countryCodes: string[];
 }

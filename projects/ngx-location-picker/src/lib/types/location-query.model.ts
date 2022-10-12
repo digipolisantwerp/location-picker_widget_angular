@@ -4,4 +4,6 @@ export interface LocationQueryModel {
   prioritizelayer: Array<string>;
   pagesize: number;
   layers: Array<string>;
+  onlyAntwerp: boolean;
+  countries: Array<string>;
 }
