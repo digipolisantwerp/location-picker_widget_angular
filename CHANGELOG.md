@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- [BREAKING] Use of Location Picker API V3
+
 ## [5.5.0] - 2022-10-10
 
 ### Added
