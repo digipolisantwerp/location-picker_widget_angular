@@ -6,13 +6,10 @@ import { NgxLocationPickerHelper } from './ngx-location-picker.helper';
 import { LambertModel, LocationModel } from '../types/location.model';
 import { AddressQueryModel } from '../types/address-query.model';
 import { LocationQueryModel } from '../types/location-query.model';
-import { LayerQueryModel } from '../types/layer-query.model';
-import { LayerModel } from '../types/layer.model';
 import { AddressIdQueryModel } from '../types/address-id-query.model';
 import { CoordinateQueryModel } from '../types/coordinate-query.model';
 import { AddressModel } from '../types/address.model';
 import { CoordinateModel, CoordinateSearchResponse } from '../types/coordinate.model';
-import { CascadingCoordinateRulesModel } from '../types/cascading-rules.model';
 import { DelegateSearchModel } from '../types/delegate-search.model';
 import { PagedResult } from '../types/pagedresult.model'
 
@@ -96,16 +93,14 @@ export class NgxLocationPickerService {
   }
 
   /**
-   * Returns a list of layers based on the provided map service.
-   *
-   * @param query (the map service to load layers from)
+   * Returns a list of layers present in elastic.
    *
    * @return Observable<LayerModel[]>
    */
-  getMapLayers(query: LayerQueryModel): Observable<LayerModel[]> {
-    const parameters = this.locationPickerHelper.toHttpParams(query);
-
-    return this.httpClient.get<LayerModel[]>(`${this.locationPickerApi}/layers`, { params: parameters });
+  getLayers(): Observable<string[]> {
+    return this.httpClient
+      .get<PagedResult<'layers', string>>(`${this.locationPickerApi}/layers`)
+      .pipe(map((pagedResult: PagedResult<'layers', string>) => pagedResult._embedded.layers));
   }
 
   /**
