@@ -13,8 +13,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+
+## [6.0.0] - 2023-02-13
+
 ### Changed
 - [BREAKING] Use of Location Picker API V3
+
 
 ## [5.5.0] - 2022-10-10
 
@@ -248,7 +252,8 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.5.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v6.0.0...HEAD
+[6.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.5.0...v6.0.0
 [5.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.4.0...v5.5.0
 [5.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.2.1...v5.3.0
