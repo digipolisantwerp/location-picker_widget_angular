@@ -178,11 +178,13 @@ export class NgxLocationPickerHelper {
    *
    * @return streetAndNumber
    */
-  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel): AddressQueryModel {
+  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel, onlyAntwerp: boolean, countryCodes: string[]): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
       streetname: '',
       streetids: [],
-      housenumber: ''
+      housenumber: '',
+      onlyAntwerp: onlyAntwerp,
+      countries: countryCodes
     };
 
     const addressParts: Array<string> = (query && query.trim().length > 0) ? query.split(' ') : null;

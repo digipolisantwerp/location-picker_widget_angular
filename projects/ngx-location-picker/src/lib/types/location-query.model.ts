@@ -2,6 +2,8 @@ export interface LocationQueryModel {
   search: string;
   sort: string;
   prioritizelayer: Array<string>;
-  limit: number;
+  pagesize: number;
   layers: Array<string>;
+  onlyAntwerp: boolean;
+  countries: Array<string>;
 }

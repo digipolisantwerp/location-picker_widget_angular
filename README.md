@@ -58,15 +58,15 @@ The BFF should function solely as a pass-through layer where the API KEY gets ad
 
 > We're using axios for handling requests in the example below. Feel free to use any other library.
 
-Step 1: Create a contract with the "LOCATIONPICKER" on the api-store.
-![screenshot](api-store.png)
+Step 1: Create a contract with the "LOCATIONPICKER" on the marketplace.
+![screenshot](marketplace.png)
 
 Step 2: Copy the api key and api url
 
 Step 3: In your BFF create a .env file and add:
 ```
 API_KEY=00000000-0000-0000-0000-000000000000
-LOCATION_PICKER_URL=https://api-gw-o.antwerpen.be/gis/locationpicker/v1
+LOCATION_PICKER_URL=https://api-gw-o.antwerpen.be/gis/locationpicker/v3
 ```
 
 Step 4: Create a new file **locations.routes.js** in **/routes** and add the following contents:
@@ -94,7 +94,7 @@ const locationModel = require('../models/location.model');
  * @param res {Response}
  */
 exports.proxyLocationRequest = (req, res) => {
-    const requestPath = req.originalUrl.replace('/api/v1/locations', '');
+    const requestPath = req.originalUrl.replace('/api/v3/locations', '');
 
     locationModel.handleLocationRequest(requestPath)
         .then((response) => {
@@ -140,7 +140,7 @@ Step 7: Add your newly created route to **app.js**
 const locationProxy = require('./routes/location.routes');
 
 // Add this after const app = express(); and before any error handler routes
-app.use('/api/v1/locations', locationProxy);
+app.use('/api/v3/locations', locationProxy);
 ```
 
 **That's it!** 🎉
@@ -223,6 +223,8 @@ selectedLocation: InitialLocationModel = {
     [prioritizeLayers]="prioritizeLayer"
     [showClearInputButton]="showClearInputButton"
     [sortBy]="sortBy"
+    [onlyAntwerp]="onlyAntwerp"
+    [countryCodes]="countryCodes"
     [coordinateErrorNotification]="coordinateErrorNotification"
     [locateMeNotAllowedNotification]="locateMeNotAllowedNotification"
     [locateMeNotSupportedNotification]="locateMeNotSupportedNotification"
@@ -325,6 +327,10 @@ class ExampleComponent {
     @Input() prioritizeLayers = ['straatnaam'];
     /* Sort locations by certain key. */
     @Input() sortBy = '';
+    /* Search locations and addresses inside Antwerp otherwise will search in provided countries ==> countryCodes */
+    @Input() onlyAntwerp = true;
+    /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
+    @Input() countryCodes = ['be','nl','lu'];
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
     /* Set time to wait after user stops typing before triggering a search */
