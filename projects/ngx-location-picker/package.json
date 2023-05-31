@@ -11,8 +11,8 @@
     "@acpaas-ui-widgets/ngx-location-viewer": "^2.3.1",
     "@acpaas-ui/ngx-icon": "^5.0.0",
     "@acpaas-ui/ngx-leaflet": "^5.0.2",
-    "@angular/common": "^10.2.5",
-    "@angular/core": "^10.2.5",
+    "@angular/common": "^11.2.14",
+    "@angular/core": "^11.2.14",
     "tslib": "^2.0.0"
   }
 }
