@@ -1,64 +1,62 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { NgxLocationPickerHelper } from './ngx-location-picker.helper';
+import { NgxLocationPickerHelper } from "./ngx-location-picker.helper";
 
-describe('NgxLocationPickerHelper', () => {
-
+describe("NgxLocationPickerHelper", () => {
   let service: NgxLocationPickerHelper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
 
-    service = TestBed.get(NgxLocationPickerHelper);
+    service = TestBed.inject(NgxLocationPickerHelper);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
-  describe('isAddressTests', () => {
+  describe("isAddressTests", () => {
     const testCases = [
       {
-        query: '',
+        query: "",
         expectedResult: false,
-        keywords: []
+        keywords: [],
       },
       {
-        query: 'Groenplaats',
+        query: "Groenplaats",
         expectedResult: false,
-        keywords: ['kaainummer']
+        keywords: ["kaainummer"],
       },
       {
-        query: 'Generaal armstrongweg',
+        query: "Generaal armstrongweg",
         expectedResult: false,
-        keywords: ['kaainummer']
-
+        keywords: ["kaainummer"],
       },
       {
-        query: 'Generaal armstrongweg 1',
+        query: "Generaal armstrongweg 1",
         expectedResult: true,
-        keywords: ['kaainummer']
+        keywords: ["kaainummer"],
       },
       {
-        query: 'Generaal armstrongweg 1A',
+        query: "Generaal armstrongweg 1A",
         expectedResult: true,
-        keywords: ['kaainummer']
+        keywords: ["kaainummer"],
       },
       {
-        query: 'Kaainummer 757',
+        query: "Kaainummer 757",
         expectedResult: false,
-        keywords: ['kaainummer']
+        keywords: ["kaainummer"],
       },
       {
-        query: 'Kaainummer 15',
+        query: "Kaainummer 15",
         expectedResult: false,
-        keywords: ['Kaainummer', 'straatnaam']
+        keywords: ["Kaainummer", "straatnaam"],
       },
       {
-        query: 'Kaainummer 20',
+        query: "Kaainummer 20",
         expectedResult: true,
-        keywords: []
-      }
+        keywords: [],
+      },
     ];
 
     testCases.forEach((test, index) => {
@@ -66,6 +64,6 @@ describe('NgxLocationPickerHelper', () => {
         const result = service.isAddress(test.query, test.keywords);
         expect(result).toEqual(test.expectedResult);
       });
-    })
-  })
+    });
+  });
 });
