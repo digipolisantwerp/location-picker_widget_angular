@@ -140,7 +140,6 @@
       }
     }
   },
-  "defaultProject": "ngx-location-picker",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"
