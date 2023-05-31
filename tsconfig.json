@@ -12,14 +12,28 @@
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "importHelpers": true,
-    "target": "es2020",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
+    "target": "ES2022",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "paths": {
-      "ngx-lib": ["dist/ngx-lib"],
-      "ngx-lib/*": ["dist/ngx-lib/*"],
-      "ngx-location-picker": ["dist/ngx-location-picker"],
-      "ngx-location-picker/*": ["dist/ngx-location-picker/*"]
-    }
+      "ngx-lib": [
+        "dist/ngx-lib"
+      ],
+      "ngx-lib/*": [
+        "dist/ngx-lib/*"
+      ],
+      "ngx-location-picker": [
+        "dist/ngx-location-picker"
+      ],
+      "ngx-location-picker/*": [
+        "dist/ngx-location-picker/*"
+      ]
+    },
+    "useDefineForClassFields": false
   }
 }
