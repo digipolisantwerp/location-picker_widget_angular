@@ -29,6 +29,7 @@
               "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
               "node_modules/leaflet.markercluster/dist/MarkerCluster.css"
             ],
+            "allowedCommonJsDependencies": ["leaflet", "leaflet.markercluster"],
             "scripts": []
           },
           "configurations": {
@@ -42,7 +43,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -112,7 +112,8 @@
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/ngx-location-picker/tsconfig.lib.json",
-            "project": "projects/ngx-location-picker/ng-package.json"
+            "project": "projects/ngx-location-picker/ng-package.json",
+            "allowedCommonJsDependencies": ["leaflet", "leaflet.markercluster"]
           }
         },
         "test": {
