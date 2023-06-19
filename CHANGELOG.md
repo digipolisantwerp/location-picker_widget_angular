@@ -11,146 +11,159 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [Unreleased]
+## [7.0.0-beta.0]
 
+### Changed
+
+- Update to Angular v. 15
+- Update to Core branding v. 6
 
 ## [6.0.0] - 2023-02-13
 
 ### Changed
-- [BREAKING] Use of Location Picker API V3
 
+- [BREAKING] Use of Location Picker API V3
 
 ## [5.5.0] - 2022-10-10
 
 ### Added
+
 - Added additional circle to improve visibilty of proximity circle
 
 ### Fixed
+
 - Fixed bug that loadingspinner is stuck after second click if 'trackingPosition' is enabled
 - Fixed import path TrackingOptions model
-
 
 ## [5.4.0] - 2022-09-05
 
 ### Changed
-- Changed the functionality behind track position: will now show proximity circle and will stop after certain accuracy is reached or time has passed (position options extended)
 
+- Changed the functionality behind track position: will now show proximity circle and will stop after certain accuracy is reached or time has passed (position options extended)
 
 ## [5.3.0] - 2022-07-18
 
 ### Added
+
 - Adds space to streetname label, so user can search for address just by adding housenumber
 - Sets focus to searchfield after streetname location selection
 
 ### Fixed
-- Show pin marker after selectedlocation is location with geometry (shapecenter)
 
+- Show pin marker after selectedlocation is location with geometry (shapecenter)
 
 ## [5.2.1] - 2022-06-20
 
 ### Fixed
-- Disables operational layer event when picking location 
-- Show picking marker when hovering over polygon and picking action is active
 
+- Disables operational layer event when picking location
+- Show picking marker when hovering over polygon and picking action is active
 
 ## [5.2.0] - 2022-02-25
 
 ### Added
+
 - Added 'none' option to locationlayers param to disable location search
 - Added 'trackPosition' parameter if enabled GPS will track user location for accurate results (ngOnChanges will listen for updates to disable/enable tracking after input change)
 - Added 'positionOptions' parameter which will be used to get the device location (GeoLocation API)
 
-
 ## [5.1.0] - 2022-01-28
 
 ### Added
+
 - Functionality to search for locations when providing address (uses the streetname)
 
-### Fixed 
+### Fixed
+
 - Issue when providing a selectedLocation, emitted an empty location on initialization
 - Zooms and centers map on selectedLocation
-
 
 ## [5.0.3] - 2022-01-17
 
 ### Fixed
-- Clears geometry when result marker (icon) is added for location or address
 
+- Clears geometry when result marker (icon) is added for location or address
 
 ## [5.0.2] - 2022-01-10
 
 ### Fixed
-- Show result marker (icon) when point is returned for location or address
 
+- Show result marker (icon) when point is returned for location or address
 
 ## [5.0.1] - 2021-07-29
 
 ### Fixed
-- Picker position to match cursor
 
+- Picker position to match cursor
 
 ## [5.0.0] - 2021-06-18
 
 ### Changed
+
 - [BREAKING] Upgraded the component to work with Angular 8
 - [BREAKING] Use of Antwerp UI v5 components
 - [BREAKING] Upgraded to core branding v5
 - [BREAKING] Implemented location viewer widget (was ngx-leaflet):
 
 ### Added
+
 - Implemented all location viewer params
 - Added location viewer dependencies (geoman, esri, turf)
 
 ### Removed
-- Removed code that already exists in ngx-location-viewer (zoom in, zoom out & tile layers)
 
+- Removed code that already exists in ngx-location-viewer (zoom in, zoom out & tile layers)
 
 ## [4.8.1] - 2021-05-10
 
 ### Fixed
+
 - Added locationKeywords param with default value ['kaainummer'], if 'kaainummer number' is entered search for location instead of address
 - When param addCoordinateToResultsAt is provided: only add result when search is triggered by coordinate
-
 
 ## [4.8.0] - 2021-04-19
 
 ### Fixed
+
 - Updated public API (added used models and fixed CascadingCoordinateRulesType enum import)
 
 ### Added
+
 - Added actualLocation property to tempLocation (selectedLocation on marker placement)
 - Option to add used coordinate to resultlist
-
 
 ## [4.7.1] - 2020-11-26
 
 ### Fixed
-- Fixed issue zoomlevel using locate-me: when onSelectZoom is null uses current zoomLevel.
 
+- Fixed issue zoomlevel using locate-me: when onSelectZoom is null uses current zoomLevel.
 
 ## [4.7.0] - 2020-11-26
 
 ### Added
+
 - Made onSelectZoom property nullable. If onSelectZoom is null, zoomlevel doesn't change after location selection.
 
 ### Fixed
+
 - Centers map and changes zoom level after using locate-me
 - Changes picker position to match cursor
-
 
 ## [4.6.0] - 2020-10-23
 
 ### Added
+
 - Search on streetnameid: if previous location was a street, when searching searching for address (street + housenumber) use previous selected streetId
 - Zoom level on location select: adds behaviour to size map to geometry size
 
 ### Fixed
-- Search on housenumer: changes regex for housenumbers with and adds check for seperate letter of housenumber
 
+- Search on housenumer: changes regex for housenumbers with and adds check for seperate letter of housenumber
 
 ## [4.5.1] - 2020-07-27
 
 ### Added
+
 - LocationModel: added postCode: number AND postCodes: Array<number>
 - LocationModel: renamed type postCode: number to postCodes: Array\<number>
 - Search by coordinates: added Lambert 72 search functionality
@@ -158,33 +171,32 @@ All notable changes to this project will be documented in this file.
 - Location selected: sets map size according to selectedGeometry
 - Location deselected: removes default set view (view size and center map)
 
-
 ## [4.5.0] - 2020-07-27 - BORKED
-
 
 ## [4.4.0] - 2020-03-30
 
 ### Added
+
 - Added debounce time for search queries
 - Added proper rounding on coordinate sets (lat/lng)
 - Added option to disable triggering a search when providing an initial location
 
 ### Changed
+
 - Changed notification position on leaflet
 - Renamed `prioritizeLayer` to `prioritizeLayers` (now uses an array of layer names)
-
 
 ## [4.3.1] - 2020-03-24
 
 ### Fixed
-- Fixed an AOT compilation issue.
 
+- Fixed an AOT compilation issue.
 
 ## [4.3.0] - 2020-03-11
 
 ### Added
-- Made the chatbot widget WCAG 2.1 AA compliant.
 
+- Made the chatbot widget WCAG 2.1 AA compliant.
 
 ## [4.2.0] - 2019-11-14
 
@@ -192,25 +204,27 @@ All notable changes to this project will be documented in this file.
 - [FIXED] Setting a location externally now properly triggers a search
 - [ADDED] Searching for locations that only have geometry data available will now also show a marker at the geometry center.
 
-
 ## [4.1.0] - 2019-10-10
 
 ### Added
+
 - [ADDED] Added markers can now be dragged to a new position
 - [ADDED] New option for fetching user location on Init
 
 ### Fixed
+
 - [FIXED] Selected location will now be properly updated from external sources
 - [FIXED] "choose selected coordinate" will no longer show for non coordinate searches
 - [FIXED] 'scroll to' when selecting a location that has a geoShape.
 
 ### Changed
-- [CHANGED] Improved normalization of search query. Adjusting the search query after selecting a location now properly triggers a new search.
 
+- [CHANGED] Improved normalization of search query. Adjusting the search query after selecting a location now properly triggers a new search.
 
 ## [4.0.0] - 2019-09-30
 
 ### Changed
+
 - [BREAKING] Most functionality of the leaflet location picker is now merged into this one (making the other package deprecated).
 - [BREAKING] Bumped Angular version to 7 (the widget now works in Angular 6, 7 and 8).
 - [BREAKING] Feature layers can now be added to leaflet.
@@ -223,34 +237,31 @@ All notable changes to this project will be documented in this file.
 - Locations that have geometry available will now be drawn on leaflet.
 - Added notification messages when things go bad.
 
-
 ## [3.0.0] - 2019-06-20
 
 ### Changed
+
 - [BREAKING] An initial location can now be set via the latitude/longitude coordinates.
 
 ### Fixed
-- Fixed an issue where result label text was not being escaped
 
+- Fixed an issue where result label text was not being escaped
 
 ## [2.0.1] - 2018-11-23
 
 ### Changed
+
 - [BREAKING] Upgraded the widget to work with Angular 6+
 
-
 ## [2.0.0] - 2018-11-20 - BORKED
-
 
 ## [1.1.0] - 2018-11-06
 
 - Show layer name in list entry
 
-
 ## [1.0.0] - 2018-05-18
 
 - Initial release.
-
 
 [Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v6.0.0...HEAD
 [6.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.5.0...v6.0.0
