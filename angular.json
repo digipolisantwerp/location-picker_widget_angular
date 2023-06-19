@@ -109,11 +109,10 @@
       "prefix": "ngx",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/ngx-location-picker/tsconfig.lib.json",
-            "project": "projects/ngx-location-picker/ng-package.json",
-            "allowedCommonJsDependencies": ["leaflet", "leaflet.markercluster"]
+            "project": "projects/ngx-location-picker/ng-package.json"
           }
         },
         "test": {
