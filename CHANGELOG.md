@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [7.0.0]
+
+### Changed
+
+- Out of beta
+
 ## [7.0.0-beta.0]
 
 ### Changed
