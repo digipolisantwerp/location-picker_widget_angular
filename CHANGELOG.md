@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [7.0.1]
+
+### Fixed
+
+- Fixed a hard dependency of location viewer
+
 ## [7.0.0]
 
 ### Changed
@@ -269,7 +275,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v6.0.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.1...HEAD
+[7.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.0...v7.0.1
+[7.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.5.0...v6.0.0
 [5.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.4.0...v5.5.0
 [5.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.3.0...v5.4.0
