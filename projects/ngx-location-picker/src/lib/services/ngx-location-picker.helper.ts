@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
-import { LambertModel, LocationModel } from '../types/location.model';
-import { AddressQueryModel } from '../types/address-query.model';
-import proj4 from 'proj4';
-import { AddressModel } from '../types/address.model';
-import { CoordinateModel } from '../types/coordinate.model';
+import { Injectable } from "@angular/core";
+import { HttpParams } from "@angular/common/http";
+import { LambertModel, LocationModel } from "../types/location.model";
+import { AddressQueryModel } from "../types/address-query.model";
+import proj4 from "proj4";
+import { AddressModel } from "../types/address.model";
+import { CoordinateModel } from "../types/coordinate.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 
 /**
@@ -15,12 +15,10 @@ import { CoordinateModel } from '../types/coordinate.model';
  * Provide helper functions
  */
 export class NgxLocationPickerHelper {
-
   /**
    * NgxLocationPickerHelper constructor
    */
-  constructor() {
-  }
+  constructor() {}
 
   // These coordinates respresents border of Belgium
   minX = 49.4;
@@ -38,7 +36,7 @@ export class NgxLocationPickerHelper {
   toHttpParams(query: any): HttpParams {
     const strQuery = this.queryObjectToStringObject(query);
     let params = new HttpParams();
-    Object.keys(strQuery).forEach(key => {
+    Object.keys(strQuery).forEach((key) => {
       if (strQuery[key]) {
         params = params.set(key, strQuery[key]);
       }
@@ -55,18 +53,21 @@ export class NgxLocationPickerHelper {
    */
   private queryObjectToStringObject(obj: any): any {
     const retObj = {};
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       const queryValue = obj[key];
-      if (typeof queryValue === 'string') {
+      if (typeof queryValue === "string") {
         retObj[key] = queryValue;
       } else if (Array.isArray(queryValue) && queryValue.length > 0) {
         const strArr: string[] = [];
         for (const [index, value] of queryValue.entries()) {
-          strArr.push((queryValue[index].toString()));
+          strArr.push(queryValue[index].toString());
         }
         retObj[key] = strArr;
       } else {
-        retObj[key] = (queryValue !== null && queryValue !== undefined) ? queryValue.toString() : '';
+        retObj[key] =
+          queryValue !== null && queryValue !== undefined
+            ? queryValue.toString()
+            : "";
       }
     });
     return retObj;
@@ -82,12 +83,12 @@ export class NgxLocationPickerHelper {
       const hasBrackets = value.match(/\(.*?\)/);
 
       if (hasBrackets && hasBrackets.length) {
-        return value.replace(` ${hasBrackets}`, '');
+        return value.replace(` ${hasBrackets}`, "");
       } else {
-        const hasComma = value.indexOf(',');
+        const hasComma = value.indexOf(",");
 
         if (hasComma > -1) {
-          return value.replace(value.substr(hasComma, value.length), '');
+          return value.replace(value.substr(hasComma, value.length), "");
         }
       }
     }
@@ -101,11 +102,15 @@ export class NgxLocationPickerHelper {
    * @return boolean
    */
   isAddress(query: string, locationKeywords: string[]): boolean {
-    const addressParts: Array<string> | null = (query) ? query.split(' ') : null;
+    const addressParts: Array<string> | null = query ? query.split(" ") : null;
 
-    const lowerLocationKeyWords = locationKeywords.map(x => x.toLowerCase());
+    const lowerLocationKeyWords = locationKeywords.map((x) => x.toLowerCase());
 
-    if (addressParts && Array.isArray(addressParts) && addressParts.length > 1) {
+    if (
+      addressParts &&
+      Array.isArray(addressParts) &&
+      addressParts.length > 1
+    ) {
       for (const [index, value] of addressParts.entries()) {
         // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
         if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase())) {
@@ -129,10 +134,14 @@ export class NgxLocationPickerHelper {
    * @return boolean
    */
   isCoordinate(query: string): boolean {
-    const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(',') : null;
+    const coordinateParts: Array<string> | null =
+      query && query.trim().length > 0 ? query.split(",") : null;
 
     if (coordinateParts.length === 2) {
-      if (!isNaN(Number(coordinateParts[0])) && !isNaN(Number(coordinateParts[1]))) {
+      if (
+        !isNaN(Number(coordinateParts[0])) &&
+        !isNaN(Number(coordinateParts[1]))
+      ) {
         return true;
       }
     }
@@ -146,7 +155,7 @@ export class NgxLocationPickerHelper {
    *
    */
   isLocationModel(object: any): object is LocationModel {
-    return 'streetName' in object;
+    return "streetName" in object;
   }
 
   /**
@@ -155,10 +164,14 @@ export class NgxLocationPickerHelper {
    * @return boolean
    */
   isAlternativeCoordinateNotation(query: string): boolean {
-    const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(' ') : null;
+    const coordinateParts: Array<string> | null =
+      query && query.trim().length > 0 ? query.split(" ") : null;
 
     if (coordinateParts.length === 2) {
-      if (!isNaN(Number(coordinateParts[0].replace(',', '.'))) && !isNaN(Number(coordinateParts[1].replace(',', '.')))) {
+      if (
+        !isNaN(Number(coordinateParts[0].replace(",", "."))) &&
+        !isNaN(Number(coordinateParts[1].replace(",", ".")))
+      ) {
         return true;
       }
     }
@@ -170,7 +183,7 @@ export class NgxLocationPickerHelper {
     const commaChar = /\,/gi;
     const spaceChar = / /gi;
 
-    return query.replace(commaChar, '.').replace(spaceChar, ',');
+    return query.replace(commaChar, ".").replace(spaceChar, ",");
   }
 
   /**
@@ -178,35 +191,41 @@ export class NgxLocationPickerHelper {
    *
    * @return streetAndNumber
    */
-  buildAddressQuery(query: string, selectedLocation: LocationModel | AddressModel | CoordinateModel, onlyAntwerp: boolean, countryCodes: string[]): AddressQueryModel {
+  buildAddressQuery(
+    query: string,
+    selectedLocation: LocationModel | AddressModel | CoordinateModel,
+    onlyAntwerp: boolean,
+    countryCodes: string[]
+  ): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
-      streetname: '',
+      streetname: "",
       streetids: [],
-      housenumber: '',
+      housenumber: "",
       onlyAntwerp: onlyAntwerp,
-      countries: countryCodes
+      countries: countryCodes,
     };
 
-    const addressParts: Array<string> = (query && query.trim().length > 0) ? query.split(' ') : null;
+    const addressParts: Array<string> =
+      query && query.trim().length > 0 ? query.split(" ") : null;
 
     if (addressParts) {
       addressParts.map((part, index) => {
         const matches = /[0-9]\w?$/.exec(part);
 
-        if ((index > 0) && matches) {
+        if (index > 0 && matches) {
           if (!!streetAndNumber.housenumber || matches.index === 0) {
-            streetAndNumber.housenumber += part + '';
+            streetAndNumber.housenumber += part + "";
             return;
           }
         }
 
         if (streetAndNumber.streetname) {
-          streetAndNumber.streetname += ' ';
+          streetAndNumber.streetname += " ";
         }
 
-        if (/\d$/.test(part) && ((index + 1) === addressParts.length)) {
-          streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, '');
-          streetAndNumber.streetname += part.replace(/\d*$/, '');
+        if (/\d$/.test(part) && index + 1 === addressParts.length) {
+          streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, "");
+          streetAndNumber.streetname += part.replace(/\d*$/, "");
         } else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
           streetAndNumber.housenumber += part;
         } else {
@@ -214,26 +233,40 @@ export class NgxLocationPickerHelper {
         }
       });
 
-      streetAndNumber.streetname = streetAndNumber.streetname.trim().replace(/\s+\([a-z\s\,]+\)$/gi, '');
+      streetAndNumber.streetname = streetAndNumber.streetname
+        .trim()
+        .replace(/\s+\([a-z\s\,]+\)$/gi, "");
 
       if (/[a-z]\d*$/.test(streetAndNumber.streetname)) {
-        streetAndNumber.streetname = streetAndNumber.streetname.replace(/[0-9]*$/g, '');
+        streetAndNumber.streetname = streetAndNumber.streetname.replace(
+          /[0-9]*$/g,
+          ""
+        );
       }
 
-      streetAndNumber.housenumber = query.replace(streetAndNumber.streetname, '').replace(/\s/g, '');
-      streetAndNumber.housenumber = streetAndNumber.housenumber.trim().replace(/^\([a-z\s\,]*\)/gi, '');
+      streetAndNumber.housenumber = query
+        .replace(streetAndNumber.streetname, "")
+        .replace(/\s/g, "");
+      streetAndNumber.housenumber = streetAndNumber.housenumber
+        .trim()
+        .replace(/^\([a-z\s\,]*\)/gi, "");
     }
 
     // if previous selected location is of type LocationModel and location has streetid
     //  ==> check if name corresponds with the streetname to use the streetnameid
-    if (selectedLocation && this.isLocationModel(selectedLocation) && selectedLocation.streetNameId) {
-      if (selectedLocation.streetName.toUpperCase()
-        === streetAndNumber.streetname.toUpperCase()) {
-        streetAndNumber.streetname = '';
+    if (
+      selectedLocation &&
+      this.isLocationModel(selectedLocation) &&
+      selectedLocation.streetNameId
+    ) {
+      if (
+        selectedLocation.streetName.toUpperCase() ===
+        streetAndNumber.streetname.toUpperCase()
+      ) {
+        streetAndNumber.streetname = "";
         streetAndNumber.streetids.push(selectedLocation.streetNameId);
       }
     }
-
 
     return streetAndNumber;
   }
@@ -244,10 +277,11 @@ export class NgxLocationPickerHelper {
    * @return coordinate
    */
   extractXYCoord(query: string): LambertModel {
-    const coordinateParts: Array<string> | null = (query && query.trim().length > 0) ? query.split(',') : null;
+    const coordinateParts: Array<string> | null =
+      query && query.trim().length > 0 ? query.split(",") : null;
     const coordinate: LambertModel = {
       x: Number(coordinateParts[0]),
-      y: Number(coordinateParts[1])
+      y: Number(coordinateParts[1]),
     };
 
     return coordinate;
@@ -275,15 +309,30 @@ export class NgxLocationPickerHelper {
    *
    * @return wgs84coordinates
    */
-  convertLambertToWgs84Coordinates(lambertCoordinate: LambertModel): LambertModel {
+  convertLambertToWgs84Coordinates(
+    lambertCoordinate: LambertModel
+  ): LambertModel {
     // tslint:disable-next-line: max-line-length
-    const lambertProj = '+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs';
-    const result = proj4(lambertProj, 'WGS84', [lambertCoordinate.x, lambertCoordinate.y]);
+    const lambertProj =
+      "+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs";
+    const result = proj4(lambertProj, "WGS84", [
+      lambertCoordinate.x,
+      lambertCoordinate.y,
+    ]);
     const coordinates: LambertModel = {
-      x: result[0] >= this.minX && result[0] <= this.maxX ? result[0] : result[1] >= this.minX && result[1] <= this.maxX ? result[1] : 0,
-      y: result[0] >= this.minY && result[0] <= this.maxY ? result[0] : result[1] >= this.minY && result[1] <= this.maxY ? result[1] : 0
+      x:
+        result[0] >= this.minX && result[0] <= this.maxX
+          ? result[0]
+          : result[1] >= this.minX && result[1] <= this.maxX
+          ? result[1]
+          : 0,
+      y:
+        result[0] >= this.minY && result[0] <= this.maxY
+          ? result[0]
+          : result[1] >= this.minY && result[1] <= this.maxY
+          ? result[1]
+          : 0,
     };
     return coordinates;
   }
-
 }

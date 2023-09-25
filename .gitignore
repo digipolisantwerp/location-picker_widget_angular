@@ -8,7 +8,7 @@
 dist.tgz
 
 # dependencies
-/node_modules
+node_modules
 
 # IDEs and editors
 /.idea
@@ -35,6 +35,7 @@ dist.tgz
 npm-debug.log
 testem.log
 /typings
+.angular
 
 # e2e
 /e2e/*.js

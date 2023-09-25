@@ -1,4 +1,15 @@
-@import '~@a-ui/core/dist/assets/styles/_quarks';
+$spacer: 1.5rem !default; // 24px
+$spacer-sm: $spacer * 0.75 !default;
+$spacer-xs: $spacer * 0.5 !default;
+
+$grey-light: #d8d8d8 !default;
+$grey-lighter: #f3f3f3 !default;
+$grey: #949494 !default;
+$input-border-focus: rgb(192, 223, 254) !default;
+$border-color: $grey-light;
+
+$animation-easing: 200ms !default;
+$animation-duration: ease-in-out !default;
 
 ::ng-deep {
   body.is-map-interaction {
@@ -14,8 +25,11 @@
   }
 
   .is-picking {
-    .leaflet-grab, .leaflet-interactive {
-      cursor: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg%20width%3D%2740px%27%20height%3D%2740px%27%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20stroke-linecap%3D%22round%22%20stroke%3D%22%230064B4%22%20fill%3D%22none%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%20.71l-.01%200c4.14-.01%207.5%203.35%207.5%207.49%200%203.54-5.5%2012.38-7.08%2014.85l-.001%200c-.15.23-.46.3-.7.15%20-.07-.04-.12-.1-.16-.16%20-1.58-2.47-7.08-11.31-7.08-14.85l0-.01c0-4.15%203.35-7.5%207.5-7.5Z%22%2F%3E%3Cpath%20d%3D%22M12%205.21a3%203%200%201%200%200%206%203%203%200%201%200%200-6Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 18 36, pointer;
+    .leaflet-grab,
+    .leaflet-interactive {
+      cursor: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg%20width%3D%2740px%27%20height%3D%2740px%27%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20stroke-linecap%3D%22round%22%20stroke%3D%22%230064B4%22%20fill%3D%22none%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%20.71l-.01%200c4.14-.01%207.5%203.35%207.5%207.49%200%203.54-5.5%2012.38-7.08%2014.85l-.001%200c-.15.23-.46.3-.7.15%20-.07-.04-.12-.1-.16-.16%20-1.58-2.47-7.08-11.31-7.08-14.85l0-.01c0-4.15%203.35-7.5%207.5-7.5Z%22%2F%3E%3Cpath%20d%3D%22M12%205.21a3%203%200%201%200%200%206%203%203%200%201%200%200-6Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+          18 36,
+        pointer;
     }
   }
 
@@ -30,7 +44,7 @@
 
   .proximity-center {
     animation: pulsate 2s ease-out infinite;
-    opacity: 0.0
+    opacity: 0;
   }
 }
 
@@ -115,7 +129,7 @@
       }
 
       small {
-        margin: $spacer-xs / 2 0 0 0;
+        margin: calc($spacer-xs / 2) 0 0 0;
       }
     }
 
@@ -141,7 +155,7 @@
         }
 
         small {
-          margin: $spacer-xs / 2 0 0 0;
+          margin: calc($spacer-xs / 2) 0 0 0;
         }
 
         p::first-letter {
@@ -158,21 +172,21 @@
 
 // Animations
 @keyframes pulsate {
-  0%, 100% { 
+  0%,
+  100% {
     opacity: 0.2;
   }
   50% {
-    opacity: 1.0;
+    opacity: 1;
   }
 }
 
 @keyframes svg-border-pulse {
-  0%, 100% {
+  0%,
+  100% {
     stroke-width: 4px;
   }
   50% {
     stroke-width: 2px;
   }
 }
-
-
