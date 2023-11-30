@@ -92,7 +92,7 @@
         [class.is-active]="pickLocationActive"
         [attr.aria-label]="locationPickAriaLabel"
       >
-        <aui-icon name="ai-pin"></aui-icon>
+        <aui-icon name="ai-pin-3"></aui-icon>
       </button>
     </div>
     <div controls bottom right>
@@ -103,7 +103,7 @@
         [disabled]="isLocating"
         (click)="getDeviceLocation()"
       >
-        <aui-icon *ngIf="!isLocating" name="ai-location-target-1"></aui-icon>
+        <aui-icon *ngIf="!isLocating" name="ai-compass-arrow"></aui-icon>
         <span *ngIf="isLocating" class="a-spinner a-spinner--s"></span>
       </button>
     </div>
