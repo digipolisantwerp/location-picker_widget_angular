@@ -14,7 +14,10 @@
         (blur)="didSearch = false"
       />
       <div class="inline-addon" *ngIf="showClearInputButton">
-        <span *ngIf="searching" class="a-spinner a-spinner--s u-margin-right-xs"></span>
+        <span
+          *ngIf="searching"
+          class="a-spinner a-spinner--s u-margin-right-xs"
+        ></span>
         <button
           *ngIf="!inputHasValue"
           class="a-button a-button--text a-button--s has-icon"
@@ -29,7 +32,11 @@
 
     <div class="m-flyout m-flyout--full" [class.is-open]="didSearch">
       <div class="m-flyout__content">
-        <small *ngIf="!hasResults && !searching; else results" class="no-results">{{ noResultsLabel }}</small>
+        <small
+          *ngIf="!hasResults && !searching; else results"
+          class="no-results"
+          >{{ noResultsLabel }}</small
+        >
         <ng-template #results>
           <ul class="a-list a-list--reset a-list--lined">
             <li
@@ -37,7 +44,11 @@
               (click)="onLocationSelect(location)"
               [class.is-highlighted]="ii === highlightedLocationResult"
             >
-              <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
+              <p
+                [innerHTML]="
+                  location.label | highlight : selectedLocation?.label
+                "
+              ></p>
               <small>{{ location.layer }}</small>
             </li>
           </ul>
@@ -54,10 +65,21 @@
       </div>
     </div>
     <div *ngIf="leafletNotification?.text">
-      <div role="alertdialog" aria-live="assertive" class="m-location-picker__notification-panel m-alert m-alert--{{ leafletNotification.status }}">
-        <p><aui-icon [name]="leafletNotification.icon"></aui-icon> {{ leafletNotification.text }}</p>
+      <div
+        role="alertdialog"
+        aria-live="assertive"
+        class="m-location-picker__notification-panel m-alert m-alert--{{
+          leafletNotification.status
+        }}"
+      >
+        <p>
+          <aui-icon [name]="leafletNotification.icon"></aui-icon>
+          {{ leafletNotification.text }}
+        </p>
         <button
-          class="a-button a-button--text a-button--{{ leafletNotification.status }} has-icon m-alert__close"
+          class="a-button a-button--s a-button--text a-button--{{
+            leafletNotification.status
+          }} has-icon m-alert__close"
           aria-label="Close"
           (click)="closeNotification()"
         >
@@ -83,7 +105,8 @@
     [class.is-picking]="pickLocationActive"
     (mouseover)="isCursorOnLeaflet(true)"
     (mouseout)="isCursorOnLeaflet(false)"
-    (filteredResult)="onResultFiltered($event)">
+    (filteredResult)="onResultFiltered($event)"
+  >
     <div controls bottom left>
       <button
         type="button"
@@ -110,5 +133,5 @@
     <div *ngIf="hasSidebar">
       <ng-content></ng-content>
     </div>
-</aui-location-viewer>
+  </aui-location-viewer>
 </div>
