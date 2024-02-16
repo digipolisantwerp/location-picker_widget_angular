@@ -1071,7 +1071,7 @@ export class NgxLocationPickerComponent
   }
 
   private createPinMarker(): string {
-    return this.createMarker("#000000", "ai-pin-3", "20px", {
+    return this.createMarker("#000000", "ai-pin", "16px", {
       top: "-4px",
       left: "-3px",
     });
