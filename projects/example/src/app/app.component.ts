@@ -21,68 +21,16 @@ export class AppComponent implements OnInit {
     buttonLabel: 'Luchtfoto'
   };
 
-  cascadingRules: CascadingCoordinateRulesModel[] = [
-    {
-      type: CascadingCoordinateRulesType.ADDRESS,
-      addressOptions: {
-        buffer: 50,
-        count: 3,
-        relevance: false
-      }
-    } as CascadingCoordinateRulesModel,
-    {
-      type: CascadingCoordinateRulesType.LOCATION,
-      locationOptions: {
-        mapService: "https://geoint.antwerpen.be/arcgissql/rest/services/P_DA/Locaties_Cascade/MapServer",
-        tolerance: 0,
-        returnGeometry: true,
-        buffer: 25,
-        count: 5,
-        layerIds: '26'
-      }
-    } as CascadingCoordinateRulesModel,
-    {
-      type: CascadingCoordinateRulesType.LOCATION,
-      locationOptions: {
-        mapService: "https://geoint.antwerpen.be/arcgissql/rest/services/P_DA/Locaties_Cascade/MapServer",
-        buffer: 100,
-        tolerance: 0,
-        returnGeometry: true,
-        count: 3,
-        layerIds: '2'
-      }
-    } as CascadingCoordinateRulesModel,
-    {
-      type: CascadingCoordinateRulesType.LOCATION,
-      locationOptions: {
-        mapService: "https://geoint.antwerpen.be/arcgissql/rest/services/P_DA/Locaties_Cascade/MapServer",
-        tolerance: 0,
-        returnGeometry: true,
-        count: 1,
-        layerIds: '5'
-      }
-    } as CascadingCoordinateRulesModel,
-    {
-      type: CascadingCoordinateRulesType.LOCATION,
-      locationOptions: {
-        mapService: "https://geoint.antwerpen.be/arcgissql/rest/services/P_DA/Locaties_Cascade/MapServer",
-        tolerance: 0,
-        returnGeometry: true,
-        count: 1,
-        layerIds: '0'
-      }
-    } as CascadingCoordinateRulesModel,
-    {
-      type: CascadingCoordinateRulesType.LOCATION,
-      locationOptions: {
-        mapService: "https://geoint.antwerpen.be/arcgissql/rest/services/P_DA/Locaties_Cascade/MapServer",
-        tolerance: 0,
-        returnGeometry: true,
-        count: 1,
-        layerIds: '28'
-      }
-    } as CascadingCoordinateRulesModel
-  ]
+  cascadingRules: CascadingCoordinateRulesModel[] = [{
+    type: CascadingCoordinateRulesType.LOCATION,
+    locationOptions: {
+      mapService: 'https://geoint-a.antwerpen.be/arcgissql/rest/services/A_DA/Locaties_Cascade/MapServer',
+      tolerance: 1,
+      returnGeometry: true,
+      count: 5,
+      layerIds: '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24',
+    }
+  }];
 
   supportingLayerOptions: SupportingLayerOptions = {
     url: 'https://geodata.antwerpen.be/arcgissql/rest/services/P_ToK/P_Tok_routeweek/Mapserver',
@@ -109,7 +57,7 @@ export class AppComponent implements OnInit {
 
   showLayerManagement = true;
   ngOnInit(): void {
-    this.baseUrl = 'https://locationsearchapi-app1-o.antwerpen.be';
+    this.baseUrl = 'https://locationpicker-app1-o.antwerpen.be';
   }
 
   onSubmitNgModel() {

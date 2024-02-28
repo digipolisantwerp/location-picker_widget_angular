@@ -3,14 +3,14 @@
     <h1 class="h5 u-margin-bottom">Digipolis Location Picker Service</h1>
     <p>
       <span class="a-label u-margin-right-xs">v1.0.0</span>
-      <a [href]="baseUrl + '/swagger/index.html'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
+      <a [href]="baseUrl + '/api-explorer/'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
     </p>
   </div>
 
   <form (ngSubmit)="onSubmitNgModel()">
     <aui-location-picker
       name="locationPickerModel"
-      [baseUrl]="baseUrl + '/v1'"
+      [baseUrl]="baseUrl + '/api/v2'"
       [(ngModel)]="selectedLocationModel"
       [locationLayers]="['all']"
       [hasSidebar]="false"
