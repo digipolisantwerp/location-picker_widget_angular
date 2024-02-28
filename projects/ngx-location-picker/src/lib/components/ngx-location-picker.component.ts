@@ -145,7 +145,7 @@ export class NgxLocationPickerComponent
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
-  @Input() debounceTime = 200;
+  @Input() debounceTime = 400;
   /* whether or not to return a single cascading result */
   @Input() cascadingCoordinateReturnSingle = true;
   /* Limit total cascading result, useful when returnSingle is false */
