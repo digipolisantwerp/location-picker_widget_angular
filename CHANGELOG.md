@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [7.0.2]
+
+### Changed
+
+- Changed `what is here` icons & colors.
+
 ## [7.0.1]
 
 ### Fixed
