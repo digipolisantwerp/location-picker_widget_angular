@@ -3,24 +3,16 @@
     <h1 class="h5 u-margin-bottom">Digipolis Location Picker Service</h1>
     <p>
       <span class="a-label u-margin-right-xs">v1.0.0</span>
-      <a [href]="baseUrl + '/swagger/index.html'" target="_blank" class="a-button a-button--tiny">View Swagger doc</a>
+      <a [href]="baseUrl + '/swagger/index.html'" target="_blank" class="a-button a-button--s">View Swagger doc</a>
     </p>
   </div>
 
   <form (ngSubmit)="onSubmitNgModel()">
-    <aui-location-picker
-      name="locationPickerModel"
-      [baseUrl]="baseUrl + '/v1'"
-      [(ngModel)]="selectedLocationModel"
-      [locationLayers]="['all']"
-      [hasSidebar]="false"
-      [tileLayer]="satelliteMapLayer"
-      [cascadingCoordinateReturnSingle]="false"
-      [cascadingCoordinateRules]="cascadingRules"
-    ></aui-location-picker>
+    <aui-location-picker name="locationPickerModel" [baseUrl]="baseUrl + '/v1'" [(ngModel)]="selectedLocationModel"
+      [locationLayers]="['all']" [hasSidebar]="false" [tileLayer]="satelliteMapLayer"
+      [cascadingCoordinateReturnSingle]="false" [cascadingCoordinateRules]="cascadingRules"></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 
     <pre>{{ selectedLocationModel | json }}</pre>
   </form>
 </div>
-

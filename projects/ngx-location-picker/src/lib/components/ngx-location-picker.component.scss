@@ -1,34 +1,24 @@
-$spacer: 1.5rem !default; // 24px
-$spacer-sm: $spacer * 0.75 !default;
-$spacer-xs: $spacer * 0.5 !default;
-
-$grey-light: #d8d8d8 !default;
-$grey-lighter: #f3f3f3 !default;
-$grey: #949494 !default;
-$input-border-focus: rgb(192, 223, 254) !default;
-$border-color: $grey-light;
-
-$animation-easing: 200ms !default;
-$animation-duration: ease-in-out !default;
+@import '@a-ui/core/src/styles/quarks/_quarks.colors';
+@import '@a-ui/core/src/styles/quarks/_quarks.variables';
 
 ::ng-deep {
   body.is-map-interaction {
     overflow: hidden;
   }
 
-  .o-leaflet__map:focus {
-    box-shadow: 0 0 0 3px $input-border-focus;
-  }
-
   .ngx-location-picker-marker {
     position: relative;
+
+    svg {
+      filter: drop-shadow(0 0 2px var(--TEXT-COLOR-INVERTED));
+    }
   }
 
   .is-picking {
+
     .leaflet-grab,
     .leaflet-interactive {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.0' width='24.000000pt' height='27.000000pt' viewBox='-40 -15 220.000000 197.000000' preserveAspectRatio='xMidYMid meet'%3E%3Cg transform='translate(0.000000,197.000000) scale(0.100000,-0.100000)' fill='%230057b7'%3E%3Cpath d='M745 1816 c-118 -29 -223 -117 -278 -233 -30 -64 -32 -75 -32 -178 0 -103 2 -114 31 -176 55 -116 178 -217 287 -235 l37 -7 0 -388 c0 -271 3 -396 12 -413 22 -49 79 -45 97 6 7 20 11 165 11 413 l0 382 38 7 c108 18 230 117 285 233 30 64 32 75 32 178 0 103 -2 114 -31 176 -35 74 -121 160 -184 199 -92 47 -206 60 -305 36z m233 -126 c66 -28 144 -111 166 -176 20 -61 21 -157 0 -217 -21 -63 -92 -140 -161 -173 -75 -37 -183 -39 -261 -5 -66 30 -144 113 -166 177 -20 61 -21 157 0 217 19 56 92 141 145 168 87 44 188 47 277 9z'/%3E%3C/g%3E%3C/svg%3E")
-          18 36,
+      cursor: url('data:image/svg+xml,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" stroke="%23000" fill="none" stroke-linejoin="round"><path d="M12 3.5a4 4 0 1 0 0 8 4 4 0 1 0 0-8Z"/><path d="M12 11.5l0 9"/></g></svg>') 18 36,
         pointer;
     }
   }
@@ -48,15 +38,8 @@ $animation-duration: ease-in-out !default;
   }
 }
 
-.is-picking .is-active {
-  background: $grey-light;
-  color: $grey;
-}
-
-.a-button {
-  &--block {
-    display: block;
-  }
+.a-button.a-button--outlined.button-location-picking {
+  --btn-bg-color: var(--THEME1-100);
 }
 
 .a-input {
@@ -71,11 +54,14 @@ $animation-duration: ease-in-out !default;
     }
 
     .inline-addon {
-      display: flex;
-      align-items: center;
       position: absolute;
-      right: 7px;
-      top: 6px;
+      right: calc(var(--SPACER) / 4);
+      top: calc(var(--SPACER) / 4);
+
+      .a-spinner {
+        margin-right: calc(var(--SPACER) / 12);
+        margin-top: calc(var(--SPACER) / 12);
+      }
     }
   }
 
@@ -100,7 +86,7 @@ $animation-duration: ease-in-out !default;
     width: 100%;
 
     &.m-alert {
-      padding: $spacer-xs;
+      min-height: calc(var(--SPACER-XL) + 2px);
     }
   }
 }
@@ -109,10 +95,13 @@ $animation-duration: ease-in-out !default;
   display: block;
 
   &__content {
-    border-top: 0;
     box-shadow: none;
+    margin-top: -1px;
+    max-height: 32.25rem;
+    overflow: hidden;
+    overflow-y: auto;
+    width: 100%;
 
-    .no-results,
     .use-coordinate {
       padding: $spacer-sm 0 $spacer-sm $spacer-xs;
       margin: 0;
@@ -120,12 +109,12 @@ $animation-duration: ease-in-out !default;
 
     .use-coordinate {
       cursor: pointer;
-      transition: all $animation-easing $animation-duration;
-      border-top: 1px solid $border-color;
+      transition: all var(--ANIMATION-NORMAL);
+      border-top: var(--BORDER-WIDTH) solid var(--BORDER-COLOR);
 
       &:hover,
       &.is-highlighted {
-        background: $grey-lighter;
+        background: $gray-100;
       }
 
       small {
@@ -133,38 +122,14 @@ $animation-duration: ease-in-out !default;
       }
     }
 
-    .a-list {
-      li {
-        cursor: pointer;
-        transition: all $animation-easing $animation-duration;
+    .a-list__results {
 
-        &:first-child {
-          border-top: 0;
-        }
+      .a-list__content {
+        flex-direction: column;
+      }
 
-        &:last-child {
-          border-bottom: 0;
-        }
-
-        &:hover {
-          background: $grey-lighter;
-        }
-
-        p::first-letter {
-          text-transform: uppercase;
-        }
-
-        small {
-          margin: calc($spacer-xs / 2) 0 0 0;
-        }
-
-        p::first-letter {
-          text-transform: uppercase;
-        }
-
-        &.is-highlighted {
-          background: $grey-lighter;
-        }
+      p::first-letter {
+        text-transform: uppercase;
       }
     }
   }
@@ -172,20 +137,24 @@ $animation-duration: ease-in-out !default;
 
 // Animations
 @keyframes pulsate {
+
   0%,
   100% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 1;
   }
 }
 
 @keyframes svg-border-pulse {
+
   0%,
   100% {
     stroke-width: 4px;
   }
+
   50% {
     stroke-width: 2px;
   }

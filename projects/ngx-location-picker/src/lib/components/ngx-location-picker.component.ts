@@ -54,8 +54,7 @@ import { LatLngExpression } from "leaflet";
   ],
 })
 export class NgxLocationPickerComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
-{
+  implements OnInit, OnDestroy, ControlValueAccessor {
   /* Url to the backend-for-frontend (bff) Should function as pass through to the Location Picker API. */
   @Input() baseUrl;
   /* The default zoom level on map load. */
@@ -257,7 +256,7 @@ export class NgxLocationPickerComponent
   private clearWatchTimeoutId;
 
   /* Used for ControlValueAccessor */
-  propagateChange = (_: any) => {};
+  propagateChange = (_: any) => { };
 
   get selectedLocation() {
     return this._selectedLocation;
@@ -386,7 +385,7 @@ export class NgxLocationPickerComponent
   /**
    * Registers a callback function is called by the forms API on initialization to update the form model on blur.
    */
-  registerOnTouched() {}
+  registerOnTouched() { }
 
   /**
    * Zooms the map in
@@ -865,7 +864,7 @@ export class NgxLocationPickerComponent
       this.onSearch(
         `${initialLocation.position.lat},${initialLocation.position.lng}`,
         initialLocation.label &&
-          this.locationPickerHelper.isCoordinate(initialLocation.label)
+        this.locationPickerHelper.isCoordinate(initialLocation.label)
       );
     } else {
       this.addMapMarker([
@@ -1021,7 +1020,7 @@ export class NgxLocationPickerComponent
     this.proximityCenter = this.locationViewerService.L.circle(coords, 15, {
       fillOpacity: 1,
       color: "#FFFFFF",
-      fillColor: "#0057b7",
+      fillColor: "#000000",
       className: "proximity-center",
     });
     this.proximityCircle.addTo(this.leafletMap.map);
@@ -1056,12 +1055,12 @@ export class NgxLocationPickerComponent
    * Defines the custom marker markup.
    */
   private createMarker(
-    color: string = "#0057b7",
-    icon: string = "ai-pin",
-    size: string = "2.5rem",
+    color: string = "var(--TEXT-COLOR)",
+    icon: string = "ai-pin-3",
+    size: string = "1.5rem",
     position: { top: string; left: string } = {
-      top: "-30px",
-      left: "-12px",
+      top: "4px",
+      left: "4px",
     }
   ) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
@@ -1071,9 +1070,9 @@ export class NgxLocationPickerComponent
   }
 
   private createPinMarker(): string {
-    return this.createMarker("#000000", "ai-pin", "16px", {
-      top: "-4px",
-      left: "-3px",
+    return this.createMarker("var(--THEME1-600)", "ai-pin", "2.5rem", {
+      top: "-8px",
+      left: "-4px",
     });
   }
 

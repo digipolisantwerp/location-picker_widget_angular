@@ -29,7 +29,10 @@
               "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
               "node_modules/leaflet.markercluster/dist/MarkerCluster.css"
             ],
-            "allowedCommonJsDependencies": ["leaflet", "leaflet.markercluster"],
+            "allowedCommonJsDependencies": [
+              "leaflet",
+              "leaflet.markercluster"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -56,7 +59,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -82,7 +86,9 @@
             "polyfills": "projects/example/src/polyfills.ts",
             "tsConfig": "projects/example/tsconfig.spec.json",
             "karmaConfig": "projects/example/karma.conf.js",
-            "styles": ["projects/example/src/styles.scss"],
+            "styles": [
+              "projects/example/src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "projects/example/src/favicon.ico",
@@ -97,7 +103,9 @@
               "projects/example/tsconfig.app.json",
               "projects/example/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -134,7 +142,9 @@
               "projects/ngx-location-picker/tsconfig.lib.json",
               "projects/ngx-location-picker/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
