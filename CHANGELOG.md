@@ -10,6 +10,16 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [7.0.3]
+
+### Changed
+
+- Changed default debounce time from 200ms to 400ms for searches.
+- Changed endpoints from "https://locationpicker-app1-o.antwerpen.be" (LocationPicker V2) to "https://locationsearchapi-app1-o.antwerpen.be"  (LocationPicker V3)
+
+### Fixed
+
+- Fixed miscellaneous branding issues
 
 ## [7.0.2]
 
