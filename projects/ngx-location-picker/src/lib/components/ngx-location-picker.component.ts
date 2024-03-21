@@ -1055,7 +1055,7 @@ export class NgxLocationPickerComponent
    * Defines the custom marker markup.
    */
   private createMarker(
-    color: string = "var(--TEXT-COLOR)",
+    color: string = "var(--THEME1-600)",
     icon: string = "ai-pin-3",
     size: string = "1.5rem",
     position: { top: string; left: string } = {
@@ -1071,8 +1071,8 @@ export class NgxLocationPickerComponent
 
   private createPinMarker(): string {
     return this.createMarker("var(--THEME1-600)", "ai-pin", "2.5rem", {
-      top: "-8px",
-      left: "-4px",
+      top: "0",
+      left: "0",
     });
   }
 

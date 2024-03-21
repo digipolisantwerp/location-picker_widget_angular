@@ -10,6 +10,16 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [7.0.4]
+
+### Fixed
+
+- Fixed `what is here` icons & colors.
+
+### Changed
+
+- Changed `luchtfoto` to a newer version.
+
 ## [7.0.3]
 
 ### Changed
