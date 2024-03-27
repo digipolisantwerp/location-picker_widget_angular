@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 -->
 ## [7.0.4]
 
+### Added
+
+- Added `bufferSearch` parameter to the widget, it will be used for searches on addresses, locations and coordinates.
+
 ### Fixed
 
 - Fixed `what is here` icons & colors.

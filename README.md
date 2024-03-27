@@ -225,6 +225,7 @@ selectedLocation: InitialLocationModel = {
     [sortBy]="sortBy"
     [onlyAntwerp]="onlyAntwerp"
     [countryCodes]="countryCodes"
+    [bufferSearch]="bufferSearch"
     [coordinateErrorNotification]="coordinateErrorNotification"
     [locateMeNotAllowedNotification]="locateMeNotAllowedNotification"
     [locateMeNotSupportedNotification]="locateMeNotSupportedNotification"
@@ -331,10 +332,12 @@ class ExampleComponent {
     @Input() onlyAntwerp = true;
     /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
     @Input() countryCodes = ['be','nl','lu'];
+    /* The buffer that will be used when searching for locations, in km. (by default no buffer is used)*/
+    @Input() bufferSearch?: number;
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
     /* Set time to wait after user stops typing before triggering a search */
-    @Input() debounceTime = 200;
+    @Input() debounceTime = 400;
     /* whether or not to return a single cascading result */
     @Input() cascadingCoordinateReturnSingle = true;
     /* Limit total cascading result, useful when returnSingle is false */

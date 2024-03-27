@@ -18,4 +18,5 @@ export interface DelegateSearchModel {
   searchStreetNameForAddress: boolean;
   onlyAntwerp: boolean;
   countryCodes: string[];
+  bufferSearch?: number;
 }
