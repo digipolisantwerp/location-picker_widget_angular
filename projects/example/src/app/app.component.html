@@ -8,9 +8,15 @@
   </div>
 
   <form (ngSubmit)="onSubmitNgModel()">
-    <aui-location-picker name="locationPickerModel" [baseUrl]="baseUrl + '/v1'" [(ngModel)]="selectedLocationModel"
-      [locationLayers]="['all']" [hasSidebar]="false" [tileLayer]="satelliteMapLayer"
-      [cascadingCoordinateReturnSingle]="false" [cascadingCoordinateRules]="cascadingRules"></aui-location-picker>
+    <aui-location-picker name="locationPickerModel"
+                         [baseUrl]="baseUrl + '/v1'"
+                         [(ngModel)]="selectedLocationModel"
+                         [locationLayers]="['all']"
+                         [hasSidebar]="false"
+                         [tileLayer]="satelliteMapLayer"
+                         [cascadingCoordinateReturnSingle]="false"
+                         [cascadingCoordinateRules]="cascadingRules"
+    ></aui-location-picker>
     <button type="submit" class="a-button u-margin-top">Log to browser console</button>
 
     <pre>{{ selectedLocationModel | json }}</pre>

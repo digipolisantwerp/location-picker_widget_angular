@@ -6,4 +6,5 @@ export interface CoordinateQueryModel {
   returnsingle?: boolean;
   totalresults?: number;
   cascadingRules: Array<CascadingCoordinateRulesModel>
+  buffer?: number;
 }

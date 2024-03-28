@@ -15,10 +15,10 @@
   }
 
   .is-picking {
-
     .leaflet-grab,
     .leaflet-interactive {
-      cursor: url('data:image/svg+xml,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" stroke="%23000" fill="none" stroke-linejoin="round"><path d="M12 3.5a4 4 0 1 0 0 8 4 4 0 1 0 0-8Z"/><path d="M12 11.5l0 9"/></g></svg>') 18 36,
+      cursor: url('data:image/svg+xml,<svg viewBox="0 0 36 36" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><g stroke-width="2" stroke-linecap="round" stroke="%230057b7" fill="none" stroke-linejoin="round"><path stroke-width="2" d="M12 3.5a4 4 0 1 0 0 8 4 4 0 1 0 0-8Z"/><path d="M12 11.5l0 9"/></g></svg>')
+      14 16,
         pointer;
     }
   }

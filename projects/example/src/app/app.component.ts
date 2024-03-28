@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   satelliteMapLayer: LeafletTileLayerModel = {
     layer: {
       name: 'Satellite View',
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+      url: 'https://geodata.antwerpen.be/arcgissql/rest/services/P_Publiek/Luchtfoto_actueel_wgs84/MapServer/tile/{z}/{y}/{x}',
     },
     buttonLabel: 'Luchtfoto'
   };

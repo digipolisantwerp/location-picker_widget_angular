@@ -139,8 +139,10 @@ export class NgxLocationPickerComponent
   @Input() sortBy = "";
   /* Search locations and addresses inside Antwerp otherwise will search in provided countries ==> countryCodes */
   @Input() onlyAntwerp = true;
-  /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
+  /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false */
   @Input() countryCodes = ["be", "nl", "lu"];
+  /* The buffer that will be used when searching for locations, in km. (by default no buffer is used)*/
+  @Input() bufferSearch?: number;
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
@@ -585,6 +587,7 @@ export class NgxLocationPickerComponent
         searchStreetNameForAddress: this.searchStreetNameForAddress,
         onlyAntwerp: this.onlyAntwerp,
         countryCodes: this.countryCodes,
+        bufferSearch: this.bufferSearch,
       };
 
       this.locationServiceSubscription = this.locationPickerService
@@ -1055,12 +1058,12 @@ export class NgxLocationPickerComponent
    * Defines the custom marker markup.
    */
   private createMarker(
-    color: string = "var(--TEXT-COLOR)",
+    color: string = "var(--THEME1-600)",
     icon: string = "ai-pin-3",
     size: string = "1.5rem",
     position: { top: string; left: string } = {
-      top: "4px",
-      left: "4px",
+      top: "-0.75rem",
+      left: "-0.6rem",
     }
   ) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
@@ -1071,8 +1074,8 @@ export class NgxLocationPickerComponent
 
   private createPinMarker(): string {
     return this.createMarker("var(--THEME1-600)", "ai-pin", "2.5rem", {
-      top: "-8px",
-      left: "-4px",
+      top: "-1.75rem",
+      left: "-0.75rem",
     });
   }
 

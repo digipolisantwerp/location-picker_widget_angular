@@ -195,7 +195,8 @@ export class NgxLocationPickerHelper {
     query: string,
     selectedLocation: LocationModel | AddressModel | CoordinateModel,
     onlyAntwerp: boolean,
-    countryCodes: string[]
+    countryCodes: string[],
+    buffer?: number
   ): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
       streetname: "",
@@ -203,6 +204,7 @@ export class NgxLocationPickerHelper {
       housenumber: "",
       onlyAntwerp: onlyAntwerp,
       countries: countryCodes,
+      buffer: buffer,
     };
 
     const addressParts: Array<string> =
