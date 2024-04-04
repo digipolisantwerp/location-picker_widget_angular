@@ -10,19 +10,21 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
-## [7.0.4]
+## [7.1.0]
 
 ### Added
 
-- Added `bufferSearch` parameter to the widget, it will be used for searches on addresses, locations and coordinates.
+- Added `bufferSearch` parameter to the widget, it will be used for searches on addresses, locations and coordinates
 
 ### Fixed
 
-- Fixed `what is here` icons & colors.
+- Fixed `what is here` icons & colors
+- Fixed an unwanted router trigger when selecting a location with the mouse
 
 ### Changed
 
-- Changed `luchtfoto` to a newer version.
+- Changed `luchtfoto` to a newer version
+- Updated location viewer dependency
 
 ## [7.0.3]
 
