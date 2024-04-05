@@ -26,14 +26,14 @@
               <a href="#" [class]="{
                 'a-list__content': true,
                 'is-active': ii === highlightedLocationResult,
-              }" (click)="onLocationSelect(location)">
+              }" (click)="onLocationSelect($event, location)">
                 <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
                 <small>{{ location.layer }}</small>
               </a>
             </li>
           </ul>
         </ng-template>
-        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect(selectedLocation)"
+        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect($event, selectedLocation)"
           class="use-coordinate" [class.is-highlighted]="!hasResults && pickedLocation">
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
@@ -64,7 +64,7 @@
       <button type="button" class="a-button has-icon u-margin-bottom-xs button-location-picking"
         (click)="pickLocationOnMap()" [class.a-button--outlined]="pickLocationActive"
         [attr.aria-label]="locationPickAriaLabel">
-        <aui-icon name="ai-pin-3"></aui-icon>
+        <aui-icon name="ai-pin"></aui-icon>
       </button>
     </div>
     <div controls bottom right>
