@@ -44,9 +44,7 @@ export class NgxLocationPickerService {
    *
    * @return Observable<LocationModel[] | AddressModel[] | CoordinateModel[]>
    */
-  delegateSearch(
-    delegateSearch: DelegateSearchModel
-  ): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
+  delegateSearch(delegateSearch: DelegateSearchModel): Observable<LocationModel[] | AddressModel[] | CoordinateModel[]> {
     delegateSearch.prioritizelayer = delegateSearch.prioritizelayer ? delegateSearch.prioritizelayer : ['straatnaam'];
     this.locationPickerApi = delegateSearch.baseUrl;
 
@@ -68,7 +66,8 @@ export class NgxLocationPickerService {
         delegateSearch.selectedLocation,
         delegateSearch.onlyAntwerp,
         delegateSearch.countryCodes,
-        delegateSearch.bufferSearch
+        delegateSearch.bufferSearch,
+        delegateSearch.coordinateSearch
       );
       if (delegateSearch.searchStreetNameForAddress) {
         const locationQuery: LocationQueryModel = {
@@ -80,6 +79,8 @@ export class NgxLocationPickerService {
           onlyAntwerp: delegateSearch.onlyAntwerp,
           countries: delegateSearch.countryCodes,
           buffer: delegateSearch.bufferSearch,
+          xcoord: delegateSearch.coordinateSearch?.lat,
+          ycoord: delegateSearch.coordinateSearch?.lng,
         };
 
         return this.searchLocations(locationQuery);
@@ -96,6 +97,8 @@ export class NgxLocationPickerService {
         onlyAntwerp: delegateSearch.onlyAntwerp,
         countries: delegateSearch.countryCodes,
         buffer: delegateSearch.bufferSearch,
+        xcoord: delegateSearch.coordinateSearch?.lat,
+        ycoord: delegateSearch.coordinateSearch?.lng,
       };
 
       return this.searchLocations(locationQuery);

@@ -3,7 +3,7 @@ import { HttpParams } from "@angular/common/http";
 import { LambertModel, LocationModel } from "../types/location.model";
 import { AddressQueryModel } from "../types/address-query.model";
 import proj4 from "proj4";
-import { AddressModel } from "../types/address.model";
+import {AddressModel, LatLngModel} from "../types/address.model";
 import { CoordinateModel } from "../types/coordinate.model";
 
 @Injectable({
@@ -196,7 +196,8 @@ export class NgxLocationPickerHelper {
     selectedLocation: LocationModel | AddressModel | CoordinateModel,
     onlyAntwerp: boolean,
     countryCodes: string[],
-    buffer?: number
+    buffer?: number,
+    coordinateSearch?: LatLngModel
   ): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
       streetname: "",
@@ -205,6 +206,8 @@ export class NgxLocationPickerHelper {
       onlyAntwerp: onlyAntwerp,
       countries: countryCodes,
       buffer: buffer,
+      xcoord: coordinateSearch?.lat,
+      ycoord: coordinateSearch?.lng
     };
 
     const addressParts: Array<string> =

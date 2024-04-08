@@ -7,4 +7,6 @@ export interface LocationQueryModel {
   onlyAntwerp: boolean;
   countries: Array<string>;
   buffer?: number;
+  xcoord?: number;
+  ycoord?: number;
 }
