@@ -547,7 +547,6 @@ export class NgxLocationPickerComponent
           coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
         }
-        this.addMapMarker([coords.x, coords.y]);
         this.writeValue(tempLocation);
       }
 
