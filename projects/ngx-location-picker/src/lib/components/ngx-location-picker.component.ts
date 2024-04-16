@@ -30,7 +30,7 @@ import { Subject } from "rxjs";
 import { NgxLocationPickerService } from "../services/ngx-location-picker.service";
 import { FeatureLayerModel } from "../types/feature-layer.model";
 import { LambertModel, LocationModel } from "../types/location.model";
-import {AddressModel, LatLngModel} from "../types/address.model";
+import { AddressModel, LatLngModel } from "../types/address.model";
 import { CoordinateModel } from "../types/coordinate.model";
 import { NotificationModel } from "../types/notification.model";
 import { NgxLocationPickerHelper } from "../services/ngx-location-picker.helper";
