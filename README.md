@@ -332,8 +332,10 @@ class ExampleComponent {
     @Input() onlyAntwerp = true;
     /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
     @Input() countryCodes = ['be','nl','lu'];
-    /* The buffer that will be used when searching for locations, in km. (by default no buffer is used)*/
+    /* The buffer that will be used when searching for locations and addresses in km. (by default no buffer is used)*/
     @Input() bufferSearch?: number;
+    /* This coordinate will be used as the center point of the buffer search area for locations and addresses. (by default no coordinateSearch is used)*/
+    @Input() coordinateSearch?: LatLngModel;
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
     /* Set time to wait after user stops typing before triggering a search */

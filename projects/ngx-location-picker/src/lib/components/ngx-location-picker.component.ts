@@ -30,7 +30,7 @@ import { Subject } from "rxjs";
 import { NgxLocationPickerService } from "../services/ngx-location-picker.service";
 import { FeatureLayerModel } from "../types/feature-layer.model";
 import { LambertModel, LocationModel } from "../types/location.model";
-import { AddressModel } from "../types/address.model";
+import { AddressModel, LatLngModel } from "../types/address.model";
 import { CoordinateModel } from "../types/coordinate.model";
 import { NotificationModel } from "../types/notification.model";
 import { NgxLocationPickerHelper } from "../services/ngx-location-picker.helper";
@@ -141,8 +141,10 @@ export class NgxLocationPickerComponent
   @Input() onlyAntwerp = true;
   /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false */
   @Input() countryCodes = ["be", "nl", "lu"];
-  /* The buffer that will be used when searching for locations, in km. (by default no buffer is used)*/
+  /* The buffer that will be used when searching for locations and addresses in km. (by default no buffer is used)*/
   @Input() bufferSearch?: number;
+  /* This coordinate will be used as the center point of the buffer search area for locations and addresses. (by default no coordinateSearch is used)*/
+  @Input() coordinateSearch?: LatLngModel;
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
@@ -516,57 +518,35 @@ export class NgxLocationPickerComponent
 
     this.cancelGeolocation();
 
-    if (
-      searchValue &&
-      this.locationPickerHelper.isAlternativeCoordinateNotation(searchValue)
-    ) {
-      searchValue =
-        this.locationPickerHelper.convertAlternativeCoordinateToNormalNotation(
-          searchValue
-        );
-    }
+    if (searchValue && this.locationPickerHelper.isAlternativeCoordinateNotation(searchValue))
+      searchValue = this.locationPickerHelper.convertAlternativeCoordinateToNormalNotation(searchValue);
 
-    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
+    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue))
       this.pickedLocation = false;
-    }
 
-    if (forcedCoordinateSearch) {
+    if (forcedCoordinateSearch)
       this.pickedLocation = true;
-    }
 
-    if (!searchValue.trim()) {
+    if (!searchValue.trim())
       this.emptyField();
-    }
 
-    if (
-      searchValue.length >= this.minInputLength &&
-      (this.locationPickerHelper.isAddress(
-        searchValue,
-        this.locationKeywords
-      ) ||
-        this.locationPickerHelper.isCoordinate(searchValue) ||
-        !this.locationLayers.includes("none"))
-    ) {
+    if (searchValue.length >= this.minInputLength && (this.locationPickerHelper.isAddress(searchValue, this.locationKeywords)
+      || this.locationPickerHelper.isCoordinate(searchValue) || !this.locationLayers.includes("none"))) {
       this.searching = true;
       this.didSearch = true;
 
-      if (
-        this.locationPickerHelper.isCoordinate(searchValue) &&
-        !this.pickLocationActive
-      ) {
-        let coords: LambertModel =
-          this.locationPickerHelper.extractXYCoord(searchValue);
+      if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
+        let coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
+
         const tempLocation = {
           position: { wgs84: { lat: coords.x, lng: coords.y } },
           label: `${coords.x},${coords.y}`,
           actualLocation: { lat: coords.x, lng: coords.y },
         };
         if (!this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
-          coords =
-            this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
+          coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
         }
-        this.addMapMarker([coords.x, coords.y]);
         this.writeValue(tempLocation);
       }
 
@@ -588,6 +568,7 @@ export class NgxLocationPickerComponent
         onlyAntwerp: this.onlyAntwerp,
         countryCodes: this.countryCodes,
         bufferSearch: this.bufferSearch,
+        coordinateSearch: this.coordinateSearch,
       };
 
       this.locationServiceSubscription = this.locationPickerService

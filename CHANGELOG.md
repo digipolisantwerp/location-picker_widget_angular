@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+
+### Added
+
+- Added `coordinateSearch` parameter to the widget, it will be used as the center point of the buffer search area for locations and coordinates
+
 ## [7.1.0]
 
 ### Added
