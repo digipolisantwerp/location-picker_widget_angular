@@ -1,7 +1,7 @@
 {
   "name": "@acpaas-ui-widgets/ngx-location-picker",
   "description": "Location Picker Smart Widget UI package (Angular)",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -17,7 +17,7 @@
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },
   "dependencies": {
-    "@acpaas-ui-widgets/ngx-location-viewer": "^3.1.5",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^3.2.1",
     "@acpaas-ui/ngx-icon": "^6.0.9",
     "@acpaas-ui/ngx-leaflet": "^6.0.10"
   },
