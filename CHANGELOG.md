@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [7.2.1]
+
+### Changed
+
+- Updated location viewer dependency
+
+
 ## [7.2.0]
 
 ### Added
