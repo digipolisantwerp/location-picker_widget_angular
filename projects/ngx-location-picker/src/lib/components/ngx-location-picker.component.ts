@@ -612,7 +612,6 @@ export class NgxLocationPickerComponent
    * When a location is selected from the list.
    */
   onLocationSelect($event: Event, selectedLocation: any, didSearch: boolean = false) {
-    // $event.stopImmediatePropagation();
     if ($event) { $event.preventDefault(); }
 
     this.didSearch = didSearch;
