@@ -21,6 +21,14 @@ export class AppComponent implements OnInit {
     buttonLabel: 'Luchtfoto'
   };
 
+  vectorTileLayer = {
+    layer: {
+      name: "Basemap_antwerpen_met_labels_20220218",
+      url: "https://tiles.arcgis.com/tiles/1KSVSmnHT2Lw9ea6/arcgis/rest/services/basemap_antwerpen_met_labels_20220218/VectorTileServer",
+    } ,
+    buttonLabel: "Basemap Antwerpen (Vector, Custom)"
+  };
+
   cascadingRules: CascadingCoordinateRulesModel[] = [
     {
       type: CascadingCoordinateRulesType.ADDRESS,

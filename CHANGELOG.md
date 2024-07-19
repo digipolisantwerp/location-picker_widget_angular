@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   Added support for vector-based layers for basemaps, currently only available for the custom basemap.
+
 ## [7.2.1]
 
 ### Changed

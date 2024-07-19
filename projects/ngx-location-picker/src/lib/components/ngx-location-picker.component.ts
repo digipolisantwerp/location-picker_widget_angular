@@ -124,6 +124,8 @@ export class NgxLocationPickerComponent
   @Input() defaultTileLayerLabel = "Kaart";
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
   @Input() tileLayer: LeafletTileLayerModel;
+  /* Sets the LocationPicker up to accept Vector based layer, instead of Raster based (default Raster based). */
+  @Input() tileLayerIsVectorBased: boolean = false;
   /* Search input length requirement before triggering a search. */
   @Input() minInputLength = 2;
   /* The amount of results to return */
