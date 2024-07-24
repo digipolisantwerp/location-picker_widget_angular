@@ -26,14 +26,14 @@
               <a href="#" [class]="{
                 'a-list__content': true,
                 'is-active': ii === highlightedLocationResult,
-              }" (mousedown)="onLocationSelect($event, location)">
+              }" (click)="onLocationSelect($event, location)">
                 <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
                 <small>{{ location.layer }}</small>
               </a>
             </li>
           </ul>
         </ng-template>
-        <div *ngIf="!hasResults && pickedLocation && !searching" (mousedown)="onLocationSelect($event, selectedLocation)"
+        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect($event, selectedLocation)"
           class="use-coordinate" [class.is-highlighted]="!hasResults && pickedLocation">
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
