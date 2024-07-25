@@ -17,9 +17,9 @@
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },
   "dependencies": {
-    "@acpaas-ui-widgets/ngx-location-viewer": "^3.2.1",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^3.3.0",
     "@acpaas-ui/ngx-icon": "^6.0.9",
-    "@acpaas-ui/ngx-leaflet": "^6.0.10"
+    "@acpaas-ui/ngx-leaflet": "^6.0.11"
   },
   "devDependencies": {
     "@a-ui/core": "^6.6.0",

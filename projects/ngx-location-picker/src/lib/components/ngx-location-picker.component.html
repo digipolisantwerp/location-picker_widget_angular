@@ -52,14 +52,23 @@
       </div>
     </div>
   </div>
-  <aui-location-viewer *ngIf="showMap" [leafletMap]="leafletMap" [(hasSidebar)]="hasSidebar"
-    [geoApiBaseUrl]="geoApiBaseUrl" [showLayerManagement]="showLayerManagement"
-    [showSelectionTools]="showSelectionTools" [showMeasureTools]="showMeasureTools"
-    [showWhatIsHereButton]="showWhatIsHereButton" [supportingLayerOptions]="supportingLayerOptions"
-    [operationalLayerOptions]="operationalLayerOptions" [filterLayers]="filterLayers" [tileLayer]="tileLayer"
-    [defaultTileLayerLabel]="defaultTileLayerLabel" [class.is-picking]="pickLocationActive"
-    (mouseover)="isCursorOnLeaflet(true)" (mouseout)="isCursorOnLeaflet(false)"
-    (filteredResult)="onResultFiltered($event)">
+<aui-location-viewer *ngIf="showMap"
+  [leafletMap]="leafletMap"
+  [(hasSidebar)]="hasSidebar"
+  [geoApiBaseUrl]="geoApiBaseUrl"
+  [showLayerManagement]="showLayerManagement"
+  [showSelectionTools]="showSelectionTools"
+  [showMeasureTools]="showMeasureTools"
+  [showWhatIsHereButton]="showWhatIsHereButton"
+  [supportingLayerOptions]="supportingLayerOptions"
+  [operationalLayerOptions]="operationalLayerOptions"
+  [filterLayers]="filterLayers" [tileLayer]="tileLayer"
+  [tileLayerIsVectorBased]="tileLayerIsVectorBased"
+  [defaultTileLayerLabel]="defaultTileLayerLabel"
+  [class.is-picking]="pickLocationActive"
+  (mouseover)="isCursorOnLeaflet(true)"
+  (mouseout)="isCursorOnLeaflet(false)"
+  (filteredResult)="onResultFiltered($event)">
     <div controls bottom left>
       <button type="button" class="a-button has-icon u-margin-bottom-xs button-location-picking"
         (click)="pickLocationOnMap()" [class.a-button--outlined]="pickLocationActive"

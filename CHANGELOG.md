@@ -12,13 +12,17 @@ All notable changes to this project will be documented in this file.
 -->
 
 ## [Unreleased]
-
 ## [7.2.1]
+
+### Added
+
+-   Added support for vector-based layers for basemaps, currently only available for the custom basemap.
 
 ### Changed
 
-- Updated location viewer dependency
-
+- Updated location viewer dependency.
+- Added 'actual location' marker for the 'What is here' feature.
+- Changed the selection of a result from click event to mousedown.
 
 ## [7.2.0]
 
