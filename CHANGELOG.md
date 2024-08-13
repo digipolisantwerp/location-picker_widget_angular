@@ -21,8 +21,6 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Updated location viewer dependency.
-- Added 'actual location' marker for the 'What is here' feature.
-- Changed the selection of a result from click event to mousedown.
 
 ## [7.2.0]
 
