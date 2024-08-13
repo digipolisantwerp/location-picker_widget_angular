@@ -12,11 +12,14 @@ All notable changes to this project will be documented in this file.
 -->
 
 ## [Unreleased]
-## [7.2.1]
+
+## [7.3.0]
 
 ### Added
 
 -   Added support for vector-based layers for basemaps, currently only available for the custom basemap.
+
+## [7.2.1]
 
 ### Changed
 
@@ -325,7 +328,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.0...HEAD
+[7.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.1...v7.3.0
+[7.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.0...v7.2.1
 [7.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.1.0...v7.2.0
 [7.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.3...v7.1.0
 [7.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.2...v7.0.3
