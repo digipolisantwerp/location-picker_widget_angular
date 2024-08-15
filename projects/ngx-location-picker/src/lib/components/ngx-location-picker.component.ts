@@ -291,6 +291,16 @@ export class NgxLocationPickerComponent
     this.propagateChange(this._selectedLocation);
   }
 
+  get selectedLocationLabel(): string {
+    return this._selectedLocation?.label || '';
+  }
+
+  set selectedLocationLabel(value: string) {
+    if (this._selectedLocation) {
+      this._selectedLocation.label = value;
+    }
+  }
+
   /**
    * Checks if input field has a value
    */

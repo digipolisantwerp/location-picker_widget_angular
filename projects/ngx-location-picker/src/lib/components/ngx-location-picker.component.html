@@ -2,7 +2,7 @@
   <div class="a-input__search" [class.has-sidebar]="hasSidebar">
     <div class="a-input__wrapper has-inline-addon">
       <input #leafletSearch id="leaflet-search" type="text" name="leaflet-search" [placeholder]="placeholder"
-        [attr.aria-label]="textInputAriaLabel" [(ngModel)]="selectedLocation && selectedLocation.label"
+        [attr.aria-label]="textInputAriaLabel" [(ngModel)]="selectedLocationLabel"
         (ngModelChange)="onInputChange($event)" autocomplete="off" (blur)="didSearch = false" />
       <div class="inline-addon" *ngIf="showClearInputButton">
         <div *ngIf="searching" class="a-spinner" role="alert">
