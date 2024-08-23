@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [7.3.1]
+
+### Changed
+
+- With Angular 18 update in dependent projects, there is a breaking update surrounding expressions inside [(ngModel)].
+- Based on: https://github.com/angular/angular/tree/18.0.3/packages/core/schematics/migrations/invalid-two-way-bindings
+
 ## [7.3.0]
 
 ### Added
