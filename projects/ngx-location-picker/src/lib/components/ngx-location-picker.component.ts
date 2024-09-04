@@ -785,6 +785,15 @@ export class NgxLocationPickerComponent
   }
 
   /**
+   * Stop propagation to the map layer when '(mousedown)' on any sort of input that overlays the map
+   * To prevent the map from dragging when clicking on a button
+   * To prevent the map from registering coordinates when selecting an address
+   */
+  stopPropagation($event: Event): void {
+      $event.stopPropagation();
+  }
+
+  /**
    * Clear watch user position
    */
   private clearWatch(): void {

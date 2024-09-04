@@ -1,4 +1,4 @@
-<div class="a-input" [class.has-map]="showMap">
+<div class="a-input" [class.has-map]="showMap" (mousedown)="stopPropagation($event)">
   <div class="a-input__search" [class.has-sidebar]="hasSidebar">
     <div class="a-input__wrapper has-inline-addon">
       <input #leafletSearch id="leaflet-search" type="text" name="leaflet-search" [placeholder]="placeholder"
