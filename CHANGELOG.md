@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [7.3.2]
+
+### Fixed
+
+- When the locationpicker is overlayed on top of something like the map, mousedown events are propagated towards the other layers below
+- When overlayed on top of the map this causes unwanted dragging and registers coordinates when selecting an address
+
 ## [7.3.1]
 
 ### Changed
