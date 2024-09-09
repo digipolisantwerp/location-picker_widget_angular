@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [7.0.4]
+
+### Changed
+
+- Enable search on municiplaity by comma.
+
 ## [7.0.3]
 
 ### Changed
