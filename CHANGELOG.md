@@ -10,11 +10,55 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
-## [7.0.4]
+
+## [Unreleased]
+
+## [7.3.2]
 
 ### Changed
 
 - Enable search on municiplaity by comma.
+
+## [7.3.1]
+
+### Changed
+
+- With Angular 18 update in dependent projects, there is a breaking update surrounding expressions inside [(ngModel)].
+- Based on: https://github.com/angular/angular/tree/18.0.3/packages/core/schematics/migrations/invalid-two-way-bindings
+
+## [7.3.0]
+
+### Added
+
+-   Added support for vector-based layers for basemaps, currently only available for the custom basemap.
+
+## [7.2.1]
+
+### Changed
+
+- Updated location viewer dependency.
+
+## [7.2.0]
+
+### Added
+
+- Added `coordinateSearch` parameter to the widget, it will be used as the center point of the buffer search area for locations and coordinates
+
+## [7.1.0]
+
+### Added
+
+- Added `bufferSearch` parameter to the widget, it will be used for searches on addresses, locations and coordinates
+
+### Fixed
+
+- Fixed `what is here` icons & colors
+- Fixed an unwanted router trigger when selecting a location with the mouse
+
+### Changed
+
+- Changed `luchtfoto` to a newer version
+- Updated location viewer dependency
 
 ## [7.0.3]
 
@@ -297,7 +341,14 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.1...HEAD
+[7.3.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.0...v7.3.1
+[7.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.1...v7.3.0
+[7.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.0...v7.2.1
+[7.2.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.1.0...v7.2.0
+[7.1.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.3...v7.1.0
+[7.0.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.2...v7.0.3
+[7.0.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.1...v7.0.2
 [7.0.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.0.0...v7.0.1
 [7.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v5.5.0...v6.0.0

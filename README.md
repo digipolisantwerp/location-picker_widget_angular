@@ -217,6 +217,7 @@ selectedLocation: InitialLocationModel = {
     [zoomInAriaLabel]="zoomInAriaLabel"
     [zoomOutAriaLabel]="zoomOutAriaLabel"
     [tileLayer]="tileLayer"
+    [tileLayerIsVectorBased]="tileLayerIsVectorBased"
     [locationLayers]="locationLayers"
     [locationsLimit]="locationsLimit"
     [minInputLength]="minInputLength"
@@ -225,6 +226,7 @@ selectedLocation: InitialLocationModel = {
     [sortBy]="sortBy"
     [onlyAntwerp]="onlyAntwerp"
     [countryCodes]="countryCodes"
+    [bufferSearch]="bufferSearch"
     [coordinateErrorNotification]="coordinateErrorNotification"
     [locateMeNotAllowedNotification]="locateMeNotAllowedNotification"
     [locateMeNotSupportedNotification]="locateMeNotSupportedNotification"
@@ -314,6 +316,8 @@ class ExampleComponent {
     @Input() defaultTileLayerLabel = 'Kaart';
     /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
     @Input() tileLayer: LeafletTileLayerModel;
+    /* Sets the LocationPicker up to accept Vector based layer on custom basemaps, instead of Raster based (default Raster based). */
+    @Input() tileLayerIsVectorBased: boolean = false;
     /* Search input length requirement before triggering a search. */
     @Input() minInputLength = 2;
     /* The amount of results to return */
@@ -331,10 +335,14 @@ class ExampleComponent {
     @Input() onlyAntwerp = true;
     /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
     @Input() countryCodes = ['be','nl','lu'];
+    /* The buffer that will be used when searching for locations and addresses in km. (by default no buffer is used)*/
+    @Input() bufferSearch?: number;
+    /* This coordinate will be used as the center point of the buffer search area for locations and addresses. (by default no coordinateSearch is used)*/
+    @Input() coordinateSearch?: LatLngModel;
     /* Use geolocation when the component finished loading */
     @Input() locateUserOnInit = false;
     /* Set time to wait after user stops typing before triggering a search */
-    @Input() debounceTime = 200;
+    @Input() debounceTime = 400;
     /* whether or not to return a single cascading result */
     @Input() cascadingCoordinateReturnSingle = true;
     /* Limit total cascading result, useful when returnSingle is false */

@@ -4,4 +4,7 @@ export interface AddressQueryModel {
   housenumber: string;
   onlyAntwerp: boolean;
   countries: string[];
+  buffer?: number;
+  xcoord?: number;
+  ycoord?: number;
 }
