@@ -82,17 +82,8 @@ export class NgxLocationPickerHelper {
     if (!this.isCoordinate(value)) {
       const hasBrackets = value.match(/\(.*?\)/);
 
-      if (hasBrackets && hasBrackets.length) {
-        return value.replace(` ${hasBrackets}`, "");
-      } else {
-        const hasComma = value.indexOf(",");
-
-        if (hasComma > -1) {
-          return value.replace(value.substr(hasComma, value.length), "");
-        }
-      }
+      if (hasBrackets && hasBrackets.length) return value.replace(` ${hasBrackets}`, "");
     }
-
     return value;
   }
 
