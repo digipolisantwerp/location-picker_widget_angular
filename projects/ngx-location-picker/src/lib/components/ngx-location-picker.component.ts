@@ -30,7 +30,7 @@ import { Subject } from "rxjs";
 import { NgxLocationPickerService } from "../services/ngx-location-picker.service";
 import { FeatureLayerModel } from "../types/feature-layer.model";
 import { LambertModel, LocationModel } from "../types/location.model";
-import { AddressModel } from "../types/address.model";
+import { AddressModel, LatLngModel } from "../types/address.model";
 import { CoordinateModel } from "../types/coordinate.model";
 import { NotificationModel } from "../types/notification.model";
 import { NgxLocationPickerHelper } from "../services/ngx-location-picker.helper";
@@ -124,6 +124,8 @@ export class NgxLocationPickerComponent
   @Input() defaultTileLayerLabel = "Kaart";
   /* Custom leaflet tile layer, if provided, shows actions on the leaflet to toggle between default and custom tile layer. */
   @Input() tileLayer: LeafletTileLayerModel;
+  /* Sets the LocationPicker up to accept Vector based layer, instead of Raster based (default Raster based). */
+  @Input() tileLayerIsVectorBased: boolean = false;
   /* Search input length requirement before triggering a search. */
   @Input() minInputLength = 2;
   /* The amount of results to return */
@@ -139,8 +141,12 @@ export class NgxLocationPickerComponent
   @Input() sortBy = "";
   /* Search locations and addresses inside Antwerp otherwise will search in provided countries ==> countryCodes */
   @Input() onlyAntwerp = true;
-  /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false*/
+  /* Search locations and addresses in provided country codes if 'onlyAntwerp' is false */
   @Input() countryCodes = ["be", "nl", "lu"];
+  /* The buffer that will be used when searching for locations and addresses in km. (by default no buffer is used)*/
+  @Input() bufferSearch?: number;
+  /* This coordinate will be used as the center point of the buffer search area for locations and addresses. (by default no coordinateSearch is used)*/
+  @Input() coordinateSearch?: LatLngModel;
   /* Use geolocation when the component finished loading */
   @Input() locateUserOnInit = false;
   /* Set time to wait after user stops typing before triggering a search */
@@ -283,6 +289,16 @@ export class NgxLocationPickerComponent
 
     this._selectedLocation = location;
     this.propagateChange(this._selectedLocation);
+  }
+
+  get selectedLocationLabel(): string {
+    return this._selectedLocation?.label || '';
+  }
+
+  set selectedLocationLabel(value: string) {
+    if (this._selectedLocation) {
+      this._selectedLocation.label = value;
+    }
   }
 
   /**
@@ -514,57 +530,35 @@ export class NgxLocationPickerComponent
 
     this.cancelGeolocation();
 
-    if (
-      searchValue &&
-      this.locationPickerHelper.isAlternativeCoordinateNotation(searchValue)
-    ) {
-      searchValue =
-        this.locationPickerHelper.convertAlternativeCoordinateToNormalNotation(
-          searchValue
-        );
-    }
+    if (searchValue && this.locationPickerHelper.isAlternativeCoordinateNotation(searchValue))
+      searchValue = this.locationPickerHelper.convertAlternativeCoordinateToNormalNotation(searchValue);
 
-    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue)) {
+    if (searchValue && !this.locationPickerHelper.isCoordinate(searchValue))
       this.pickedLocation = false;
-    }
 
-    if (forcedCoordinateSearch) {
+    if (forcedCoordinateSearch)
       this.pickedLocation = true;
-    }
 
-    if (!searchValue.trim()) {
+    if (!searchValue.trim())
       this.emptyField();
-    }
 
-    if (
-      searchValue.length >= this.minInputLength &&
-      (this.locationPickerHelper.isAddress(
-        searchValue,
-        this.locationKeywords
-      ) ||
-        this.locationPickerHelper.isCoordinate(searchValue) ||
-        !this.locationLayers.includes("none"))
-    ) {
+    if (searchValue.length >= this.minInputLength && (this.locationPickerHelper.isAddress(searchValue, this.locationKeywords)
+      || this.locationPickerHelper.isCoordinate(searchValue) || !this.locationLayers.includes("none"))) {
       this.searching = true;
       this.didSearch = true;
 
-      if (
-        this.locationPickerHelper.isCoordinate(searchValue) &&
-        !this.pickLocationActive
-      ) {
-        let coords: LambertModel =
-          this.locationPickerHelper.extractXYCoord(searchValue);
+      if (this.locationPickerHelper.isCoordinate(searchValue) && !this.pickLocationActive) {
+        let coords: LambertModel = this.locationPickerHelper.extractXYCoord(searchValue);
+
         const tempLocation = {
           position: { wgs84: { lat: coords.x, lng: coords.y } },
           label: `${coords.x},${coords.y}`,
           actualLocation: { lat: coords.x, lng: coords.y },
         };
         if (!this.locationPickerHelper.isWgs84Coordinates(coords.x, coords.y)) {
-          coords =
-            this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
+          coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
         }
-        this.addMapMarker([coords.x, coords.y]);
         this.writeValue(tempLocation);
       }
 
@@ -585,6 +579,8 @@ export class NgxLocationPickerComponent
         searchStreetNameForAddress: this.searchStreetNameForAddress,
         onlyAntwerp: this.onlyAntwerp,
         countryCodes: this.countryCodes,
+        bufferSearch: this.bufferSearch,
+        coordinateSearch: this.coordinateSearch,
       };
 
       this.locationServiceSubscription = this.locationPickerService
@@ -603,7 +599,7 @@ export class NgxLocationPickerComponent
             }
 
             if (this.foundLocations.length && this.pickedLocation) {
-              this.onLocationSelect(this.foundLocations[0], true);
+              this.onLocationSelect(null, this.foundLocations[0], true);
             }
           },
           (error) => {
@@ -619,58 +615,60 @@ export class NgxLocationPickerComponent
   /**
    * When a location is selected from the list.
    */
-  onLocationSelect($event: any, didSearch: boolean = false) {
+  onLocationSelect($event: Event, selectedLocation: any, didSearch: boolean = false) {
+    if ($event) { $event.preventDefault(); }
+
     this.didSearch = didSearch;
     this.removeMarker(true);
 
-    this.writeValue($event);
+    this.writeValue(selectedLocation);
 
     if (this.showMap) {
       if (
-        $event.address &&
-        $event.address.addressPosition &&
-        $event.address.addressPosition.wgs84
+        selectedLocation.address &&
+        selectedLocation.address.addressPosition &&
+        selectedLocation.address.addressPosition.wgs84
       ) {
         const coords: Array<number> = [
-          $event.address.addressPosition.wgs84.lat,
-          $event.address.addressPosition.wgs84.lng,
+          selectedLocation.address.addressPosition.wgs84.lat,
+          selectedLocation.address.addressPosition.wgs84.lng,
         ];
         this.addResultMarker(coords);
-      } else if ($event.addressPosition && $event.addressPosition.wgs84) {
+      } else if (selectedLocation.addressPosition && selectedLocation.addressPosition.wgs84) {
         const coords: Array<number> = [
-          $event.addressPosition.wgs84.lat,
-          $event.addressPosition.wgs84.lng,
+          selectedLocation.addressPosition.wgs84.lat,
+          selectedLocation.addressPosition.wgs84.lng,
         ];
         this.addResultMarker(coords);
-      } else if ($event.position) {
-        if ($event.position.wgs84) {
+      } else if (selectedLocation.position) {
+        if (selectedLocation.position.wgs84) {
           const coords: Array<number> = [
-            $event.position.wgs84.lat,
-            $event.position.wgs84.lng,
+            selectedLocation.position.wgs84.lat,
+            selectedLocation.position.wgs84.lng,
           ];
           this.addResultMarker(coords);
-        } else if ($event.position.geometry) {
+        } else if (selectedLocation.position.geometry) {
           this.addMapGeoJson(
-            $event.label,
-            $event.position.geometryShape,
-            $event.position.geometry
+            selectedLocation.label,
+            selectedLocation.position.geometryShape,
+            selectedLocation.position.geometry
           );
         }
       } else if (
-        $event.location &&
-        $event.location.position &&
-        ($event.location.position.geometry || $event.location.position.wgs84)
+        selectedLocation.location &&
+        selectedLocation.location.position &&
+        (selectedLocation.location.position.geometry || selectedLocation.location.position.wgs84)
       ) {
-        if ($event.location.position.geometry) {
+        if (selectedLocation.location.position.geometry) {
           this.addMapGeoJson(
-            $event.label,
-            $event.location.position.geometryShape,
-            $event.location.position.geometry
+            selectedLocation.label,
+            selectedLocation.location.position.geometryShape,
+            selectedLocation.location.position.geometry
           );
         } else {
           const coords: Array<number> = [
-            $event.location.position.wgs84.lat,
-            $event.location.position.wgs84.lng,
+            selectedLocation.location.position.wgs84.lat,
+            selectedLocation.location.position.wgs84.lng,
           ];
           this.addResultMarker(coords);
         }
@@ -746,10 +744,11 @@ export class NgxLocationPickerComponent
     if (event.key === "Enter" && this.didSearch) {
       if (this.hasResults) {
         this.onLocationSelect(
+          null,
           this.foundLocations[this.highlightedLocationResult]
         );
       } else {
-        this.onLocationSelect(this.selectedLocation);
+        this.onLocationSelect(null, this.selectedLocation);
       }
 
       this.pickedLocation = false;
@@ -950,6 +949,7 @@ export class NgxLocationPickerComponent
    * @param location the selected location
    * @param keepGeometry whether or not to remove existing geometry
    * @param keepMarker whether or not to remove existing marker
+   * @param marker the marker styling itself
    */
   private addMapMarker(
     coords,
@@ -1055,12 +1055,12 @@ export class NgxLocationPickerComponent
    * Defines the custom marker markup.
    */
   private createMarker(
-    color: string = "var(--TEXT-COLOR)",
-    icon: string = "ai-pin-3",
-    size: string = "1.5rem",
+    color: string = "var(--THEME1-600)",
+    icon: string = "ai-pin",
+    size: string = "var(--SPACER)",
     position: { top: string; left: string } = {
-      top: "4px",
-      left: "4px",
+      top: "-0.75rem",
+      left: "-0.6rem",
     }
   ) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
@@ -1071,8 +1071,8 @@ export class NgxLocationPickerComponent
 
   private createPinMarker(): string {
     return this.createMarker("var(--THEME1-600)", "ai-pin", "2.5rem", {
-      top: "-8px",
-      left: "-4px",
+      top: "-1.75rem",
+      left: "-0.75rem",
     });
   }
 

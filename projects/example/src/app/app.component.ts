@@ -16,9 +16,17 @@ export class AppComponent implements OnInit {
   satelliteMapLayer: LeafletTileLayerModel = {
     layer: {
       name: 'Satellite View',
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+      url: 'https://geodata.antwerpen.be/arcgissql/rest/services/P_Publiek/Luchtfoto_actueel_wgs84/MapServer/tile/{z}/{y}/{x}',
     },
     buttonLabel: 'Luchtfoto'
+  };
+
+  vectorTileLayer = {
+    layer: {
+      name: "Basemap_antwerpen_met_labels_20220218",
+      url: "https://tiles.arcgis.com/tiles/1KSVSmnHT2Lw9ea6/arcgis/rest/services/basemap_antwerpen_met_labels_20220218/VectorTileServer",
+    } ,
+    buttonLabel: "Basemap Antwerpen (Vector, Custom)"
   };
 
   cascadingRules: CascadingCoordinateRulesModel[] = [

@@ -2,7 +2,7 @@
   <div class="a-input__search" [class.has-sidebar]="hasSidebar">
     <div class="a-input__wrapper has-inline-addon">
       <input #leafletSearch id="leaflet-search" type="text" name="leaflet-search" [placeholder]="placeholder"
-        [attr.aria-label]="textInputAriaLabel" [(ngModel)]="selectedLocation && selectedLocation.label"
+        [attr.aria-label]="textInputAriaLabel" [(ngModel)]="selectedLocationLabel"
         (ngModelChange)="onInputChange($event)" autocomplete="off" (blur)="didSearch = false" />
       <div class="inline-addon" *ngIf="showClearInputButton">
         <div *ngIf="searching" class="a-spinner" role="alert">
@@ -26,14 +26,14 @@
               <a href="#" [class]="{
                 'a-list__content': true,
                 'is-active': ii === highlightedLocationResult,
-              }" (click)="onLocationSelect(location)">
+              }" (click)="onLocationSelect($event, location)">
                 <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
                 <small>{{ location.layer }}</small>
               </a>
             </li>
           </ul>
         </ng-template>
-        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect(selectedLocation)"
+        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect($event, selectedLocation)"
           class="use-coordinate" [class.is-highlighted]="!hasResults && pickedLocation">
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
@@ -52,19 +52,28 @@
       </div>
     </div>
   </div>
-  <aui-location-viewer *ngIf="showMap" [leafletMap]="leafletMap" [(hasSidebar)]="hasSidebar"
-    [geoApiBaseUrl]="geoApiBaseUrl" [showLayerManagement]="showLayerManagement"
-    [showSelectionTools]="showSelectionTools" [showMeasureTools]="showMeasureTools"
-    [showWhatIsHereButton]="showWhatIsHereButton" [supportingLayerOptions]="supportingLayerOptions"
-    [operationalLayerOptions]="operationalLayerOptions" [filterLayers]="filterLayers" [tileLayer]="tileLayer"
-    [defaultTileLayerLabel]="defaultTileLayerLabel" [class.is-picking]="pickLocationActive"
-    (mouseover)="isCursorOnLeaflet(true)" (mouseout)="isCursorOnLeaflet(false)"
-    (filteredResult)="onResultFiltered($event)">
+<aui-location-viewer *ngIf="showMap"
+  [leafletMap]="leafletMap"
+  [(hasSidebar)]="hasSidebar"
+  [geoApiBaseUrl]="geoApiBaseUrl"
+  [showLayerManagement]="showLayerManagement"
+  [showSelectionTools]="showSelectionTools"
+  [showMeasureTools]="showMeasureTools"
+  [showWhatIsHereButton]="showWhatIsHereButton"
+  [supportingLayerOptions]="supportingLayerOptions"
+  [operationalLayerOptions]="operationalLayerOptions"
+  [filterLayers]="filterLayers" [tileLayer]="tileLayer"
+  [tileLayerIsVectorBased]="tileLayerIsVectorBased"
+  [defaultTileLayerLabel]="defaultTileLayerLabel"
+  [class.is-picking]="pickLocationActive"
+  (mouseover)="isCursorOnLeaflet(true)"
+  (mouseout)="isCursorOnLeaflet(false)"
+  (filteredResult)="onResultFiltered($event)">
     <div controls bottom left>
       <button type="button" class="a-button has-icon u-margin-bottom-xs button-location-picking"
         (click)="pickLocationOnMap()" [class.a-button--outlined]="pickLocationActive"
         [attr.aria-label]="locationPickAriaLabel">
-        <aui-icon name="ai-pin-3"></aui-icon>
+        <aui-icon name="ai-pin"></aui-icon>
       </button>
     </div>
     <div controls bottom right>
