@@ -67,7 +67,8 @@ export class NgxLocationPickerService {
         delegateSearch.onlyAntwerp,
         delegateSearch.countryCodes,
         delegateSearch.bufferSearch,
-        delegateSearch.coordinateSearch
+        delegateSearch.coordinateSearch,
+        delegateSearch?.selectedLocation && (delegateSearch?.selectedLocation as LocationModel)?.streetNameId ? [(delegateSearch?.selectedLocation as LocationModel)?.streetNameId] : delegateSearch.selectedLocation && (delegateSearch?.selectedLocation as AddressModel)?.street?.streetNameId ? [(delegateSearch?.selectedLocation as AddressModel)?.street?.streetNameId] : []
       );
       if (delegateSearch.searchStreetNameForAddress) {
         const locationQuery: LocationQueryModel = {
@@ -82,7 +83,6 @@ export class NgxLocationPickerService {
           xcoord: delegateSearch.coordinateSearch?.lat,
           ycoord: delegateSearch.coordinateSearch?.lng,
         };
-
         return this.searchLocations(locationQuery);
       } else {
         return this.searchAddresses(addressQuery);
