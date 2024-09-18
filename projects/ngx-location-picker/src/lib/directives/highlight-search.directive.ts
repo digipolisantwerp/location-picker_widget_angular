@@ -13,7 +13,7 @@ export class HighlightSearchDirective implements PipeTransform {
 
     try {
       // Remove malicious characters
-      const maliciousCharacters = /[\*\%\;\|\<\>\\\/\{\}\[\]\n\r]/g;
+      const maliciousCharacters = /[\*\%\;\|\<\>\\\/\{\}\[\]\n\r\.\--\?]/g;
       args = args.replace(maliciousCharacters, "");
 
       const regEx = new RegExp(args, 'ig');
