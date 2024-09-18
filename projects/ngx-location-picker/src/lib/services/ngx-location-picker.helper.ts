@@ -80,8 +80,11 @@ export class NgxLocationPickerHelper {
    */
   normalizeSearchValue(value: string) {
     if (!this.isCoordinate(value)) {
-      const hasBrackets = value.match(/\(.*?\)/);
+      // Espace malicious characters
+      const maliciousCharacters = /[\*\%\;\|\<\>\\\/\{\}\[\]\n\r]/g;
+      value = value.replace(maliciousCharacters, "");
 
+      const hasBrackets = value.match(/\(.*?\)/);
       if (hasBrackets && hasBrackets.length) return value.replace(` ${hasBrackets}`, "");
     }
     return value;
