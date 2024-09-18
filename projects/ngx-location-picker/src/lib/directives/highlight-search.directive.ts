@@ -12,7 +12,7 @@ export class HighlightSearchDirective implements PipeTransform {
     }
 
     try {
-      // Espace malicious characters
+      // Remove malicious characters
       const maliciousCharacters = /[\*\%\;\|\<\>\\\/\{\}\[\]\n\r]/g;
       args = args.replace(maliciousCharacters, "");
 

@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Prevent/escape malicious characters to be send thourgh input to the backend.
+- Prevent malicious characters to be send thourgh input to the backend.
 
 ## [7.4.0]
 
