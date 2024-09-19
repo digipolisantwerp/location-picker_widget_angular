@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [7.6.0]
+
+### Changed
+
+- Set marker on actual location for all addresses and locations.
+
 ## [7.4.0]
 
 ### Changed
