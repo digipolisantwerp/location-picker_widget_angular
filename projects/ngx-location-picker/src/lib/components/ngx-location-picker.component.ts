@@ -592,6 +592,9 @@ export class NgxLocationPickerComponent
           (response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
             this.foundLocations = response;
 
+            // Reset location search fields when selected street name does not match the search value
+            if(this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringMatchesSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName)) this.resetLocationSearchFields();
+
             //adds used coordinate to result list
             if (this.addCoordinateToResultsAt && this.pickedLocation) {
               this.foundLocations.splice(
@@ -1199,5 +1202,12 @@ export class NgxLocationPickerComponent
    */
   private setNotification(notification: NotificationModel) {
     this.leafletNotification = notification;
+  }
+
+  /**
+   * Does input string match the selected street name
+   */
+  private inputStringMatchesSelectedStreetName(input: string, expectedStreetName: string): boolean {
+    return input?.trim()?.toLocaleLowerCase().startsWith(expectedStreetName?.trim()?.toLocaleLowerCase());
   }
 }
