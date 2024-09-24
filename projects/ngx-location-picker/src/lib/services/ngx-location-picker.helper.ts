@@ -80,8 +80,11 @@ export class NgxLocationPickerHelper {
    */
   normalizeSearchValue(value: string) {
     if (!this.isCoordinate(value)) {
-      const hasBrackets = value.match(/\(.*?\)/);
+      // Remove malicious characters
+      const maliciousCharacters = /[\*\%\;\|\<\>\{\}\[\]\/\\\n\r\?\.\--]/g;
+      value = value.replace(maliciousCharacters, "");
 
+      const hasBrackets = value.match(/\(.*?\)/);
       if (hasBrackets && hasBrackets.length) return value.replace(` ${hasBrackets}`, "");
     }
     return value;
@@ -188,11 +191,12 @@ export class NgxLocationPickerHelper {
     onlyAntwerp: boolean,
     countryCodes: string[],
     buffer?: number,
-    coordinateSearch?: LatLngModel
+    coordinateSearch?: LatLngModel,
+    streetIds?: number[],
   ): AddressQueryModel {
     const streetAndNumber: AddressQueryModel = {
       streetname: "",
-      streetids: [],
+      streetids: streetIds ?? [],
       housenumber: "",
       onlyAntwerp: onlyAntwerp,
       countries: countryCodes,
