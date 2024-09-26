@@ -10,11 +10,13 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+
 ## [7.5.0]
 
 ### Changed
 
 - Enable search for addresses linked to the selected street.
+- Set marker on actual location for all addresses and locations.
 
 ## [7.4.0]
 

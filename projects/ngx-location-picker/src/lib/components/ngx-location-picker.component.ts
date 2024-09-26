@@ -559,6 +559,9 @@ export class NgxLocationPickerComponent
           coords = this.locationPickerHelper.convertLambertToWgs84Coordinates(coords);
           searchValue = `${coords.x}, ${coords.y}`;
         }
+
+        this.addMapMarker([coords.x, coords.y], null, false, false,  this.createPinMarker());
+
         this.writeValue(tempLocation);
       }
 
@@ -636,7 +639,7 @@ export class NgxLocationPickerComponent
           selectedLocation.address.addressPosition.wgs84.lat,
           selectedLocation.address.addressPosition.wgs84.lng,
         ];
-        this.addResultMarker(coords);
+        this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40" });
       } else if (selectedLocation.addressPosition && selectedLocation.addressPosition.wgs84) {
         const coords: Array<number> = [
           selectedLocation.addressPosition.wgs84.lat,
@@ -857,7 +860,6 @@ export class NgxLocationPickerComponent
    */
   private setInitialLocation(initialLocation: InitialLocationModel) {
     this.cancelGeolocation();
-
     if (
       !("options" in initialLocation) ||
       !("triggerSearch" in initialLocation.options) ||
@@ -994,12 +996,14 @@ export class NgxLocationPickerComponent
   }
 
   /* Adds a marker on a given coordinate and zooms in on this location. */
-  private addResultMarker(coords: number[]): void {
+  private addResultMarker(coords: number[], pointDetails?: {color: string, opacity: string}): void {
     this.removeGeometry();
-
     this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(
       coords,
-      this.createPinMarker()
+      this.createMarker("var(--THEME1-600)", "ai-controls-record", "var(--SPACER)", {
+        top: "-0.4rem",
+        left: "-0.4rem",
+      }, pointDetails),
     );
     this.setView(coords);
   }
@@ -1064,10 +1068,11 @@ export class NgxLocationPickerComponent
     position: { top: string; left: string } = {
       top: "-0.75rem",
       left: "-0.6rem",
-    }
+    },
+    pointDetails?: {color: string; opacity: string}
   ) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" /></svg>`;
+    const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" style="fill: ${pointDetails?.color}; opacity: ${pointDetails?.opacity}%;" /></svg>`;
 
     return `<span style="${markerStyle}" class="ai ngx-location-picker-marker">${markerIcon}</span>`;
   }
@@ -1122,22 +1127,11 @@ export class NgxLocationPickerComponent
 
     if (this.selectedLocation && shapeCenter) {
       if (!this.pickedLocation) {
-        this.addMapMarker(
-          shapeCenter,
-          null,
-          true,
-          false,
-          this.createPinMarker()
-        );
         this.setView(shapeCenter);
         if (this.changeZoomLevelOnLocationSelect) {
           this.leafletMap.map.fitBounds(bounds);
         }
       } else {
-        this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(
-          shapeCenter,
-          this.createPinMarker()
-        );
         // only change map zoomlevel if the selection is not the default selection after location was picked
         if (this.changeZoomLevelOnLocationSelect && !this.didSearch) {
           this.leafletMap.map.fitBounds(bounds);
