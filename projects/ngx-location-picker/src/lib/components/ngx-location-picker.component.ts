@@ -639,13 +639,13 @@ export class NgxLocationPickerComponent
           selectedLocation.address.addressPosition.wgs84.lat,
           selectedLocation.address.addressPosition.wgs84.lng,
         ];
-        this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40" });
+        this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
       } else if (selectedLocation.addressPosition && selectedLocation.addressPosition.wgs84) {
         const coords: Array<number> = [
           selectedLocation.addressPosition.wgs84.lat,
           selectedLocation.addressPosition.wgs84.lng,
         ];
-        this.addResultMarker(coords);
+        this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
       } else if (selectedLocation.position) {
         if (selectedLocation.position.wgs84) {
           const coords: Array<number> = [
@@ -996,7 +996,7 @@ export class NgxLocationPickerComponent
   }
 
   /* Adds a marker on a given coordinate and zooms in on this location. */
-  private addResultMarker(coords: number[], pointDetails?: {color: string, opacity: string}): void {
+  private addResultMarker(coords: number[], pointDetails?: {color: string, opacity: string, strokeColor: string, strokeWidth: string}): void {
     this.removeGeometry();
     this.calculatedLocationMarker = this.leafletMap.addHtmlMarker(
       coords,
@@ -1069,10 +1069,10 @@ export class NgxLocationPickerComponent
       top: "-0.75rem",
       left: "-0.6rem",
     },
-    pointDetails?: {color: string; opacity: string}
+    pointDetails?: {color: string; opacity: string, strokeColor: string, strokeWidth: string}
   ) {
     const markerStyle = `color: ${color}; font-size: ${size}; top: ${position.top}; left: ${position.left}`;
-    const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" style="fill: ${pointDetails?.color}; opacity: ${pointDetails?.opacity}%;" /></svg>`;
+    const markerIcon = `<svg aria-hidden="true"><use href="#${icon}" style="fill: ${pointDetails?.color}; fill-opacity: ${pointDetails?.opacity}%; stroke: ${pointDetails?.strokeColor}; stroke-width: ${pointDetails?.strokeWidth}; stroke-opacity: 1;" /></svg>`;
 
     return `<span style="${markerStyle}" class="ai ngx-location-picker-marker">${markerIcon}</span>`;
   }
