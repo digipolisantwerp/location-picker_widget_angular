@@ -11,6 +11,13 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [7.6.0]
+
+### Changed
+
+- When searching for an address, do not send streetname in the query if combination streetnameid and housenumber is available for addresses in Antwerp.
+- Change actual location marker color.
+
 ## [7.5.0]
 
 ### Changed
