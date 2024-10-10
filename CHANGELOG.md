@@ -11,13 +11,6 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [7.6.0]
-
-### Changed
-
-- When searching for an address, do not send streetname in the query if combination streetnameid and housenumber is available for addresses in Antwerp.
-- Change actual location marker color.
-
 ## [7.5.0]
 
 ### Changed
@@ -353,7 +346,10 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.6.0...HEAD
+[7.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.5.0...v7.6.0
+[7.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.4.0...v7.5.0
+[7.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.1...v7.4.0
 [7.3.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.0...v7.3.1
 [7.3.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.1...v7.3.0
 [7.2.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.2.0...v7.2.1
