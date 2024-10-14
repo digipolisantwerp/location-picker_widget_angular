@@ -647,18 +647,18 @@ export class NgxLocationPickerComponent
         ];
         this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
       } else if (selectedLocation.position) {
-        if (selectedLocation.position.wgs84) {
-          const coords: Array<number> = [
-            selectedLocation.position.wgs84.lat,
-            selectedLocation.position.wgs84.lng,
-          ];
-          this.addResultMarker(coords);
-        } else if (selectedLocation.position.geometry) {
+        if (selectedLocation.position.geometry) {
           this.addMapGeoJson(
             selectedLocation.label,
             selectedLocation.position.geometryShape,
             selectedLocation.position.geometry
           );
+        } else if (selectedLocation.position.wgs84) {
+          const coords: Array<number> = [
+            selectedLocation.position.wgs84.lat,
+            selectedLocation.position.wgs84.lng,
+          ];
+          this.addResultMarker(coords);
         }
       } else if (
         selectedLocation.location &&
@@ -1110,7 +1110,7 @@ export class NgxLocationPickerComponent
       },
       geometry: {
         type: geometryShape,
-        coordinates: geometry,
+        coordinates: geometryShape === "MultiPolygon" ? [geometry] : geometry,
       },
     };
 
