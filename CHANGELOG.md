@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## Not yet released
+
+### Fixed
+
+- Fixed minor bug related to deselecting addresses from streetNameId to streetName.
 
 ## [7.6.0]
 

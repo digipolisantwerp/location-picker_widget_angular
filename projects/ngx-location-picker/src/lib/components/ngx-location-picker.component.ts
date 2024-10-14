@@ -5,12 +5,10 @@ import {
   forwardRef,
   HostListener,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Renderer2,
-  SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -567,6 +565,11 @@ export class NgxLocationPickerComponent
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
+      // Reset the previous location if the current search value is not matching with the previous one, only applicable to addresses.
+      if(this.previousLocation && 'formattedAddress' in this.previousLocation &&
+        !this.inputStringMatchesSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
+        this.previousLocation = null;
+
       const delegateSearch: DelegateSearchModel = {
         search: searchValue,
         baseUrl: this.baseUrl,
@@ -591,9 +594,6 @@ export class NgxLocationPickerComponent
         .subscribe(
           (response: LocationModel[] | AddressModel[] | CoordinateModel[]) => {
             this.foundLocations = response;
-
-            // Reset location search fields when selected street name does not match the search value
-            if(this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringMatchesSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName)) this.resetLocationSearchFields();
 
             //adds used coordinate to result list
             if (this.addCoordinateToResultsAt && this.pickedLocation) {
