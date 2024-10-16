@@ -10,6 +10,19 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## Not yet released
+
+### Changed
+
+- Changed the priority of showing locations their Polygon geometry instead of their coordinates. First the Polygon will be shown and if not present the coordinate will be used.
+
+### Added
+
+- Added support for showing MultiPolygon geometry locations when searching via searchbar.
+
+### Fixed
+
+- Fixed minor bug related to deselecting addresses from streetNameId to streetName.
 
 ## [7.6.0]
 
