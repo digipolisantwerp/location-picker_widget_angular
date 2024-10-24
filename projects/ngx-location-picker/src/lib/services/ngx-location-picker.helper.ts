@@ -105,7 +105,7 @@ export class NgxLocationPickerHelper {
       Array.isArray(addressParts) &&
       addressParts.length > 1
     ) {
-      for (const [index, value] of addressParts.entries()) {
+      for (const [index, _] of addressParts.entries()) {
         // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
         if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase())) {
           return false;
@@ -205,25 +205,25 @@ export class NgxLocationPickerHelper {
       ycoord: coordinateSearch?.lng
     };
 
-    
+
     const addressParts: Array<string> =
     query && query.trim().length > 0 ? query.split(" ") : null;
-    
+
     if (addressParts) {
       addressParts.map((part, index) => {
         const matches = /[0-9]\w?$/.exec(part);
-        
+
         if (index > 0 && matches) {
           if (!!streetAndNumber.housenumber || matches.index === 0) {
             streetAndNumber.housenumber += part + "";
             return;
           }
         }
-        
+
         if (streetAndNumber.streetname) {
           streetAndNumber.streetname += " ";
         }
-        
+
         if (/\d$/.test(part) && index + 1 === addressParts.length) {
           streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, "");
           streetAndNumber.streetname += part.replace(/\d*$/, "");
@@ -233,7 +233,7 @@ export class NgxLocationPickerHelper {
           streetAndNumber.streetname += part;
         }
       });
-      
+
       streetAndNumber.streetname = streetAndNumber.streetname
         .trim()
         .replace(/\s+\([a-z\s\,]+\)$/gi, "");
@@ -318,7 +318,7 @@ export class NgxLocationPickerHelper {
   convertLambertToWgs84Coordinates(
     lambertCoordinate: LambertModel
   ): LambertModel {
-    // tslint:disable-next-line: max-line-length
+    // eslint-disable-next-line max-len
     const lambertProj =
       "+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs";
     const result = proj4(lambertProj, "WGS84", [
