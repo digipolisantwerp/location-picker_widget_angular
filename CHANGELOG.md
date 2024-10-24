@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 -->
 ## Not yet released
 
+## [7.7.0]
+
 ### Changed
 
 - Changed the priority of showing locations their Polygon geometry instead of their coordinates. First the Polygon will be shown and if not present the coordinate will be used.
@@ -366,7 +368,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.6.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.0...HEAD
+[7.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.6.0...v7.7.0
 [7.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.5.0...v7.6.0
 [7.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.4.0...v7.5.0
 [7.4.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.3.1...v7.4.0
