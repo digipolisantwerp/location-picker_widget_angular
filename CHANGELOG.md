@@ -10,7 +10,9 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
-## Not yet released
+## Unreleased
+
+## [7.7.1]
 
 ### Fixed
 
@@ -372,7 +374,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.1...HEAD
+[7.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.0...v7.7.1
 [7.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.6.0...v7.7.0
 [7.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.5.0...v7.6.0
 [7.5.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.4.0...v7.5.0
