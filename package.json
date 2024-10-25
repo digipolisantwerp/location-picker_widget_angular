@@ -24,6 +24,10 @@
   "devDependencies": {
     "@a-ui/core": "^6.6.0",
     "@angular-devkit/build-angular": "^15.2.8",
+    "@angular-eslint/eslint-plugin": "^18.4.0",
+    "@angular-eslint/eslint-plugin-template": "^18.4.0",
+    "@angular-eslint/template-parser": "^18.4.0",
+    "@angular-eslint/builder": "^18.4.0",
     "@angular/animations": "^15.2.9",
     "@angular/cli": "^15.2.8",
     "@angular/common": "^15.2.9",
@@ -57,6 +61,7 @@
     "tslib": "^2.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.9.5",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
     "zone.js": "~0.11.8"
   }
 }

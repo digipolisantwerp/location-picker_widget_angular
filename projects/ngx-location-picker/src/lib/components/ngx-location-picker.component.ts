@@ -565,10 +565,10 @@ export class NgxLocationPickerComponent
 
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
-      // Reset the previous location if the current search value is not matching with the previous one, only applicable to addresses.
-      if(this.previousLocation && 'formattedAddress' in this.previousLocation &&
-        !this.inputStringMatchesSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
-        this.previousLocation = null;
+      // Reset the previous location if the current search value does not equal the previous one, only applicable to addresses and locations.
+      if((this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
+        || (this.previousLocation && 'position' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.name)))
+          this.previousLocation = null;
 
       const delegateSearch: DelegateSearchModel = {
         search: searchValue,
@@ -979,7 +979,7 @@ export class NgxLocationPickerComponent
 
     this.selectedLocationMarker.dragging.enable();
 
-    this.selectedLocationMarker.on("dragend", (event) => {
+    this.selectedLocationMarker.on("dragend", (_) => {
       const newCoords = this.selectedLocationMarker.getLatLng();
       const searchValue = newCoords
         ? `${newCoords.lat.toFixed(6)},${newCoords.lng.toFixed(6)}`
@@ -1205,9 +1205,9 @@ export class NgxLocationPickerComponent
   }
 
   /**
-   * Does input string match the selected street name
+   * Does the input check on to see if given input equals to the current selected street name
    */
-  private inputStringMatchesSelectedStreetName(input: string, expectedStreetName: string): boolean {
+  private inputStringEqualsSelectedStreetName(input: string, expectedStreetName: string): boolean {
     return input?.trim()?.toLocaleLowerCase().startsWith(expectedStreetName?.trim()?.toLocaleLowerCase());
   }
 }

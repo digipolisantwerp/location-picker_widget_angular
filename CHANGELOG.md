@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 -->
 ## Not yet released
 
+### Fixed
+
+- Added additional check for the feature related to deselecting addresses and locations from streetNameId to streetName.
+
 ## [7.7.0]
 
 ### Changed
