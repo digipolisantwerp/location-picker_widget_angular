@@ -647,7 +647,7 @@ export class NgxLocationPickerComponent
         ];
         this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
       } else if (selectedLocation.position) {
-        if (selectedLocation.position.geometry) {
+        if (selectedLocation.label && selectedLocation.position.geometry && selectedLocation.position.geometryShape) {
           this.addMapGeoJson(
             selectedLocation.label,
             selectedLocation.position.geometryShape,
@@ -665,7 +665,7 @@ export class NgxLocationPickerComponent
         selectedLocation.location.position &&
         (selectedLocation.location.position.geometry || selectedLocation.location.position.wgs84)
       ) {
-        if (selectedLocation.location.position.geometry) {
+        if (selectedLocation.label && selectedLocation.location.position.geometry && selectedLocation.location.position.geometryShape) {
           this.addMapGeoJson(
             selectedLocation.label,
             selectedLocation.location.position.geometryShape,

@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Fixed
+
+- Added additional checks for locations that only have points and are not polygons.
+
+
 ## [7.7.1]
 
 ### Fixed
