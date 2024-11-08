@@ -658,7 +658,7 @@ export class NgxLocationPickerComponent
             selectedLocation.position.wgs84.lat,
             selectedLocation.position.wgs84.lng,
           ];
-          this.addResultMarker(coords);
+          this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
         }
       } else if (
         selectedLocation.location &&
@@ -676,7 +676,7 @@ export class NgxLocationPickerComponent
             selectedLocation.location.position.wgs84.lat,
             selectedLocation.location.position.wgs84.lng,
           ];
-          this.addResultMarker(coords);
+          this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
         }
       } else {
         this.removeGeometry();
