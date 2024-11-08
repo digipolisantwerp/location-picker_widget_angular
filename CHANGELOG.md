@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Changed
+
+- Adjusted styling of adding a result marker for locations that only have points and are not polygons.
 
 ## [7.7.2]
 
