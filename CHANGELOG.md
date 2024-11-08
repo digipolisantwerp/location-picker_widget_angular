@@ -12,10 +12,12 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+
+## [7.7.2]
+
 ### Fixed
 
 - Added additional checks for locations that only have points and are not polygons.
-
 
 ## [7.7.1]
 
@@ -379,7 +381,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.2...HEAD
+[7.7.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.1...v7.7.2
 [7.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.0...v7.7.1
 [7.7.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.6.0...v7.7.0
 [7.6.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.5.0...v7.6.0

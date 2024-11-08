@@ -1,7 +1,7 @@
 {
   "name": "@acpaas-ui-widgets/ngx-location-picker",
   "description": "Location Picker Smart Widget UI package (Angular)",
-  "version": "7.7.1",
+  "version": "7.7.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
