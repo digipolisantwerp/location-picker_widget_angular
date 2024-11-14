@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
-## [7.7.3]
+## [7.7.4]
 
 ### Changed
 
@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed placement of location pin after dropping it onto the map.
+
+## [7.7.3] - BORKED
 
 ## [7.7.2]
 
