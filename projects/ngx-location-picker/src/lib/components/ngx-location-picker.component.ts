@@ -665,17 +665,26 @@ export class NgxLocationPickerComponent
         selectedLocation.location.position &&
         (selectedLocation.location.position.geometry || selectedLocation.location.position.wgs84)
       ) {
-        if (selectedLocation.label && selectedLocation.location.position.geometry && selectedLocation.location.position.geometryShape) {
+        if (selectedLocation.label && selectedLocation.location.position.geometry && selectedLocation.location.position.geometryShape && selectedLocation.location.position.geometryShape !== "Point") {
           this.addMapGeoJson(
             selectedLocation.label,
             selectedLocation.location.position.geometryShape,
             selectedLocation.location.position.geometry
           );
         } else {
-          const coords: Array<number> = [
-            selectedLocation.location.position.wgs84.lat,
-            selectedLocation.location.position.wgs84.lng,
-          ];
+          let coords: Array<number>;
+          if (selectedLocation.layerAttributes?.Position_wgs84_lat !== undefined &&
+            selectedLocation.layerAttributes?.Position_wgs84_lon !== undefined) {
+            coords = [
+              selectedLocation.layerAttributes.Position_wgs84_lat,
+              selectedLocation.layerAttributes.Position_wgs84_lon,
+            ];
+          } else {
+            coords = [
+              selectedLocation.location.position.wgs84.lat,
+              selectedLocation.location.position.wgs84.lng,
+            ];
+          }
           this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
         }
       } else {
