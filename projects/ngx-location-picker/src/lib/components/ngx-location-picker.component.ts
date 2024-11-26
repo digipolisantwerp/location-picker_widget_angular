@@ -566,8 +566,8 @@ export class NgxLocationPickerComponent
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
       // Reset the previous location if the current search value does not equal the previous one, only applicable to addresses and locations.
-      if((this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
-        || (this.previousLocation && 'position' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.name)))
+      if(((this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
+        || (this.previousLocation && 'position' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.name))) &&  !this.locationPickerHelper.isCoordinate(searchValue))
           this.previousLocation = null;
 
       const delegateSearch: DelegateSearchModel = {

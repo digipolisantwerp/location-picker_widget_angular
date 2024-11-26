@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Fixed
+
+- Fix: Added additional check for previousLocation reset, it should not be applicable to search values that are coordinates.
+
 ## [7.7.4]
 
 ### Changed
