@@ -566,8 +566,8 @@ export class NgxLocationPickerComponent
       searchValue = this.locationPickerHelper.normalizeSearchValue(searchValue);
 
       // Reset the previous location if the current search value does not equal the previous one, only applicable to addresses and locations.
-      if((this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
-        || (this.previousLocation && 'position' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.name)))
+      if(((this.previousLocation && 'formattedAddress' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.street?.streetName))
+        || (this.previousLocation && 'position' in this.previousLocation && !this.inputStringEqualsSelectedStreetName(searchValue as string, this.previousLocation?.name))) &&  !this.locationPickerHelper.isCoordinate(searchValue))
           this.previousLocation = null;
 
       const delegateSearch: DelegateSearchModel = {
@@ -665,17 +665,26 @@ export class NgxLocationPickerComponent
         selectedLocation.location.position &&
         (selectedLocation.location.position.geometry || selectedLocation.location.position.wgs84)
       ) {
-        if (selectedLocation.label && selectedLocation.location.position.geometry && selectedLocation.location.position.geometryShape) {
+        if (selectedLocation.label && selectedLocation.location.position.geometry && selectedLocation.location.position.geometryShape && selectedLocation.location.position.geometryShape !== "Point") {
           this.addMapGeoJson(
             selectedLocation.label,
             selectedLocation.location.position.geometryShape,
             selectedLocation.location.position.geometry
           );
         } else {
-          const coords: Array<number> = [
-            selectedLocation.location.position.wgs84.lat,
-            selectedLocation.location.position.wgs84.lng,
-          ];
+          let coords: Array<number>;
+          if (selectedLocation.layerAttributes?.Position_wgs84_lat !== undefined &&
+            selectedLocation.layerAttributes?.Position_wgs84_lon !== undefined) {
+            coords = [
+              selectedLocation.layerAttributes.Position_wgs84_lat,
+              selectedLocation.layerAttributes.Position_wgs84_lon,
+            ];
+          } else {
+            coords = [
+              selectedLocation.location.position.wgs84.lat,
+              selectedLocation.location.position.wgs84.lng,
+            ];
+          }
           this.addResultMarker(coords, { color: "var(--THEME1-600)", opacity: "40", strokeColor: "var(--THEME1-600)", strokeWidth: "2px"});
         }
       } else {

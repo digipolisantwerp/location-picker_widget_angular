@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Fixed
+
+- Added additional check for previousLocation reset, it should not be applicable to search values that are coordinates.
+- Added additional check for locations with shape, they should not be Points to be added as geometry. Also added support for Position_wgs84_lat and Position_wgs84_lng, these coordinates are much preciser for locations.
+
 ## [7.7.4]
 
 ### Changed
