@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+## [7.7.5]
+
 ### Fixed
 
 - Added additional check for previousLocation reset, it should not be applicable to search values that are coordinates.
@@ -397,7 +399,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.3...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.5...HEAD
+[7.7.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.4...v7.7.5
+[7.7.4]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.3...v7.7.4
 [7.7.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.2...v7.7.3
 [7.7.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.1...v7.7.2
 [7.7.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.0...v7.7.1
