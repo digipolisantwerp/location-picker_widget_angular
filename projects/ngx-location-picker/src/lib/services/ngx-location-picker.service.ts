@@ -56,6 +56,7 @@ export class NgxLocationPickerService {
         returnsingle: delegateSearch.cascadingCoordinateReturnSingle,
         totalresults: delegateSearch.cascadingCoordinateLimit,
         cascadingRules: delegateSearch.cascadingCoordinateRules,
+        cascadingGuid: delegateSearch.cascadingCoordinateGuid,
         buffer: delegateSearch.bufferSearch,
       };
 
