@@ -13,6 +13,7 @@ export interface DelegateSearchModel {
   cascadingCoordinateReturnSingle: boolean;
   cascadingCoordinateLimit: number;
   cascadingCoordinateRules: CascadingCoordinateRulesModel[];
+  cascadingCoordinateGuid: string;
   selectedLocation: LocationModel | AddressModel | CoordinateModel;
   locationKeywords: string[];
   searchStreetNameForAddress: boolean;

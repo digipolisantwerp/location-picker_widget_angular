@@ -5,6 +5,7 @@ export interface CoordinateQueryModel {
   ycoord: number;
   returnsingle?: boolean;
   totalresults?: number;
-  cascadingRules: Array<CascadingCoordinateRulesModel>
+  cascadingRules: Array<CascadingCoordinateRulesModel>;
+  cascadingGuid: string;
   buffer?: number;
 }

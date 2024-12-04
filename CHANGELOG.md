@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Added
+
+- Added support to do cascade search for coordinates by GUID, that will fetch the most up to date cascading rules.
+
 ## [7.7.5]
 
 ### Fixed

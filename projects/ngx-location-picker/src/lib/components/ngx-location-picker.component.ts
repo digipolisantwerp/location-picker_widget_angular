@@ -153,8 +153,12 @@ export class NgxLocationPickerComponent
   @Input() cascadingCoordinateReturnSingle = true;
   /* Limit total cascading result, useful when returnSingle is false */
   @Input() cascadingCoordinateLimit = 10;
-  /* Cascading configuration for doing reverse lookups by coordinates */
+  /* Cascading configuration for doing reverse lookups by coordinates
+  Will NOT be used if a valid and matching cascadingCoordinateGuid is given */
   @Input() cascadingCoordinateRules: CascadingCoordinateRulesModel[] = [];
+  /* Cascading configuration for doing reverse lookups by coordinates
+  Retrieves the most up to date cascading rules by GUID, it overwrites the cascadingCoordinateRules input */
+  @Input() cascadingCoordinateGuid: string;
   /* Input params to pass through to location viewer */
   /* Geo API */
   @Input() geoApiBaseUrl: string;
@@ -580,6 +584,7 @@ export class NgxLocationPickerComponent
         cascadingCoordinateReturnSingle: this.cascadingCoordinateReturnSingle,
         cascadingCoordinateLimit: this.cascadingCoordinateLimit,
         cascadingCoordinateRules: this.cascadingCoordinateRules,
+        cascadingCoordinateGuid: this.cascadingCoordinateGuid,
         selectedLocation: this.previousLocation,
         locationKeywords: this.locationKeywords,
         searchStreetNameForAddress: this.searchStreetNameForAddress,
