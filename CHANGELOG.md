@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+## [7.8.0]
+
 ### Added
 
 - Added support to do cascade search for coordinates by GUID, that will fetch the most up to date cascading rules.
@@ -403,7 +405,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.5...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.0...HEAD
+[7.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.5...v7.8.0
 [7.7.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.4...v7.7.5
 [7.7.4]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.3...v7.7.4
 [7.7.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.2...v7.7.3
