@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Changed
+
+- Adjusted location picking icon dragging center, the dragging point is now the bottom of the icon instead of the center.
+
+
 ## [7.8.0]
 
 ### Added
