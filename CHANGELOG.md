@@ -12,7 +12,9 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
-### Changed
+## [7.8.1]
+
+### Fixed
 
 - Adjusted location picking icon dragging center, the dragging point is now the bottom of the icon instead of the center.
 
@@ -410,7 +412,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.0...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.1...HEAD
+[7.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.0...v7.8.1
 [7.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.5...v7.8.0
 [7.7.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.4...v7.7.5
 [7.7.4]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.3...v7.7.4
