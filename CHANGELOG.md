@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Added
+
+- Added support of postcode and place/municipality search for addresses.
+
 ## [7.8.1]
 
 ### Fixed
