@@ -96,30 +96,20 @@ export class NgxLocationPickerHelper {
    * @return boolean
    */
   isAddress(query: string, locationKeywords: string[]): boolean {
-    const addressParts: Array<string> | null = query ? query.split(" ") : null;
+    if (!query || query.trim().length === 0) return false;
 
-    const lowerLocationKeyWords = locationKeywords.map((x) => x.toLowerCase());
+    const lowerQuery = query.toLowerCase();
 
-    if (
-      addressParts &&
-      Array.isArray(addressParts) &&
-      addressParts.length > 1
-    ) {
-      for (const [index, _] of addressParts.entries()) {
-        // exclusion for specific search combinations (ex 'kaainummer + number' GIS-537)
-        if (lowerLocationKeyWords.includes(addressParts[index].toLowerCase())) {
-          return false;
-        }
-
-        const matches = /[0-9]\w?$/.exec(addressParts[index]);
-
-        if (matches) {
-          return true;
-        }
-      }
+    // Check if it contains a known location keyword explicitly (exclude such cases)
+    const lowerLocationKeywords = locationKeywords.map(k => k.toLowerCase());
+    if (lowerLocationKeywords.some(keyword => lowerQuery.includes(keyword))) {
+      return false;
     }
 
-    return false;
+    // Try to match a typical address pattern:
+    // e.g. streetname followed by a number (with optional suffix)
+    const basicAddressPattern = /\b([a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*)[\s\-]+([\w\-\/]{1,10})\b/;
+    return basicAddressPattern.test(query);
   }
 
   /**
@@ -198,6 +188,8 @@ export class NgxLocationPickerHelper {
       streetname: "",
       streetids: streetIds ?? [],
       housenumber: "",
+      postcode: "",
+      place: "",
       onlyAntwerp: onlyAntwerp,
       countries: countryCodes,
       buffer: buffer,
@@ -205,12 +197,20 @@ export class NgxLocationPickerHelper {
       ycoord: coordinateSearch?.lng
     };
 
+    const allParts: Array<string> = query && query.trim().length > 0 ? query.split(",") : null;
 
-    const addressParts: Array<string> =
-    query && query.trim().length > 0 ? query.split(" ") : null;
+    let postcodeAndMunicipalityParts: Array<string> = null;
+    let addressParts: Array<string> = null;
+
+    if (allParts){
+      addressParts = allParts[0].split(" ");
+      if (allParts.length == 2){
+        postcodeAndMunicipalityParts = allParts[1].split(" ");
+      }
+    }
 
     if (addressParts) {
-      addressParts.map((part, index) => {
+      addressParts.map((part: string, index: number): void => {
         const matches = /[0-9]\w?$/.exec(part);
 
         if (index > 0 && matches) {
@@ -245,7 +245,8 @@ export class NgxLocationPickerHelper {
         );
       }
 
-      streetAndNumber.housenumber = query
+      streetAndNumber.housenumber = addressParts
+        .join("")
         .replace(streetAndNumber.streetname, "")
         .replace(/\s/g, "");
       streetAndNumber.housenumber = streetAndNumber.housenumber
@@ -256,6 +257,27 @@ export class NgxLocationPickerHelper {
       // The combination of a street name id and a house number are unique to Antwerp.
       // Including a street name has no added value if the housenumer and streetnameid are known
       if(streetAndNumber.onlyAntwerp && streetAndNumber.streetids.length !== 0 && streetAndNumber.housenumber) streetAndNumber.streetname = null;
+    }
+
+    if (postcodeAndMunicipalityParts){
+      postcodeAndMunicipalityParts = postcodeAndMunicipalityParts.filter(p => p && p.trim().length > 0);
+
+      postcodeAndMunicipalityParts.forEach((part: string): void => {
+        const trimmedPart:string = part.trim();
+
+        if (/^\d{1,4}$/.test(trimmedPart)) {
+          streetAndNumber.postcode = trimmedPart;
+        }
+        else {
+          // Assume it's part of the municipality/place name
+          if (streetAndNumber.place) {
+            streetAndNumber.place += " ";
+          }
+          streetAndNumber.place += trimmedPart;
+        }
+      });
+
+      streetAndNumber.place = streetAndNumber.place?.trim();
     }
 
     // if previous selected location is of type LocationModel and location has streetid
