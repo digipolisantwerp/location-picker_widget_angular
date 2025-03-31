@@ -12,6 +12,14 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Added
+
+- Added support of postcode and place/municipality search for addresses.
+
+### Fixed
+
+- Changed click event listeners to pointerdown event listeners for touchpad support.
+
 ## [7.8.1]
 
 ### Fixed
