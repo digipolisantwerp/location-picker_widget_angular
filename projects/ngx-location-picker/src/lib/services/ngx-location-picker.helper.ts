@@ -106,10 +106,11 @@ export class NgxLocationPickerHelper {
       return false;
     }
 
-    // Try to match a typical address pattern:
-    // e.g. streetname followed by a number (with optional suffix)
-    const basicAddressPattern = /\b([a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*)[\s\-]+([\w\-\/]{1,10})\b/;
-    return basicAddressPattern.test(query);
+    // Ensure the query matches: Street name (1 or more words) + house number
+    const addressPattern = /^\b([a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*)\s+(\d+[a-zA-Z]{0,5})(?:,\s*(\d{1,4}|\d{4,5}(?:\s+[a-zA-Z\s]+)?|[a-zA-Z\s]+)?)?\s*,?\s*$/i;
+
+    // Match only if there is at least one street name and a house number
+    return addressPattern.test(query);
   }
 
   /**
@@ -210,26 +211,24 @@ export class NgxLocationPickerHelper {
     }
 
     if (addressParts) {
+      let foundHouseNumber = false;
+
       addressParts.map((part: string, index: number): void => {
-        const matches = /[0-9]\w?$/.exec(part);
+        const isNumber = /^[0-9]/.test(part);
+        const isHouseNumberPart = /[0-9]\w?$/.test(part);
 
-        if (index > 0 && matches) {
-          if (!!streetAndNumber.housenumber || matches.index === 0) {
-            streetAndNumber.housenumber += part + "";
-            return;
-          }
-        }
-
-        if (streetAndNumber.streetname) {
-          streetAndNumber.streetname += " ";
-        }
-
-        if (/\d$/.test(part) && index + 1 === addressParts.length) {
-          streetAndNumber.housenumber = part.replace(/^[0-9]\-[a-z]+/g, "");
-          streetAndNumber.streetname += part.replace(/\d*$/, "");
-        } else if (/[0-9]\w?$/.exec(streetAndNumber.housenumber + part)) {
+        // Check if we found the house number
+        if (isNumber && !foundHouseNumber) {
+          streetAndNumber.housenumber = part;
+          foundHouseNumber = true;
+        } else if (foundHouseNumber) {
+          // Continue building the house number if still adding
           streetAndNumber.housenumber += part;
         } else {
+          // Otherwise, treat it as part of the street name
+          if (streetAndNumber.streetname) {
+            streetAndNumber.streetname += " ";
+          }
           streetAndNumber.streetname += part;
         }
       });
@@ -245,13 +244,17 @@ export class NgxLocationPickerHelper {
         );
       }
 
-      streetAndNumber.housenumber = addressParts
-        .join("")
-        .replace(streetAndNumber.streetname, "")
-        .replace(/\s/g, "");
-      streetAndNumber.housenumber = streetAndNumber.housenumber
+      // Clean up street name
+      streetAndNumber.streetname = streetAndNumber.streetname
         .trim()
-        .replace(/^\([a-z\s\,]*\)/gi, "");
+        .replace(/\s+\([a-z\s\,]+\)$/gi, "");
+
+      // Edge case: Remove numbers mistakenly left in street name
+      if (/[a-z]\d*$/.test(streetAndNumber.streetname)) {
+        streetAndNumber.streetname = streetAndNumber.streetname.replace(/[0-9]*$/g, "");
+      }
+
+      streetAndNumber.housenumber = streetAndNumber.housenumber.trim();
 
       // The user first chooses a street and can then add a house number. The address is looked up based on the streetnameid and house number.
       // The combination of a street name id and a house number are unique to Antwerp.
