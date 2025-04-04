@@ -12,13 +12,23 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
+### Fixed
+
+- Removed redirect side effect when clicking on location/address/coordinate result.
+
+## [7.8.4]
+
 ### Added
 
 - Added support of postcode and place/municipality search for addresses.
 
+## [7.8.3]
+
 ### Fixed
 
 - Changed click event listeners to pointerdown event listeners for touchpad support.
+
+## [7.8.2] - BORKED
 
 ## [7.8.1]
 
