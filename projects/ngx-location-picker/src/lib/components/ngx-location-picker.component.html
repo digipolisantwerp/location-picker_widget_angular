@@ -22,8 +22,8 @@
         <p *ngIf="!hasResults && !searching; else results" class="u-margin-s">{{ noResultsLabel }}</p>
         <ng-template #results>
           <ul class="a-list a-list--lined a-list--flushed a-list__results">
-            <li *ngFor="let location of foundLocations; let ii = index" class="a-list__item">
-              <a href="#" [class]="{
+            <li *ngFor="let location of foundLocations; let ii = index" class="a-list__item result-list-item-clickable">
+              <a [class]="{
                 'a-list__content': true,
                 'is-active': ii === highlightedLocationResult,
               }" (pointerdown)="onLocationSelect($event, location)">

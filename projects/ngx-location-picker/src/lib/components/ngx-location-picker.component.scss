@@ -6,6 +6,10 @@
     overflow: hidden;
   }
 
+  .result-list-item-clickable:hover {
+    cursor: pointer;
+  }
+
   .ngx-location-picker-marker {
     position: relative;
 
