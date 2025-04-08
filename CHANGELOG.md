@@ -10,17 +10,20 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+
 ## Unreleased
+
+## [7.8.5]
+
+### Fixed
+
+- Removed redirect side effect when clicking on location/address/coordinate result.
 
 ## [7.8.4]
 
 ### Added
 
 - Added support of postcode and place/municipality search for addresses.
-
-### Fixed
-
-- Removed redirect side effect when clicking on location/address/coordinate result.
 
 ## [7.8.3]
 
@@ -430,7 +433,11 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.1...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.5...HEAD
+[7.8.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.4...v7.8.5
+[7.8.4]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.3...v7.8.4
+[7.8.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.2...v7.8.3
+[7.8.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.1...v7.8.2
 [7.8.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.0...v7.8.1
 [7.8.0]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.5...v7.8.0
 [7.7.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.7.4...v7.7.5
