@@ -3,7 +3,7 @@
     <div class="a-input__wrapper has-inline-addon">
       <input #leafletSearch id="leaflet-search" type="text" name="leaflet-search" [placeholder]="placeholder"
         [attr.aria-label]="textInputAriaLabel" [(ngModel)]="selectedLocationLabel"
-        (ngModelChange)="onInputChange($event)" autocomplete="off" (blur)="didSearch = false" />
+        (ngModelChange)="onInputChange($event)" autocomplete="off" (blur)="setDidSearch()" />
       <div class="inline-addon" *ngIf="showClearInputButton">
         <div *ngIf="searching" class="a-spinner" role="alert">
           <span class="a-spinner__circle">
@@ -11,7 +11,7 @@
           </span>
         </div>
         <button *ngIf="!inputHasValue && !searching" class="a-button a-button--s a-button--text has-icon" type="button"
-          (pointerdown)="emptyField()" [attr.aria-label]="clearInputAriaLabel">
+          (click)="emptyField()" [attr.aria-label]="clearInputAriaLabel">
           <aui-icon name="ai-close"></aui-icon>
         </button>
       </div>
@@ -22,18 +22,18 @@
         <p *ngIf="!hasResults && !searching; else results" class="u-margin-s">{{ noResultsLabel }}</p>
         <ng-template #results>
           <ul class="a-list a-list--lined a-list--flushed a-list__results">
-            <li *ngFor="let location of foundLocations; let ii = index" class="a-list__item result-list-item-clickable">
-              <a [class]="{
+            <li *ngFor="let location of foundLocations; let ii = index" class="a-list__item">
+              <a href="#" [class]="{
                 'a-list__content': true,
                 'is-active': ii === highlightedLocationResult,
-              }" (pointerdown)="onLocationSelect($event, location)">
+              }" (click)="onLocationSelect($event, location)">
                 <p [innerHTML]="location.label | highlight: selectedLocation?.label"></p>
                 <small>{{ location.layer }}</small>
               </a>
             </li>
           </ul>
         </ng-template>
-        <div *ngIf="!hasResults && pickedLocation && !searching" (pointerdown)="onLocationSelect($event, selectedLocation)"
+        <div *ngIf="!hasResults && pickedLocation && !searching" (click)="onLocationSelect($event, selectedLocation)"
           class="use-coordinate" [class.is-highlighted]="!hasResults && pickedLocation">
           <p>{{ defaultOptionLabel }}</p>
           <small>{{ selectedLocation.label }}</small>
@@ -46,7 +46,7 @@
         <p><aui-icon [name]="leafletNotification.icon" class="u-margin-right-xxs"></aui-icon> {{
           leafletNotification.text }}</p>
         <button class="a-button a-button--text a-button--{{ leafletNotification.status }} has-icon m-alert__close"
-          aria-label="Close" (pointerdown)="closeNotification()">
+          aria-label="Close" (click)="closeNotification()">
           <aui-icon name="ai-close"></aui-icon>
         </button>
       </div>
@@ -71,14 +71,14 @@
   (filteredResult)="onResultFiltered($event)">
     <div controls bottom left>
       <button type="button" class="a-button has-icon u-margin-bottom-xs button-location-picking"
-        (pointerdown)="pickLocationOnMap()" [class.a-button--outlined]="pickLocationActive"
+        (click)="pickLocationOnMap()" [class.a-button--outlined]="pickLocationActive"
         [attr.aria-label]="locationPickAriaLabel">
         <aui-icon name="ai-pin"></aui-icon>
       </button>
     </div>
     <div controls bottom right>
       <button type="button" class="a-button has-icon" [attr.aria-label]="locateMeAriaLabel"
-        (pointerdown)="getDeviceLocation()">
+        (click)="getDeviceLocation()">
         <aui-icon name="ai-compass-arrow"></aui-icon>
       </button>
     </div>
