@@ -623,11 +623,15 @@ export class NgxLocationPickerComponent
     }
   }
 
+  protected setDidSearch(): void {
+    setTimeout(() => this.didSearch = false, 200);
+  }
+
   /**
    * When a location is selected from the list.
    */
-  onLocationSelect($event: Event, selectedLocation: any, didSearch: boolean = false) {
-    if ($event) { $event.preventDefault(); }
+  protected onLocationSelect($event: Event, selectedLocation: any, didSearch: boolean = false): void {
+    if ($event) $event.preventDefault();
 
     this.didSearch = didSearch;
     this.removeMarker(true);
