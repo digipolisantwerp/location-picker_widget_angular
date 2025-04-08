@@ -12,15 +12,15 @@ All notable changes to this project will be documented in this file.
 -->
 ## Unreleased
 
-### Fixed
-
-- Removed redirect side effect when clicking on location/address/coordinate result.
-
 ## [7.8.4]
 
 ### Added
 
 - Added support of postcode and place/municipality search for addresses.
+
+### Fixed
+
+- Removed redirect side effect when clicking on location/address/coordinate result.
 
 ## [7.8.3]
 
