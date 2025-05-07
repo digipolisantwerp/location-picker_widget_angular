@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Fixed
+
+- Fixed the normalization function to preserve hyphens instead of removing them.
+
 ## [7.8.5]
 
 ### Fixed
