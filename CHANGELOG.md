@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## [7.8.6]
+
 ### Fixed
 
 - Fixed the normalization function to preserve hyphens instead of removing them.
@@ -438,7 +440,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.5...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.6...HEAD
+[7.8.6]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.5...v7.8.6
 [7.8.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.4...v7.8.5
 [7.8.4]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.3...v7.8.4
 [7.8.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.2...v7.8.3
