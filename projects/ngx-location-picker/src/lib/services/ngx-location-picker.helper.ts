@@ -81,7 +81,7 @@ export class NgxLocationPickerHelper {
   normalizeSearchValue(value: string) {
     if (!this.isCoordinate(value)) {
       // Remove malicious characters
-      const maliciousCharacters = /[\*\%\;\|\<\>\{\}\[\]\/\\\n\r\?\.\--]/g;
+      const maliciousCharacters = /[\*\%\;\|\<\>\{\}\[\]\/\\\n\r\?\.]/g;
       value = value.replace(maliciousCharacters, "");
 
       const hasBrackets = value.match(/\(.*?\)/);
@@ -107,7 +107,7 @@ export class NgxLocationPickerHelper {
     }
 
     // Ensure the query matches: Street name (1 or more words) + house number
-    const addressPattern = /^\b([a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*)\s+(\d+[a-zA-Z]{0,5})(?:,\s*(\d{1,4}|\d{4,5}(?:\s+[a-zA-Z\s]+)?|[a-zA-Z\s]+)?)?\s*,?\s*$/i;
+    const addressPattern = /^\b([\p{L}'\-]{2,}(?:\s+[\p{L}'\-]{2,})*)\s+(\d+[a-zA-Z]{0,5})(?:,\s*(\d{1,4}|\d{4,5}(?:\s+[\p{L}\s]+)?|[\p{L}\s]+)?)?\s*,?\s*$/iu;
 
     // Match only if there is at least one street name and a house number
     return addressPattern.test(query);
