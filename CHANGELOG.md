@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## [7.8.8]
+
+### Fixed
+
+- Fixed an upstream dependency conflict
+
 ## [7.8.7]
 
 ### Fixed
@@ -446,7 +452,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.7...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.8...HEAD
+[7.8.8]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.7...v7.8.8
 [7.8.7]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.6...v7.8.7
 [7.8.6]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.5...v7.8.6
 [7.8.5]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.4...v7.8.5

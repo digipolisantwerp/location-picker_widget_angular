@@ -1,7 +1,7 @@
 {
   "name": "@acpaas-ui-widgets/ngx-location-picker",
   "description": "Location Picker Smart Widget UI package (Angular)",
-  "version": "7.8.7",
+  "version": "7.8.8",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -17,17 +17,17 @@
     "build-lib": "ng build ngx-location-picker && npm run copy-files && npm run npm-pack"
   },
   "dependencies": {
-    "@acpaas-ui-widgets/ngx-location-viewer": "^3.3.0",
+    "@acpaas-ui-widgets/ngx-location-viewer": "^3.3.2",
     "@acpaas-ui/ngx-icon": "^6.0.9",
     "@acpaas-ui/ngx-leaflet": "^6.0.11"
   },
   "devDependencies": {
     "@a-ui/core": "^6.6.0",
     "@angular-devkit/build-angular": "^15.2.8",
+    "@angular-eslint/builder": "^18.4.0",
     "@angular-eslint/eslint-plugin": "^18.4.0",
     "@angular-eslint/eslint-plugin-template": "^18.4.0",
     "@angular-eslint/template-parser": "^18.4.0",
-    "@angular-eslint/builder": "^18.4.0",
     "@angular/animations": "^15.2.9",
     "@angular/cli": "^15.2.8",
     "@angular/common": "^15.2.9",
@@ -44,6 +44,7 @@
     "@types/leaflet": "^1.9.3",
     "@types/node": "~8.10.65",
     "@types/proj4": "^2.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
     "core-js": "^2.5.4",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
@@ -61,7 +62,6 @@
     "tslib": "^2.0.0",
     "tslint": "~6.1.0",
     "typescript": "~4.9.5",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
     "zone.js": "~0.11.8"
   }
 }
