@@ -13,6 +13,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Added
+
+- Added spinner for "get location" feature.
+
+### Changed
+
+- Altered default trackingTimeout and preferredAccuracy to a lower value for an acceptable time for Edge users for retrieving locations.
+
 ## [7.8.8]
 
 ### Fixed
