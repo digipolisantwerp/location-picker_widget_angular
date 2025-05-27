@@ -187,8 +187,8 @@ export class NgxLocationPickerComponent
     enableHighAccuracy: false,
     timeout: Infinity,
     maximumAge: 0,
-    preferredAccuracy: 50,
-    trackingTimeout: 5000,
+    preferredAccuracy: 25,
+    trackingTimeout: 2000,
   };
   /* If true, will use watchposition to track current position */
   @Input() trackPosition: boolean = false;
