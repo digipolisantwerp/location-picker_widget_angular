@@ -83,7 +83,7 @@
             <aui-icon *ngIf="!isLocating" name="ai-compass-arrow"></aui-icon>
             <div *ngIf="isLocating" class="a-spinner" role="alert">
               <span class="a-spinner__circle">
-                <span class="u-screen-reader-only">Fetching data...</span>
+                <span class="u-screen-reader-only">{{ locatingAriaLabel }}</span>
               </span>
             </div>
         </button>

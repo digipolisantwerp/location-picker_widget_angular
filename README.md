@@ -212,6 +212,7 @@ selectedLocation: InitialLocationModel = {
     [clearInputAriaLabel]="clearInputAriaLabel"
     [defaultTileLayerLabel]="defaultTileLayerLabel"
     [locateMeAriaLabel]="locateMeAriaLabel"
+    [locatingAriaLabel]="locatingAriaLabel"
     [locationPickAriaLabel]="locationPickAriaLabel"
     [textInputAriaLabel]="textInputAriaLabel"
     [zoomInAriaLabel]="zoomInAriaLabel"
@@ -303,6 +304,8 @@ class ExampleComponent {
     @Input() textInputAriaLabel = 'Locaties zoeken op basis van zoekterm';
     /* Aria label for locate me button */
     @Input() locateMeAriaLabel = 'Gebruik mijn locatie';
+    /* Aria label for locate me button when fetching */
+    @Input() locatingAriaLabel = "Locatie bepalen";
     /* Locate me error notification texts */
     @Input() locateMeNotSupportedNotification = 'Locatiebepaling wordt niet ondersteund op dit toestel.';
     @Input() locateMeNotAllowedNotification = 'Gelieve toegang tot je locatie toe te staan.';
