@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Added spinner for "get location" feature.
+- Added locatingAriaLabel for spinner text when fetching.
 
 ### Changed
 

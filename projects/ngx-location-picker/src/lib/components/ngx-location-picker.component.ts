@@ -101,6 +101,8 @@ export class NgxLocationPickerComponent
   @Input() textInputAriaLabel = "Locaties zoeken op basis van zoekterm";
   /* Aria label for locate me button */
   @Input() locateMeAriaLabel = "Gebruik mijn locatie";
+  /* Aria label for locate me button when fetching */
+  @Input() locatingAriaLabel = "Locatie bepalen";
   /* Locate me error notification texts */
   @Input() locateMeNotSupportedNotification =
     "Locatiebepaling wordt niet ondersteund op dit toestel.";
