@@ -30,6 +30,7 @@
               "node_modules/leaflet.markercluster/dist/MarkerCluster.css"
             ],
             "allowedCommonJsDependencies": [
+              "esri-leaflet-vector",
               "leaflet",
               "leaflet.markercluster"
             ],

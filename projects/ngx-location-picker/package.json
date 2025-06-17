@@ -1,7 +1,7 @@
 {
   "name": "@acpaas-ui-widgets/ngx-location-picker",
   "description": "Location Picker Smart Widget UI package (Angular)",
-  "version": "7.8.8",
+  "version": "7.9.1",
   "license": "MIT",
   "repository": {
     "type": "git",

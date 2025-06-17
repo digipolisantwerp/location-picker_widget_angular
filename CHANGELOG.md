@@ -13,10 +13,17 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## [7.9.1]
+
+### Added
+
+- Added locatingAriaLabel for spinner text when fetching.
+
+## [7.9.0]
+
 ### Added
 
 - Added spinner for "get location" feature.
-- Added locatingAriaLabel for spinner text when fetching.
 
 ### Changed
 
@@ -461,7 +468,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.8...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.1...HEAD
+[7.9.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.0...v7.9.1
 [7.8.8]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.7...v7.8.8
 [7.8.7]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.6...v7.8.7
 [7.8.6]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.5...v7.8.6
