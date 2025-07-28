@@ -77,15 +77,20 @@
       </button>
     </div>
     <div controls bottom right>
-        <button type="button" class="a-button has-icon" [attr.aria-label]="locateMeAriaLabel"
-                [class.a-button--outlined]="isLocating"
-                (click)="getDeviceLocation()">
-            <aui-icon *ngIf="!isLocating" name="ai-compass-arrow"></aui-icon>
-            <div *ngIf="isLocating" class="a-spinner" role="alert">
-              <span class="a-spinner__circle">
-                <span class="u-screen-reader-only">{{ locatingAriaLabel }}</span>
-              </span>
-            </div>
+        <button
+          type="button"
+          class="a-button has-icon"
+          [attr.aria-label]="isLocating ? locatingAriaLabel : locateMeAriaLabel"
+          [class.a-button--outlined]="isLocating"
+          [disabled]="isLocating"
+          (click)="getDeviceLocation()"
+        >
+          <aui-icon *ngIf="!isLocating" name="ai-compass-arrow"></aui-icon>
+          <div *ngIf="isLocating" class="a-spinner" role="alert">
+            <span class="a-spinner__circle">
+              <span class="u-screen-reader-only">{{ locatingAriaLabel }}</span>
+            </span>
+          </div>
         </button>
     </div>
     <div *ngIf="hasSidebar">
