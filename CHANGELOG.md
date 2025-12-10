@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## Fixed
+- Removed WGS84 location recalculation when we have a Polygon shape
+
 ## [7.9.2]
 
 ### Fixed
