@@ -1157,17 +1157,6 @@ export class NgxLocationPickerComponent
           this.leafletMap.map.fitBounds(bounds);
         }
       }
-
-      if (this.selectedLocation.position) {
-        this.selectedLocation.position.wgs84 = shapeCenter;
-      }
-
-      if (
-        this.selectedLocation.location &&
-        this.selectedLocation.location.position
-      ) {
-        this.selectedLocation.location.position.wgs84 = shapeCenter;
-      }
     }
   }
 
