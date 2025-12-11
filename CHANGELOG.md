@@ -13,7 +13,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-## Fixed
+
+
+## [7.9.3]
+
+### Fixed
+
 - Removed WGS84 location recalculation when we have a Polygon shape
 
 ## [7.9.2]
@@ -477,7 +482,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.2...HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.3...HEAD
+[7.9.3]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.2...v7.9.3
 [7.9.2]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.1...v7.9.2
 [7.9.1]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.9.0...v7.9.1
 [7.8.8]: https://github.com/digipolisantwerp/location-picker_widget_angular/compare/v7.8.7...v7.8.8
